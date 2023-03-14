@@ -97,7 +97,7 @@
 					} else {
 						versionBadge = "<span class='badge badge-primary'>Current</span>"
                                        }
-					resultsHTML += "<li><h4><a href='/UAIbot.github.io" + item.url.trim() + "'>" + titlePreview + "</a></h4><p>" + versionBadge +"<small>" + contentPreview + "</small></p></li>";
+					resultsHTML += "<li><h4><a href='" + item.url.trim() + "'>" + titlePreview + "</a></h4><p>" + versionBadge +"<small>" + contentPreview + "</small></p></li>";
 				}
 			});
 
