@@ -1,8 +1,12 @@
-title: UAIbot documentation 2
-description: A starter template for a Jeykll site using the Just the Docs theme!
+title: UAIbot documentation
+description: Easily make 3D simulations of robots online or offline
 theme: just-the-docs
 
-url: https://just-the-docs.github.io
+url: https://uaibot.github.io/
 
 aux_links:
-  Template Repository: https://github.com/just-the-docs/just-the-docs-template
+  Github repositories: https://github.com/UAIbot
+
+color_scheme: foo
+# Set a path/url to a favicon that will be displayed by the browser
+favicon_ico: "/assets/favicon.png"
