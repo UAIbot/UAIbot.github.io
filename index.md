@@ -20,6 +20,11 @@ Multi-language web-based simulator for interactive robotics learning and researc
 [Try it in JavaScript](#getting-started){: .btn .btn-green}
 
 ---
+> "While teaching robotics, I used many different desktop-based simulators with my students (such as CoppeliaSim and Matlab Toolboxes). However, I realized that students nowadays are much more used to web-based applications. This is why I, together with my students, came with the idea of creating a simulator [...]"<br>
+<div align="center">
+Vinicius Mariano Gonçalves<br>UAIbot co-creator
+</div>
+
 ## Frequently Asked Questions
 
 <details>
