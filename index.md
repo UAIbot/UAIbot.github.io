@@ -7,7 +7,7 @@ nav_order: 1
 # UAIbot: Effortless robotics simulation
 {: .fs-9 }
 
-Multi-language web-based simulator for interactive robotics learning and research. Click on the simulation below to interact with it in 3D!
+Beginner-friendly web-based simulator for interactive robotics learning and research. Click on the simulation below to interact with it in 3D!
 {: .fs-6 .fw-300 }
 
 <div align="center" style="width:100%; height:400px"> 
@@ -16,10 +16,17 @@ Multi-language web-based simulator for interactive robotics learning and researc
 
 
 
-[Try it in Python](#getting-started){: .btn .btn-green .mr-4}
-[Try it in JavaScript](#getting-started){: .btn .btn-green}
+[Try it in Python](#getting-started){: .btn .btn-outline .mr-4}
+[Try it in JavaScript](#getting-started){: .btn .btn-outline}
 
----
+
+## Whith UAIBot you have:
+- **Accessibility**<br> Use it from anywhere with an internet connection through Google Colab or locally in an IDE or Jupyter Notebook. 
+- **Easy-of-use**<br> Create simulations with a simple and intuitive API. Go as low-level or as high-level as you want. Share your simulations with others as HTML files.
+- **Interactivity**<br> Be able to visualise and interact with your simulations in 3D. Go foward and backward in time, pause, and resume the simulation as you please.
+
+<br>
+
 > "While teaching robotics, I used many different desktop-based simulators with my students (such as CoppeliaSim and Matlab Toolboxes). However, I realized that students nowadays are much more used to web-based applications. This is why I, together with my students, came with the idea of creating a simulator [...]"<br>
 <div align="center">
 Vinicius Mariano Gonçalves<br>UAIbot co-creator
