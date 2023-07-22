@@ -20,7 +20,7 @@ Beginner-friendly web-based simulator for interactive robotics learning and rese
 [Try it in JavaScript](#getting-started){: .btn .btn-outline}
 
 
-## Whith UAIBot you have:
+## With UAIBot you have:
 - **Accessibility**<br> Use it from anywhere with an internet connection through Google Colab or locally in an IDE or Jupyter Notebook. 
 - **Easy-of-use**<br> Create simulations with a simple and intuitive API. Go as low-level or as high-level as you want. Share your simulations with others as HTML files.
 - **Interactivity**<br> Be able to visualise and interact with your simulations in 3D. Go foward and backward in time, pause, and resume the simulation as you please.
