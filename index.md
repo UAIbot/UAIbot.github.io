@@ -7,7 +7,7 @@ nav_order: 1
 # UAIbot: Effortless robotics simulation
 {: .fs-9 }
 
-Beginner-friendly web-based simulator for interactive robotics learning and research. Click on the simulation below to interact with it in 3D!
+Beginner-friendly web-based simulator for interactive robotics learning and research. Click and drag on the simulation below to interact with it in 3D!
 {: .fs-6 .fw-300 }
 
 <div align="center" style="width:100%; height:400px"> 
