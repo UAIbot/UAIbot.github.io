@@ -16,8 +16,8 @@ Beginner-friendly web-based simulator for interactive robotics learning and rese
 
 
 
-[Try it in Python](#getting-started){: .btn .btn-outline .mr-4}
-[Try it in JavaScript](#getting-started){: .btn .btn-outline}
+[Try it in Python](/docs/User_Guide/UAIbotPy_quickstart){: .btn .btn-outline .mr-4}
+[Try it in JavaScript](/docs/User_Guide/UAIbotJS_quickstart){: .btn .btn-outline}
 
 
 ## With UAIBot you have:

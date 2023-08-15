@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <body>
+
+    <!--The canvas element below is where the simulation will be displayed-->
+    <canvas id="scene" style='width:100%; height:100%; position:absolute'></canvas>
+
+    <script type="module"> 
+      import * as UAIbot from "https://cdn.jsdelivr.net/gh/UAIbot/UAIbotJS@v1.0.1/UAIbotJS/UAIbot.js";
+      import * as Utils from "https://cdn.jsdelivr.net/gh/UAIbot/UAIbotJS@main/UAIbotJS/Utils.js";
+      import * as math from 'https://cdn.jsdelivr.net/npm/mathjs@11.6.0/+esm'
+
+      let sim = new UAIbot.Simulation(); //instantiate simulation
+      let bot = new UAIbot.Robot().create_epson_t6(); //instantiate robot
+      let box = new UAIbot.Box(0.1, 0.1, 0.1, "red"); //instantiate cube
+
+      sim.add(box);//Add box
+      sim.add(bot);//Add cube
+      
+      let position_vector = math.matrix([[0.05],
+                                         [-0.525],
+                                         [0.05]]);//Create position vector for positioning the cube
+      let box_position = Utils.trn(position_vector); //Create HTM for positioning the cube
+      box.setHTM(box_position)//Change cube position
+
+      sim.setAnimationLoop(() => {
+        sim.render();
+      });
+      
+    </script>
+
+  </body>
+</html>
