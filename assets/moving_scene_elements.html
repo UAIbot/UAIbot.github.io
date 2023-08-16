@@ -23,7 +23,23 @@
       let box_position = Utils.trn(position_vector); //Create HTM for positioning the cube
       box.setHTM(box_position)//Change cube position
 
+      let i = 0;//Variable for registering frame number
       sim.setAnimationLoop(() => {
+
+        if(i < 392){
+          let q = math.matrix([[math.cos(i/50)],
+                               [math.cos(i/50)],
+                               [-0.04*math.cos(i/25) - 0.05]]);//Create configuration vector
+          if(i == 157){
+            bot.catch(box);//Catch box
+          }
+          if(i == 314){
+            bot.release(box);//Realease box
+          }
+          bot.config(q);//Put robot in specified configuration
+        }
+        i++;//Go to next frame
+
         sim.render();
       });
       

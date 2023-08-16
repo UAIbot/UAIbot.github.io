@@ -5,7 +5,7 @@ theme: just-the-docs
 url: https://uaibot.github.io/
 
 aux_links:
-  Github repositories: https://github.com/UAIbot
+  GitHub repositories: https://github.com/UAIbot
 
 color_scheme: foo.scss
 
