@@ -11,7 +11,7 @@ Beginner-friendly web-based simulator for interactive robotics learning and rese
 {: .fs-6 .fw-300 }
 
 <div align="center" style="width:100%; height:400px"> 
-<iframe frameBorder="0" scrolling="no" src="/assets/anim2.html" style="width:100%;height:100%"></iframe>
+<iframe frameBorder="0" scrolling="no" src="assets/Python_examples/HERO_sim.html" style="width:100%;height:100%"></iframe>
 </div>
 
 
