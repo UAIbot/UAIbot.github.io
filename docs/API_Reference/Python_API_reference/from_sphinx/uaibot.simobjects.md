@@ -1,8 +1,6 @@
 ---
-layout: home
-title: UAIbot.Robot
+layout: default
+title: uaibot.simobjects
 has_children: true
 parent: Python API reference
 ---
-
-# UAIbot.Robot
