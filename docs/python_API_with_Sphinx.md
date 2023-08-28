@@ -17,7 +17,7 @@ and install the sphinx-markdown-builder
 pip install sphinx-markdown-builder
 ```
 
-Then, you need to clone the UAIbotPy repository
+You need to clone the UAIbotPy repository
 
 ```bash
 git clone https://github.com/UAIbot/UAIbotPy.git
@@ -34,7 +34,7 @@ and then, get into the docs folder
 cd docs
 ```
 
-then, run the comand for the sphinx quickstart
+Run the comand for the sphinx quickstart
 
 ```bash
 sphinx-quickstart
@@ -44,7 +44,9 @@ Answer the questions acordingly to your preferences. Now go to the conf.py file 
 ```python
  extensions = ['sphinx.ext.autodoc', 'sphinx_markdown_builder']
 ```
-now go to the main folder
+
+go to the main folder
+
 
 ```bash
 cd ..
@@ -126,16 +128,8 @@ and copy the markdown files to the from_sphinx folder at the documentation repos
 cp -r docs/_build/markdown/* /home/user/UAIbot.github.io/docs/API_Reference/Python_API_reference/from_sphinx
 ```
 
-then run the following command to recreate the documentation
+Finally, run the following command to recreate the documentation
 
 ```bash
 bundle exec jekyll serve
-```
-
-finally, push the changes to the documentation repository
-
-```bash
-git add .
-git commit -m "created new python API reference"
-git push
 ```
