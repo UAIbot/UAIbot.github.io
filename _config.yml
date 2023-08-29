@@ -11,3 +11,6 @@ color_scheme: foo.scss
 
 # Set a path/url to a favicon that will be displayed by the browser
 favicon_ico: "/assets/favicon.png"
+
+math: katex
+
