@@ -7,6 +7,10 @@ parent: Theoretical Reference
 
 # Rotation Matrix
 
+To understand this section a basic knowledge of linear algebra is required.
+
+## Definition
+
 In this context we have the following definition:
 
 > A rotation matrix is a matrix $$Q\in \mathbb{R}^{3 \times 3}$$ with two properties:
@@ -80,7 +84,7 @@ The point $$p'$$ is the point $$p$$ rotated 45 degrees on axis $$z_0$$.
 
 ### Example 2
 
-In UAIBot it is possible to calculate the axis and angle (in radians) of a rotation matrix using the `Utils.axis_angle` function:
+In UAIBot it is possible to calculate the axis and angle (in radians) of a rotation matrix as:
 
 ```python
 import numpy as np
@@ -95,7 +99,7 @@ print(angle) #prints 1.570 rad
 
 Note that the axis is written in a generic reference frame $$\mathcal{F}_0$$. The axis is contextualized when we apply the rotation matrix to a point $$p$$ written in a specific reference.
 
-## COMPOSITION OF ROTATION MATRIXES
+## Composition of Rotations
 
 Two rotations in a row represented by matrices $$Q_1$$ and $$Q_2$$ (in that order!) in a frame of reference $$\mathcal{F}_0$$ form another rotation in the reference frame $$\mathcal{F}_0$$, represented by a rotation matrix $$Q_3=Q_2Q_1$$ (the product of matrices).
 
@@ -143,7 +147,9 @@ The first matrix is a rotation on the axis $$r=( \frac{\sqrt{3}}{3} \ \frac{\sqr
 The second matrix is a rotation on the axis $$r=( \frac{\sqrt{3}}{3} \ \frac{\sqrt{3}}{3} \
                         -\frac{\sqrt{3}}{3} )^T$$ by an angle of 2.09 radians.
 
-## ELEMENTARY ROTATIONS
+## Elementary Rotations
+
+The elementary rotations are rotations around the $$x$$, $$y$$ and $$z$$ axes, respectively, by a specific angle $$\theta$$.
 
 $$R_x(\theta) = \Large{\Bigg(}\normalsize{}\begin{array}{ccc}
                         1 & 0 & 0 \\
@@ -155,7 +161,7 @@ $$R_y(\theta) = \Large{\Bigg(}\normalsize{}\begin{array}{ccc}
                         \ \cos(\theta) & 0 & \sin(\theta) \\
                         0 & 1 & 0 \\
                         -\sin(\theta) & 0 & \cos(\theta)
-                        \end{array}\Large{\Bigg)}\normalsize{}.
+                        \end{array}\Large{\Bigg)}\normalsize{}.$$
 
 $$R_z(\theta) = \Large{\Bigg(}\normalsize{}\begin{array}{ccc}
                         \cos(\theta) & -\sin(\theta) & 0 \\
@@ -166,7 +172,7 @@ $$R_z(\theta) = \Large{\Bigg(}\normalsize{}\begin{array}{ccc}
 
 ### Example 4
 
-In UAIBot, elementary rotations are implemented by:
+In UAIBot, elementary rotations are implemented as:
 
 ```python
 import uaibot as ub
@@ -176,6 +182,61 @@ Rx = ub.Utils.rotx(theta)
 Ry = ub.Utils.roty(theta)
 Rz = ub.Utils.rotz(theta)
 ```
+in Python, or:
 
-In this case the matrices will be 4x4 instead of 3x3, but you can recover the rotation matrices by discarding the last row and the last column. Why these matrices are embedded in the 4x4 matrix will become clear shortly.
+```javascript
+import * as Utils from "https://cdn.jsdelivr.net/gh/UAIbot/UAIbotJS@main/UAIbotJS/Utils.js";
 
+let theta = 3.14/2;
+
+let Rx = Utils.rotx(theta);
+let Ry = Utils.roty(theta);
+let Rz = Utils.rotz(theta);
+```
+
+in Javascript.
+
+In this case the matrices will be 4x4 instead of 3x3, but you can recover the rotation matrices by discarding the last row and the last column. Why these matrices are embedded in the 4x4 matrix will become clear in the Homogeneous Transformation Matrix section.
+
+Every rotation matrix can be decomposed into a product of elementary rotations. This is generally refered to as Euler Angles representation. The most common Euler Angles representation is:
+
+$$Q = R_z(\alpha)R_y(\beta)R_x(\gamma)$$
+
+But there are other ways. For example:
+
+$$Q = R_x(\alpha)R_y(\beta)R_z(\gamma)$$
+
+For more information on Euler Angles, see the Euler Angles section.
+
+## Arbitrary Rotations
+
+Rotations around an arbitrary axis $$r$$ and an angle $$\theta$$ are also implemented in UAIbot as:
+
+```python
+import uaibot as ub
+
+theta=3.14/2
+r = [1,2,3]
+
+R = ub.Utils.rot(r, theta)
+```
+
+in Python, or:
+
+```javascript
+import * as Utils from "https://cdn.jsdelivr.net/gh/UAIbot/UAIbotJS@main/UAIbotJS/Utils.js";
+import * as math from 'https://cdn.jsdelivr.net/npm/mathjs@11.6.0/+esm';
+
+let theta = 3.14 / 2;
+let r = math.matrix([
+  [1],
+  [2],
+  [3]
+]);
+
+let R = Utils.rot(r, theta);
+```
+
+in Javascript.
+
+In this case the matrices will be 4x4 instead of 3x3, but you can recover the rotation matrices by discarding the last row and the last column. Why these matrices are embedded in the 4x4 matrix will become clear, again, in the Homogeneous Transformation Matrix section.

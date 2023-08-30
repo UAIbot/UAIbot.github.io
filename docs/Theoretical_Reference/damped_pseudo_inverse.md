@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Damped Pseudo Inverse
-nav_order: 5
+nav_order: 6
 parent: Theoretical Reference
 ---
 
