@@ -7,9 +7,9 @@ parent: Theoretical Reference
 
 # Euler Angles
 
-## Definition
-
 To understand this section a basic knowledge of linear algebra is required.
+
+## Definition
 
 In this context we have the following definition:
 
@@ -20,7 +20,7 @@ the angles $$\alpha$$, $$\beta$$ and $$\gamma$$ are called the Euler angles of r
 
 There are other Euler angle conventions (e.g. $$Q = R_x(\alpha)R_y(\beta)R_z(\gamma)$$), but this is the most common.
 
-## Example 1
+### Example 1
 
 In UAIBot, Euler angles can be calculated using the Utils.euler_angles function in Python.
 
@@ -33,7 +33,7 @@ alpha, beta, gamma = ub.Utils.euler_angles(Q)
 print([alpha, beta, gamma])
 ```
 
-## Demosntration 1
+### Demosntration 1
 
 The following interactive demonstration shows the rotation of a box by the Euler angles $$\alpha$$, $$\beta$$ and $$\gamma$$. This demosnstration is made using the UAIbotJS library. You can play around with the code by clicking the "Edit in JSFiddle" button.
 
