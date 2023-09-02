@@ -89,7 +89,7 @@ HTMs have several uses when representing rigid transformations. For example, the
 
 $$T_2(T_1(p)) = (Q_2Q_1)p + (Q_2s_1+s_2).$$
 
-Note that, as with rotations, transformations do not necessarily commute: (T_2T_1 \not= T_1T_2).
+Note that, as with rotations, transformations do not necessarily commute: $$(T_2T_1 \not= T_1T_2)$$.
 
 Let the respective MTH of the transformations be $$T_1$$ and $$T_2$$, and the MTH of the composition be $$T_3$$ ($$T_3 = T_2T_1$$). Then:
 
