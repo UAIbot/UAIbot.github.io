@@ -117,7 +117,7 @@ Consider the following sequence of transformations:
 
 $$H = R_x(\pi/4) D_y(-0.25) R_z(\pi/2) D_x(1).$$
 
-Note the order ($$D_x(1)$$ first, $$R_z(\pi/2)$$ later, etc.). We read from right to left!
+Note the order ($$D_x(1)$$ first, $$R_z(\pi/2)$$ later, etc...). We read from right to left!
 
 See the demonstration bellow with the sequence of transformations. Note that all transformations are done with respect to the reference frame $$\mathcal{F}_0$$.
 
