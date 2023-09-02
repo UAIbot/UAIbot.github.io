@@ -6,3 +6,5 @@ parent: Theoretical Reference
 ---
 
 # Damped Pseudo Inverse
+
+Soon
