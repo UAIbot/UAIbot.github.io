@@ -25,7 +25,7 @@ Definition:
 
 >The configuration of a robotic manipulator is the set of all joint angles $$\theta$$. The configuration space is the set of all possible configurations. The configuration space of a robot with $$n$$ joints is $$\mathbb{R}^n$$.
 
-## Solving the forward kinematics problem with the D–H convention
+## The the D–H referentials
 
 The D–H convention is a systematic procedure for assigning coordinate frames to the links of a robot manipulator. The rocedure goes as follows:
 
@@ -75,4 +75,53 @@ Given the two interpretations for an HTM, we can also interpret $$H_{DH0}^{DHn}(
 
 Anyway, for that we have to extract the Denavit-Hartenberg Parameters from the robot, which are $$4n$$ numbers that allow us to know how each of the references is at a given instant of time.
 
-aula 3 slide 31
+There are 4 parameters to transform from the frame $$\mathcal{F}_{DH(i-1)}$$ to the next frame $$\mathcal{F}_{DHi}$$. This is for $$i=1,...,n$$, totaling $$4n$$ parameters.
+
+The parameters are:
+
+- $$\theta_i$$: the rotation that must be done on the current $$z$$ axis to align the current $$x$$ axis with the next $$x$$ axis.
+- $$d_i$$: the displacement to be made on the current $$z$$ axis so that the center of the current frame goes to point $$i,i+1$$.
+- $$\alpha_i$$: the rotation that must be done on the current $$x$$ axis to align the current $$x$$ axis with the next $$x$$ axis.
+- $$a_i$$: the translation that must be done on the current $$x$$ axis so that the two reference frames finally coincide.
+
+The way in which the DH axes are created guarantees the existence of these parameters, that is, that there are numbers $$\theta_i,d_i,\alpha_i,a_i$$ in which these transformations parameterized by them transform one referential into the next.
+
+**Very important**: if the $$i$$-th joint is revolute, $$\theta_i$$ is variable and depends on the current **configuration** of joint $$i$$,$$q_i$$. If it is linear, it is $$d_i$$ which is variable, and depends on the current **configuration** of joint $$i$$,$$q_i$$.
+
+All three remaining parameters from one reference frame to the other are structural constants of the robot, decided at the time of its design. Note that transformations always use the current frame of reference, not the starting frame.
+
+### Demonstration 4
+
+In the animation bellow, the four D–H parameters are deduced for each link of a robot manipulator.
+
+<iframe frameBorder="0" scrolling="no" src="/assets/dh4.html" style="width:800px;height:650px;"></iframe>
+
+### Demonstration 5
+
+In the animation bellow, the four D–H parameters are deduced for each link of a robot manipulator.
+
+<iframe frameBorder="0" scrolling="no" src="/assets/dh5.html" style="width:800px;height:650px;"></iframe>
+
+Note that in the two previous examples, the robot was the same, but in different configurations. The structural parameters (in white) were the same, but the variables (in yellow) changed. 
+
+### Demonstration 6
+
+In the animation bellow, the four D–H parameters are deduced for each link of a robot manipulator.
+
+<iframe frameBorder="0" scrolling="no" src="/assets/dh6.html" style="width:800px;height:650px;"></iframe>
+
+## Solving the forward kinematics problem with the D–H convention
+
+In possession of the parameters, it is easy to calculate the transformation of the reference frame $$\mathcal{F}_{DH(i-1)}$$ to $$\mathcal{F}_{DHi}$$, for $$i=1,2,...,n$$.
+
+The transformation goes as follows:
+
+$$H_{DH(i-1)}^{DHi}(q_i) = R_z(\theta_i)D_z(d_i)R_x(\alpha_i)D_x(a_i).$$
+
+Note that the transformation must be read from left to right, as we use the current reference frame, not the initial one, to interpret the transformations! So first is the $$z$$ rotation, then the $$z$$ displacement, then the $$x$$ rotation, and finally the $$x$$ displacement.
+
+The HTM $$H_{DH0}^{DHn}(q)$$ between the first reference frame (fixed) and the one that is attached to the last link (effector) is:
+
+$$H_{DH0}^{DHn}(q) = H_{DH0}^{DH1}(q_1)H_{DH1}^{DH2}(q_2)...H_{DH(n-1)}^{DHn}(q_n).$$
+
+Depended on the **configuration** $$q$$ of the robot.

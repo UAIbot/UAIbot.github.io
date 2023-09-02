@@ -6,3 +6,5 @@ grand_parent: Cookbook
 ---
 
 # Inverse kinematics of 2-Link Planar Manipulator
+
+Soon

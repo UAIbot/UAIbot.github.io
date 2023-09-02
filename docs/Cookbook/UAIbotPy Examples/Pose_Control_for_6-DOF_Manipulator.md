@@ -6,3 +6,5 @@ grand_parent: Cookbook
 ---
 
 # Pose Control for 6-DOF Manipulator
+
+Soon

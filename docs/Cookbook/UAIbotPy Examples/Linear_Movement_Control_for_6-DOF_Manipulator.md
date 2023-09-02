@@ -6,3 +6,5 @@ grand_parent: Cookbook
 ---
 
 # Linear Movement Control for 6-DOF Manipulator
+
+Soon
