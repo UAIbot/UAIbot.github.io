@@ -33,8 +33,8 @@ alpha, beta, gamma = ub.Utils.euler_angles(Q)
 print([alpha, beta, gamma])
 ```
 
-### Demosntration 1
+### Demonstration 1
 
-The following interactive demonstration shows the rotation of a box by the Euler angles $$\alpha$$, $$\beta$$ and $$\gamma$$. This demosnstration is made using the UAIbotJS library. You can play around with the code by clicking the "Edit in JSFiddle" button.
+The following interactive demonstration shows the rotation of a box by the Euler angles $$\alpha$$, $$\beta$$ and $$\gamma$$. This demonstration is made using the UAIbotJS library. You can play around with the code by clicking the "Edit in JSFiddle" button.
 
 <iframe width="100%" height="600px" src="//jsfiddle.net/UAIbot/tycnm73b/24/embedded/result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
