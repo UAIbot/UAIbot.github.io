@@ -3,12 +3,12 @@
 .controller:hover{opacity:1 !important;}
 </style>
 <body>
-<div id='canvas_container_16942029285437312' style='width:800px;height:600px;position:relative'>
-<div id='loading_screen_16942029285437312' style='width:800px;height:600px;position:relative; background-color: #19bd39;text-align:center;align-items:center;display:flex;justify-content:center'> 
+<div id='canvas_container_1694202937499905' style='width:800px;height:600px;position:relative'>
+<div id='loading_screen_1694202937499905' style='width:800px;height:600px;position:relative; background-color: #19bd39;text-align:center;align-items:center;display:flex;justify-content:center'> 
  <img src='https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/SVG/logo_uai_bot.svg' style='width:200px;height:114px'/>
  </div>
 <script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js'></script>
-<canvas id='scene_16942029285437312' width='800px' height='600px'></canvas>
+<canvas id='scene_1694202937499905' width='800px' height='600px'></canvas>
 <!-- USER DIVS GO HERE --><div class = 'controller' style='width:800px;height:30px;'></div>
 </div>
 
@@ -38,7 +38,7 @@ import { RoomEnvironment } from 'https://unpkg.com/three@0.126.1/examples/jsm/en
 const delay = 500; 
  const maxTime = 0; 
  const cameraType= 'perspective'; 
- const sceneID= '16942029285437312'; 
+ const sceneID= '1694202937499905'; 
  const showWorldFrame=true; 
  const showGrid=true; 
  const backgroundColor='white'; 
@@ -640,6 +640,252 @@ if (showGrid) {
 //------------------------------------------------------------
 
 //--------------- ADDING ELEMENTS TO THIS SCENE ---------------
+
+//BEGIN DECLARATION OF THE ROBOT 'epsont6'
+
+const object3d_base_epsont6_list = [];
+
+const material_epsont6_obj_base_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "white",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.3,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_epsont6_obj_base_0 = new Matrix4(); 
+htm_epsont6_obj_base_0.set(1.0,0.0,0.0,0.0,0.0,0.0007963267107332633,-0.9999996829318346,0.0,0.0,0.9999996829318346,0.0007963267107332633,0.0,0.0,0.0,0.0,1.0);
+const object3d_epsont6_obj_base_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/EpsonT6/Base.obj',
+scale: 0.001,
+matrix: htm_epsont6_obj_base_0,
+type: 'obj',
+mesh_material: material_epsont6_obj_base_0};
+
+object3d_base_epsont6_list.push(object3d_epsont6_obj_base_0);
+
+const list_links_epsont6 = [];
+
+const object3d_link_0_epsont6_list = [];
+
+const material_link_0_epsont6_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "white",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.3,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_0_epsont6_obj_0 = new Matrix4(); 
+htm_link_0_epsont6_obj_0.set(1.0,0.0,0.0,-0.325,0.0,0.0007963267107332633,-0.9999996829318346,0.0,0.0,0.9999996829318346,0.0007963267107332633,0.0,0.0,0.0,0.0,1.0);
+const object3d_link_0_epsont6_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/EpsonT6/T6Axis1.obj',
+scale: 0.001,
+matrix: htm_link_0_epsont6_obj_0,
+type: 'obj',
+mesh_material: material_link_0_epsont6_obj_0};
+
+object3d_link_0_epsont6_list.push(object3d_link_0_epsont6_obj_0);
+const material_link_0_epsont6_obj_1 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "black",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0,
+normalScale: new Vector2(1,1),
+refractionRatio: 0.98,
+roughness: 1,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_0_epsont6_obj_1 = new Matrix4(); 
+htm_link_0_epsont6_obj_1.set(6.341362302272584e-07,-0.0007963264582434141,0.9999996829318346,0.0,0.9999996829318346,0.0007963267107332633,0.0,0.0,-0.0007963264582434141,0.9999993658637698,0.0007963267107332633,0.22,0.0,0.0,0.0,1.0);
+const object3d_link_0_epsont6_obj_1={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/EpsonT6/T6Cable.obj',
+scale: 0.001,
+matrix: htm_link_0_epsont6_obj_1,
+type: 'obj',
+mesh_material: material_link_0_epsont6_obj_1};
+
+object3d_link_0_epsont6_list.push(object3d_link_0_epsont6_obj_1);
+
+const link_0_epsont6 = {
+theta: 0, 
+d: 0, 
+a: 0.325, 
+alpha: 0, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_0_epsont6_list}; 
+ 
+list_links_epsont6.push(link_0_epsont6);
+
+const object3d_link_1_epsont6_list = [];
+
+const material_link_1_epsont6_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "white",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.3,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_1_epsont6_obj_0 = new Matrix4(); 
+htm_link_1_epsont6_obj_0.set(1.0,0.0,0.0,0.0,0.0,0.0007963267107332633,0.9999996829318346,0.0,0.0,-0.9999996829318346,0.0007963267107332633,-0.06,0.0,0.0,0.0,1.0);
+const object3d_link_1_epsont6_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/EpsonT6/T6Axis2.obj',
+scale: 0.001,
+matrix: htm_link_1_epsont6_obj_0,
+type: 'obj',
+mesh_material: material_link_1_epsont6_obj_0};
+
+object3d_link_1_epsont6_list.push(object3d_link_1_epsont6_obj_0);
+
+const link_1_epsont6 = {
+theta: 0, 
+d: 0.0, 
+a: 0.275, 
+alpha: 3.14, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_1_epsont6_list}; 
+ 
+list_links_epsont6.push(link_1_epsont6);
+
+const object3d_link_2_epsont6_list = [];
+
+const material_link_2_epsont6_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "white",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.3,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_epsont6_obj_0 = new Matrix4(); 
+htm_link_2_epsont6_obj_0.set(1.0,0.0,0.0,0.0,0.0,0.0007963267107332633,0.9999996829318346,0.0,0.0,-0.9999996829318346,0.0007963267107332633,-0.4,0.0,0.0,0.0,1.0);
+const object3d_link_2_epsont6_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/EpsonT6/T6Axis3.obj',
+scale: 0.001,
+matrix: htm_link_2_epsont6_obj_0,
+type: 'obj',
+mesh_material: material_link_2_epsont6_obj_0};
+
+object3d_link_2_epsont6_list.push(object3d_link_2_epsont6_obj_0);
+
+const link_2_epsont6 = {
+theta: 0, 
+d: 0, 
+a: 0, 
+alpha: 0, 
+jointType: 1, 
+showFrame: false,
+model3d: object3d_link_2_epsont6_list}; 
+ 
+list_links_epsont6.push(link_2_epsont6);
+
+const htm_epsont6_base_0 = new Matrix4(); 
+htm_epsont6_base_0.set(1,0,0,0.0625,0,1,0,0,0,0,1,0.2,0,0,0,1);
+const htm_epsont6_n_eef = new Matrix4(); 
+htm_epsont6_n_eef.set(1.0,0.0,0.0,0.0,0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
+const var_epsont6 = new Robot(object3d_base_epsont6_list, list_links_epsont6,[[0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0, 0, 0, 1, [0.0, 0.0, 0.0]]], htm_epsont6_base_0, htm_epsont6_n_eef,true);
+sceneElements.push(var_epsont6);
 //USER INPUT GOES HERE
 
 

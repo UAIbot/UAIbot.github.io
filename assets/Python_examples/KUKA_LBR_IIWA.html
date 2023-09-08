@@ -3,12 +3,12 @@
 .controller:hover{opacity:1 !important;}
 </style>
 <body>
-<div id='canvas_container_16942029285437312' style='width:800px;height:600px;position:relative'>
-<div id='loading_screen_16942029285437312' style='width:800px;height:600px;position:relative; background-color: #19bd39;text-align:center;align-items:center;display:flex;justify-content:center'> 
+<div id='canvas_container_16942033580016177' style='width:800px;height:600px;position:relative'>
+<div id='loading_screen_16942033580016177' style='width:800px;height:600px;position:relative; background-color: #19bd39;text-align:center;align-items:center;display:flex;justify-content:center'> 
  <img src='https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/SVG/logo_uai_bot.svg' style='width:200px;height:114px'/>
  </div>
 <script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js'></script>
-<canvas id='scene_16942029285437312' width='800px' height='600px'></canvas>
+<canvas id='scene_16942033580016177' width='800px' height='600px'></canvas>
 <!-- USER DIVS GO HERE --><div class = 'controller' style='width:800px;height:30px;'></div>
 </div>
 
@@ -38,7 +38,7 @@ import { RoomEnvironment } from 'https://unpkg.com/three@0.126.1/examples/jsm/en
 const delay = 500; 
  const maxTime = 0; 
  const cameraType= 'perspective'; 
- const sceneID= '16942029285437312'; 
+ const sceneID= '16942033580016177'; 
  const showWorldFrame=true; 
  const showGrid=true; 
  const backgroundColor='white'; 
@@ -640,6 +640,422 @@ if (showGrid) {
 //------------------------------------------------------------
 
 //--------------- ADDING ELEMENTS TO THIS SCENE ---------------
+
+//BEGIN DECLARATION OF THE ROBOT 'kukalbriiwa'
+
+const object3d_base_kukalbriiwa_list = [];
+
+const material_kukalbriiwa_obj_base_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "silver",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.3,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_kukalbriiwa_obj_base_0 = new Matrix4(); 
+htm_kukalbriiwa_obj_base_0.set(1.0,0.0,0.0,0.0,0.0,0.0007963267107332633,-0.9999996829318346,0.0,0.0,0.9999996829318346,0.0007963267107332633,0.0,0.0,0.0,0.0,1.0);
+const object3d_kukalbriiwa_obj_base_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/KukaLBRIIWA/base_link.dae',
+scale: 1,
+matrix: htm_kukalbriiwa_obj_base_0,
+type: 'dae',
+mesh_material: material_kukalbriiwa_obj_base_0};
+
+object3d_base_kukalbriiwa_list.push(object3d_kukalbriiwa_obj_base_0);
+
+const list_links_kukalbriiwa = [];
+
+const object3d_link_0_kukalbriiwa_list = [];
+
+const material_link_0_kukalbriiwa_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "silver",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.3,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_0_kukalbriiwa_obj_0 = new Matrix4(); 
+htm_link_0_kukalbriiwa_obj_0.set(0.9999987317275395,0.0,-0.0015926529164868282,0.0,0.0,-1.0,0.0,0.36000000000000004,-0.0015926529164868282,0.0,-0.9999987317275395,0.0,0.0,0.0,0.0,1.0);
+const object3d_link_0_kukalbriiwa_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/KukaLBRIIWA/link_1.dae',
+scale: 1,
+matrix: htm_link_0_kukalbriiwa_obj_0,
+type: 'dae',
+mesh_material: material_link_0_kukalbriiwa_obj_0};
+
+object3d_link_0_kukalbriiwa_list.push(object3d_link_0_kukalbriiwa_obj_0);
+
+const link_0_kukalbriiwa = {
+theta: 0, 
+d: 0.36, 
+a: 0, 
+alpha: -1.57, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_0_kukalbriiwa_list}; 
+ 
+list_links_kukalbriiwa.push(link_0_kukalbriiwa);
+
+const object3d_link_1_kukalbriiwa_list = [];
+
+const material_link_1_kukalbriiwa_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "silver",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.3,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_1_kukalbriiwa_obj_0 = new Matrix4(); 
+htm_link_1_kukalbriiwa_obj_0.set(0.9999987317275395,0.0,-0.0015926529164868282,0.0,-0.0015926529164868282,0.0,-0.9999987317275395,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0);
+const object3d_link_1_kukalbriiwa_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/KukaLBRIIWA/link_2.dae',
+scale: 1,
+matrix: htm_link_1_kukalbriiwa_obj_0,
+type: 'dae',
+mesh_material: material_link_1_kukalbriiwa_obj_0};
+
+object3d_link_1_kukalbriiwa_list.push(object3d_link_1_kukalbriiwa_obj_0);
+
+const link_1_kukalbriiwa = {
+theta: 0, 
+d: 0, 
+a: 0, 
+alpha: 1.57, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_1_kukalbriiwa_list}; 
+ 
+list_links_kukalbriiwa.push(link_1_kukalbriiwa);
+
+const object3d_link_2_kukalbriiwa_list = [];
+
+const material_link_2_kukalbriiwa_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "silver",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.3,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_kukalbriiwa_obj_0 = new Matrix4(); 
+htm_link_2_kukalbriiwa_obj_0.set(0.9999987317275395,0.0,-0.0015926529164868282,0.0,0.0,1.0,0.0,-0.42,0.0015926529164868282,0.0,0.9999987317275395,0.0,0.0,0.0,0.0,1.0);
+const object3d_link_2_kukalbriiwa_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/KukaLBRIIWA/link_3.dae',
+scale: 1,
+matrix: htm_link_2_kukalbriiwa_obj_0,
+type: 'dae',
+mesh_material: material_link_2_kukalbriiwa_obj_0};
+
+object3d_link_2_kukalbriiwa_list.push(object3d_link_2_kukalbriiwa_obj_0);
+
+const link_2_kukalbriiwa = {
+theta: 0, 
+d: 0.42, 
+a: 0, 
+alpha: 1.57, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_2_kukalbriiwa_list}; 
+ 
+list_links_kukalbriiwa.push(link_2_kukalbriiwa);
+
+const object3d_link_3_kukalbriiwa_list = [];
+
+const material_link_3_kukalbriiwa_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "silver",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.3,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_3_kukalbriiwa_obj_0 = new Matrix4(); 
+htm_link_3_kukalbriiwa_obj_0.set(0.9999987317275395,0.0,-0.0015926529164868282,0.0,-0.0015926529164868282,0.0,-0.9999987317275395,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0);
+const object3d_link_3_kukalbriiwa_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/KukaLBRIIWA/link_4.dae',
+scale: 1,
+matrix: htm_link_3_kukalbriiwa_obj_0,
+type: 'dae',
+mesh_material: material_link_3_kukalbriiwa_obj_0};
+
+object3d_link_3_kukalbriiwa_list.push(object3d_link_3_kukalbriiwa_obj_0);
+
+const link_3_kukalbriiwa = {
+theta: 0, 
+d: 0, 
+a: 0, 
+alpha: -1.57, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_3_kukalbriiwa_list}; 
+ 
+list_links_kukalbriiwa.push(link_3_kukalbriiwa);
+
+const object3d_link_4_kukalbriiwa_list = [];
+
+const material_link_4_kukalbriiwa_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "silver",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.3,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_4_kukalbriiwa_obj_0 = new Matrix4(); 
+htm_link_4_kukalbriiwa_obj_0.set(1.0,0.0,0.0,0.0,0.0,-1.0,0.0,0.39999999999999997,0.0,0.0,-1.0,0.0,0.0,0.0,0.0,1.0);
+const object3d_link_4_kukalbriiwa_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/KukaLBRIIWA/link_5.dae',
+scale: 1,
+matrix: htm_link_4_kukalbriiwa_obj_0,
+type: 'dae',
+mesh_material: material_link_4_kukalbriiwa_obj_0};
+
+object3d_link_4_kukalbriiwa_list.push(object3d_link_4_kukalbriiwa_obj_0);
+
+const link_4_kukalbriiwa = {
+theta: 0, 
+d: 0.4, 
+a: 0, 
+alpha: -1.57, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_4_kukalbriiwa_list}; 
+ 
+list_links_kukalbriiwa.push(link_4_kukalbriiwa);
+
+const object3d_link_5_kukalbriiwa_list = [];
+
+const material_link_5_kukalbriiwa_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "silver",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.3,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_5_kukalbriiwa_obj_0 = new Matrix4(); 
+htm_link_5_kukalbriiwa_obj_0.set(1.0,0.0,0.0,0.0,0.0,0.0,-1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0);
+const object3d_link_5_kukalbriiwa_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/KukaLBRIIWA/link_6.dae',
+scale: 1,
+matrix: htm_link_5_kukalbriiwa_obj_0,
+type: 'dae',
+mesh_material: material_link_5_kukalbriiwa_obj_0};
+
+object3d_link_5_kukalbriiwa_list.push(object3d_link_5_kukalbriiwa_obj_0);
+
+const link_5_kukalbriiwa = {
+theta: 0, 
+d: 0, 
+a: 0, 
+alpha: 1.57, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_5_kukalbriiwa_list}; 
+ 
+list_links_kukalbriiwa.push(link_5_kukalbriiwa);
+
+const object3d_link_6_kukalbriiwa_list = [];
+
+const material_link_6_kukalbriiwa_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#707070",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.7,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_6_kukalbriiwa_obj_0 = new Matrix4(); 
+htm_link_6_kukalbriiwa_obj_0.set(1.0,0.0,0.0,0.0,0.0,0.0007963267107332633,-0.9999996829318346,0.0,0.0,0.9999996829318346,0.0007963267107332633,-0.17,0.0,0.0,0.0,1.0);
+const object3d_link_6_kukalbriiwa_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/KukaLBRIIWA/link_7.dae',
+scale: 1,
+matrix: htm_link_6_kukalbriiwa_obj_0,
+type: 'dae',
+mesh_material: material_link_6_kukalbriiwa_obj_0};
+
+object3d_link_6_kukalbriiwa_list.push(object3d_link_6_kukalbriiwa_obj_0);
+
+const link_6_kukalbriiwa = {
+theta: 0, 
+d: 0.152, 
+a: 0, 
+alpha: 0, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_6_kukalbriiwa_list}; 
+ 
+list_links_kukalbriiwa.push(link_6_kukalbriiwa);
+
+const htm_kukalbriiwa_base_0 = new Matrix4(); 
+htm_kukalbriiwa_base_0.set(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
+const htm_kukalbriiwa_n_eef = new Matrix4(); 
+htm_kukalbriiwa_n_eef.set(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
+const var_kukalbriiwa = new Robot(object3d_base_kukalbriiwa_list, list_links_kukalbriiwa,[[0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0, 0, 0, 1, [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]], htm_kukalbriiwa_base_0, htm_kukalbriiwa_n_eef,true);
+sceneElements.push(var_kukalbriiwa);
 //USER INPUT GOES HERE
 
 

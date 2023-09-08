@@ -3,12 +3,12 @@
 .controller:hover{opacity:1 !important;}
 </style>
 <body>
-<div id='canvas_container_16942029285437312' style='width:800px;height:600px;position:relative'>
-<div id='loading_screen_16942029285437312' style='width:800px;height:600px;position:relative; background-color: #19bd39;text-align:center;align-items:center;display:flex;justify-content:center'> 
+<div id='canvas_container_16942029378870976' style='width:800px;height:600px;position:relative'>
+<div id='loading_screen_16942029378870976' style='width:800px;height:600px;position:relative; background-color: #19bd39;text-align:center;align-items:center;display:flex;justify-content:center'> 
  <img src='https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/SVG/logo_uai_bot.svg' style='width:200px;height:114px'/>
  </div>
 <script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js'></script>
-<canvas id='scene_16942029285437312' width='800px' height='600px'></canvas>
+<canvas id='scene_16942029378870976' width='800px' height='600px'></canvas>
 <!-- USER DIVS GO HERE --><div class = 'controller' style='width:800px;height:30px;'></div>
 </div>
 
@@ -38,7 +38,7 @@ import { RoomEnvironment } from 'https://unpkg.com/three@0.126.1/examples/jsm/en
 const delay = 500; 
  const maxTime = 0; 
  const cameraType= 'perspective'; 
- const sceneID= '16942029285437312'; 
+ const sceneID= '16942029378870976'; 
  const showWorldFrame=true; 
  const showGrid=true; 
  const backgroundColor='white'; 
@@ -640,6 +640,270 @@ if (showGrid) {
 //------------------------------------------------------------
 
 //--------------- ADDING ELEMENTS TO THIS SCENE ---------------
+
+//BEGIN DECLARATION OF THE ROBOT 'frankaermika'
+
+const object3d_base_frankaermika_list = [];
+
+const material_frankaermika_obj_base_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "silver",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.3,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_frankaermika_obj_base_0 = new Matrix4(); 
+htm_frankaermika_obj_base_0.set(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+const object3d_frankaermika_obj_base_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/FrankaErmika/link0.obj',
+scale: 1,
+matrix: htm_frankaermika_obj_base_0,
+type: 'obj',
+mesh_material: material_frankaermika_obj_base_0};
+
+object3d_base_frankaermika_list.push(object3d_frankaermika_obj_base_0);
+
+const list_links_frankaermika = [];
+
+const object3d_link_0_frankaermika_list = [];
+
+const material_link_0_frankaermika_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "silver",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.3,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_0_frankaermika_obj_0 = new Matrix4(); 
+htm_link_0_frankaermika_obj_0.set(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+const object3d_link_0_frankaermika_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/FrankaErmika/link1.obj',
+scale: 1,
+matrix: htm_link_0_frankaermika_obj_0,
+type: 'obj',
+mesh_material: material_link_0_frankaermika_obj_0};
+
+object3d_link_0_frankaermika_list.push(object3d_link_0_frankaermika_obj_0);
+
+const link_0_frankaermika = {
+theta: 0, 
+d: 0.333, 
+a: 0, 
+alpha: 0, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_0_frankaermika_list}; 
+ 
+list_links_frankaermika.push(link_0_frankaermika);
+
+const object3d_link_1_frankaermika_list = [];
+
+const material_link_1_frankaermika_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "silver",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.3,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_1_frankaermika_obj_0 = new Matrix4(); 
+htm_link_1_frankaermika_obj_0.set(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+const object3d_link_1_frankaermika_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/FrankaErmika/link2.obj',
+scale: 1,
+matrix: htm_link_1_frankaermika_obj_0,
+type: 'obj',
+mesh_material: material_link_1_frankaermika_obj_0};
+
+object3d_link_1_frankaermika_list.push(object3d_link_1_frankaermika_obj_0);
+
+const link_1_frankaermika = {
+theta: 0, 
+d: 0, 
+a: 0, 
+alpha: -1.57, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_1_frankaermika_list}; 
+ 
+list_links_frankaermika.push(link_1_frankaermika);
+
+const object3d_link_2_frankaermika_list = [];
+
+const material_link_2_frankaermika_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "silver",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.3,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_frankaermika_obj_0 = new Matrix4(); 
+htm_link_2_frankaermika_obj_0.set(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
+const object3d_link_2_frankaermika_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/FrankaErmika/link3.obj',
+scale: 1,
+matrix: htm_link_2_frankaermika_obj_0,
+type: 'obj',
+mesh_material: material_link_2_frankaermika_obj_0};
+
+object3d_link_2_frankaermika_list.push(object3d_link_2_frankaermika_obj_0);
+
+const link_2_frankaermika = {
+theta: 0, 
+d: 0.316, 
+a: 0, 
+alpha: 1.57, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_2_frankaermika_list}; 
+ 
+list_links_frankaermika.push(link_2_frankaermika);
+
+const object3d_link_3_frankaermika_list = [];
+
+
+const link_3_frankaermika = {
+theta: 0, 
+d: 0, 
+a: 0.0825, 
+alpha: 1.57, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_3_frankaermika_list}; 
+ 
+list_links_frankaermika.push(link_3_frankaermika);
+
+const object3d_link_4_frankaermika_list = [];
+
+
+const link_4_frankaermika = {
+theta: 0, 
+d: 0.384, 
+a: -0.0825, 
+alpha: -1.57, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_4_frankaermika_list}; 
+ 
+list_links_frankaermika.push(link_4_frankaermika);
+
+const object3d_link_5_frankaermika_list = [];
+
+
+const link_5_frankaermika = {
+theta: 0, 
+d: 0, 
+a: 0, 
+alpha: 1.57, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_5_frankaermika_list}; 
+ 
+list_links_frankaermika.push(link_5_frankaermika);
+
+const object3d_link_6_frankaermika_list = [];
+
+
+const link_6_frankaermika = {
+theta: 0, 
+d: 0, 
+a: 0.088, 
+alpha: 1.57, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_6_frankaermika_list}; 
+ 
+list_links_frankaermika.push(link_6_frankaermika);
+
+const htm_frankaermika_base_0 = new Matrix4(); 
+htm_frankaermika_base_0.set(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
+const htm_frankaermika_n_eef = new Matrix4(); 
+htm_frankaermika_n_eef.set(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
+const var_frankaermika = new Robot(object3d_base_frankaermika_list, list_links_frankaermika,[[0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0, 0, 0, 1, [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]], htm_frankaermika_base_0, htm_frankaermika_n_eef,true);
+sceneElements.push(var_frankaermika);
 //USER INPUT GOES HERE
 
 

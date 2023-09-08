@@ -35,7 +35,49 @@ def moving_simulation_elements():
 
     sim.save(os.path.dirname(__file__), "moving_simulation_elements")
 
+def ABB_CRB():
+    robot = ub.Robot.create_abb_crb() #Instantiate robot
+    sim = ub.Simulation([robot]) #Instantiate simulation
+    sim.save(os.path.dirname(__file__), "ABB_CRB")
+
+def DARWIN_MINI():
+    robot = ub.Robot.create_darwin_mini() #Instantiate robot
+    sim = ub.Simulation([robot]) #Instantiate simulation
+    sim.save(os.path.dirname(__file__), "DARWIN_MINI")
+
+def EPSON_T6():
+    robot = ub.Robot.create_epson_t6() #Instantiate robot
+    sim = ub.Simulation([robot]) #Instantiate simulation
+    sim.save(os.path.dirname(__file__), "EPSON_T6")
+
+def FRANKA_ERMIKA_3():
+    robot = ub.Robot.create_franka_ermika_3() #Instantiate robot
+    sim = ub.Simulation([robot]) #Instantiate simulation
+    sim.save(os.path.dirname(__file__), "FRANKA_ERMIKA_3")
+
+def KUKA_KR5():
+    robot = ub.Robot.create_kuka_kr5() #Instantiate robot
+    sim = ub.Simulation([robot]) #Instantiate simulation
+    sim.save(os.path.dirname(__file__), "KUKA_KR5")
+
+def KUKA_LBR_IIWA():
+    robot = ub.Robot.create_kuka_lbr_iiwa() #Instantiate robot
+    sim = ub.Simulation([robot]) #Instantiate simulation
+    sim.save(os.path.dirname(__file__), "KUKA_LBR_IIWA")
+
+def STAUBLI_TX60():
+    robot = ub.Robot.create_staubli_tx60() #Instantiate robot
+    sim = ub.Simulation([robot]) #Instantiate simulation
+    sim.save(os.path.dirname(__file__), "STAUBLI_TX60")
+
 if __name__ == "__main__":
     creating_a_simulation()
     adding_objects_to_the_simulation()
     moving_simulation_elements()
+    ABB_CRB()
+    DARWIN_MINI()
+    EPSON_T6()
+    FRANKA_ERMIKA_3()
+    KUKA_KR5()
+    KUKA_LBR_IIWA()
+    STAUBLI_TX60()

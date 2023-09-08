@@ -3,12 +3,12 @@
 .controller:hover{opacity:1 !important;}
 </style>
 <body>
-<div id='canvas_container_16942029285437312' style='width:800px;height:600px;position:relative'>
-<div id='loading_screen_16942029285437312' style='width:800px;height:600px;position:relative; background-color: #19bd39;text-align:center;align-items:center;display:flex;justify-content:center'> 
+<div id='canvas_container_16942029300767848' style='width:800px;height:600px;position:relative'>
+<div id='loading_screen_16942029300767848' style='width:800px;height:600px;position:relative; background-color: #19bd39;text-align:center;align-items:center;display:flex;justify-content:center'> 
  <img src='https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/SVG/logo_uai_bot.svg' style='width:200px;height:114px'/>
  </div>
 <script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js'></script>
-<canvas id='scene_16942029285437312' width='800px' height='600px'></canvas>
+<canvas id='scene_16942029300767848' width='800px' height='600px'></canvas>
 <!-- USER DIVS GO HERE --><div class = 'controller' style='width:800px;height:30px;'></div>
 </div>
 
@@ -38,7 +38,7 @@ import { RoomEnvironment } from 'https://unpkg.com/three@0.126.1/examples/jsm/en
 const delay = 500; 
  const maxTime = 0; 
  const cameraType= 'perspective'; 
- const sceneID= '16942029285437312'; 
+ const sceneID= '16942029300767848'; 
  const showWorldFrame=true; 
  const showGrid=true; 
  const backgroundColor='white'; 
@@ -640,6 +640,370 @@ if (showGrid) {
 //------------------------------------------------------------
 
 //--------------- ADDING ELEMENTS TO THIS SCENE ---------------
+
+//BEGIN DECLARATION OF THE ROBOT 'abbcrb'
+
+const object3d_base_abbcrb_list = [];
+
+const material_abbcrb_obj_base_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#606060",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.7,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_abbcrb_obj_base_0 = new Matrix4(); 
+htm_abbcrb_obj_base_0.set(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
+const object3d_abbcrb_obj_base_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/ABBCRB15000/base_link.stl',
+scale: 1,
+matrix: htm_abbcrb_obj_base_0,
+type: 'stl',
+mesh_material: material_abbcrb_obj_base_0};
+
+object3d_base_abbcrb_list.push(object3d_abbcrb_obj_base_0);
+
+const list_links_abbcrb = [];
+
+const object3d_link_0_abbcrb_list = [];
+
+const material_link_0_abbcrb_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#606060",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.7,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_0_abbcrb_obj_0 = new Matrix4(); 
+htm_link_0_abbcrb_obj_0.set(1.0,0.0,0.0,0.0,0.0,0.0007963267107332633,0.9999996829318346,0.0,0.0,-0.9999996829318346,0.0007963267107332633,0.0,0.0,0.0,0.0,1.0);
+const object3d_link_0_abbcrb_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/ABBCRB15000/link_1.stl',
+scale: 1,
+matrix: htm_link_0_abbcrb_obj_0,
+type: 'stl',
+mesh_material: material_link_0_abbcrb_obj_0};
+
+object3d_link_0_abbcrb_list.push(object3d_link_0_abbcrb_obj_0);
+
+const link_0_abbcrb = {
+theta: 0, 
+d: 0.265, 
+a: 0, 
+alpha: 1.57, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_0_abbcrb_list}; 
+ 
+list_links_abbcrb.push(link_0_abbcrb);
+
+const object3d_link_1_abbcrb_list = [];
+
+const material_link_1_abbcrb_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#606060",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.7,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_1_abbcrb_obj_0 = new Matrix4(); 
+htm_link_1_abbcrb_obj_0.set(0.0007963267107332633,0.0,0.9999996829318346,-0.444,-0.9999993658637698,0.0007963267107332633,0.0007963264582434141,0.0,-0.0007963264582434141,-0.9999996829318346,6.341362302272584e-07,0.0,0.0,0.0,0.0,1.0);
+const object3d_link_1_abbcrb_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/ABBCRB15000/link_2.stl',
+scale: 1,
+matrix: htm_link_1_abbcrb_obj_0,
+type: 'stl',
+mesh_material: material_link_1_abbcrb_obj_0};
+
+object3d_link_1_abbcrb_list.push(object3d_link_1_abbcrb_obj_0);
+
+const link_1_abbcrb = {
+theta: 0, 
+d: 0, 
+a: 0.444, 
+alpha: 0, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_1_abbcrb_list}; 
+ 
+list_links_abbcrb.push(link_1_abbcrb);
+
+const object3d_link_2_abbcrb_list = [];
+
+const material_link_2_abbcrb_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#606060",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.7,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_abbcrb_obj_0 = new Matrix4(); 
+htm_link_2_abbcrb_obj_0.set(0.0007963267107332633,0.0,0.9999996829318346,-0.11,0.0,1.0,0.0,0.0,-0.9999996829318346,0.0,0.0007963267107332633,0.0,0.0,0.0,0.0,1.0);
+const object3d_link_2_abbcrb_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/ABBCRB15000/link_3.stl',
+scale: 1,
+matrix: htm_link_2_abbcrb_obj_0,
+type: 'stl',
+mesh_material: material_link_2_abbcrb_obj_0};
+
+object3d_link_2_abbcrb_list.push(object3d_link_2_abbcrb_obj_0);
+
+const link_2_abbcrb = {
+theta: 3.14, 
+d: 0, 
+a: 0.11, 
+alpha: -1.57, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_2_abbcrb_list}; 
+ 
+list_links_abbcrb.push(link_2_abbcrb);
+
+const object3d_link_3_abbcrb_list = [];
+
+const material_link_3_abbcrb_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "white",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.7,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_3_abbcrb_obj_0 = new Matrix4(); 
+htm_link_3_abbcrb_obj_0.set(6.341362302272584e-07,-0.0007963264582434141,-0.9999996829318346,0.0,0.9999996829318346,0.0007963267107332633,0.0,-0.47,0.0007963264582434141,-0.9999993658637698,0.0007963267107332633,0.0,0.0,0.0,0.0,1.0);
+const object3d_link_3_abbcrb_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/ABBCRB15000/link_4.stl',
+scale: 1,
+matrix: htm_link_3_abbcrb_obj_0,
+type: 'stl',
+mesh_material: material_link_3_abbcrb_obj_0};
+
+object3d_link_3_abbcrb_list.push(object3d_link_3_abbcrb_obj_0);
+
+const link_3_abbcrb = {
+theta: 0, 
+d: -0.47, 
+a: 0, 
+alpha: -1.57, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_3_abbcrb_list}; 
+ 
+list_links_abbcrb.push(link_3_abbcrb);
+
+const object3d_link_4_abbcrb_list = [];
+
+const material_link_4_abbcrb_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "white",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.7,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_4_abbcrb_obj_0 = new Matrix4(); 
+htm_link_4_abbcrb_obj_0.set(6.341362302272584e-07,-0.0015926526639970591,0.9999987317277407,-0.08,0.0007963264582434141,-0.9999984146595753,-0.0015926526639970591,0.0,0.9999996829318346,0.0007963264582434141,6.341362302272584e-07,0.0,0.0,0.0,0.0,1.0);
+const object3d_link_4_abbcrb_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/ABBCRB15000/link_5.stl',
+scale: 1,
+matrix: htm_link_4_abbcrb_obj_0,
+type: 'stl',
+mesh_material: material_link_4_abbcrb_obj_0};
+
+object3d_link_4_abbcrb_list.push(object3d_link_4_abbcrb_obj_0);
+
+const link_4_abbcrb = {
+theta: 0, 
+d: 0, 
+a: 0.08, 
+alpha: -1.57, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_4_abbcrb_list}; 
+ 
+list_links_abbcrb.push(link_4_abbcrb);
+
+const object3d_link_5_abbcrb_list = [];
+
+const material_link_5_abbcrb_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "silver",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.7,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 1,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_5_abbcrb_obj_0 = new Matrix4(); 
+htm_link_5_abbcrb_obj_0.set(0.0007963267107332633,0.0,-0.9999996829318346,0.0,0.0,1.0,0.0,0.0,0.9999996829318346,0.0,0.0007963267107332633,0.0,0.0,0.0,0.0,1.0);
+const object3d_link_5_abbcrb_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/ABBCRB15000/link_6.stl',
+scale: 1,
+matrix: htm_link_5_abbcrb_obj_0,
+type: 'stl',
+mesh_material: material_link_5_abbcrb_obj_0};
+
+object3d_link_5_abbcrb_list.push(object3d_link_5_abbcrb_obj_0);
+
+const link_5_abbcrb = {
+theta: 0, 
+d: 0.101, 
+a: 0, 
+alpha: 0, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_5_abbcrb_list}; 
+ 
+list_links_abbcrb.push(link_5_abbcrb);
+
+const htm_abbcrb_base_0 = new Matrix4(); 
+htm_abbcrb_base_0.set(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
+const htm_abbcrb_n_eef = new Matrix4(); 
+htm_abbcrb_n_eef.set(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
+const var_abbcrb = new Robot(object3d_base_abbcrb_list, list_links_abbcrb,[[0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0, 0, 0, 1, [0.0, 0.0, 3.14, 0.0, 0.0, 0.0]]], htm_abbcrb_base_0, htm_abbcrb_n_eef,true);
+sceneElements.push(var_abbcrb);
 //USER INPUT GOES HERE
 
 

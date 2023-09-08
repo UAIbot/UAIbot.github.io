@@ -1,0 +1,4004 @@
+<html>
+<style>
+.controller:hover{opacity:1 !important;}
+</style>
+<body>
+<div id='canvas_container_16942029370382216' style='width:800px;height:600px;position:relative'>
+<div id='loading_screen_16942029370382216' style='width:800px;height:600px;position:relative; background-color: #19bd39;text-align:center;align-items:center;display:flex;justify-content:center'> 
+ <img src='https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/SVG/logo_uai_bot.svg' style='width:200px;height:114px'/>
+ </div>
+<script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js'></script>
+<canvas id='scene_16942029370382216' width='800px' height='600px'></canvas>
+<!-- USER DIVS GO HERE --><div class = 'controller' style='width:800px;height:30px;'></div>
+</div>
+
+ <script type="module">
+import { Object3D, Vector3, BoxBufferGeometry, Color, Mesh, MeshBasicMaterial, PerspectiveCamera, OrthographicCamera,
+Scene, WebGLRenderer, AmbientLight, DirectionalLight, HemisphereLight, MeshStandardMaterial,
+AxesHelper, GridHelper, Matrix4, SphereBufferGeometry, CylinderBufferGeometry, ConeGeometry, Group, LoadingManager, MeshPhysicalMaterial, Vector2, FrontSide,
+	BackSide, DoubleSide, PMREMGenerator, TextureLoader, PointLight, UVMapping, CubeReflectionMapping, CubeRefractionMapping,
+	EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeUVReflectionMapping,
+	CubeUVRefractionMapping, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping,
+	NearestFilter, LinearFilter, NearestMipmapNearestFilter, NearestMipmapLinearFilter, LinearMipmapNearestFilter,
+	LinearMipmapLinearFilter, BufferGeometry, Float32BufferAttribute, PointsMaterial, Points, ArrowHelper, TextGeometry, CubeTextureLoader,sRGBEncoding
+} from 'https://cdn.skypack.dev/three@0.135.0/build/three.module.js';
+import { OrbitControls } from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/controls/OrbitControls.js';
+import {OBJLoader} from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/loaders/OBJLoader.js';
+import {STLLoader} from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/loaders/STLLoader.js';
+import {ColladaLoader} from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/loaders/ColladaLoader.js';
+import {GUI} from 'https://cdn.skypack.dev/dat.gui';
+import {ParametricGeometry} from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/geometries/ParametricGeometry.js'
+
+
+//0.126.1 0.137.5
+import { RoomEnvironment } from 'https://unpkg.com/three@0.126.1/examples/jsm/environments/RoomEnvironment.js';
+
+//--------------------SIMULATION ELEMENTS---------------------
+
+const delay = 500; 
+ const maxTime = 0; 
+ const cameraType= 'perspective'; 
+ const sceneID= '16942029370382216'; 
+ const showWorldFrame=true; 
+ const showGrid=true; 
+ const backgroundColor='white'; 
+ const ambientLightIntensity = 12;
+ const ldrUrls = [];
+ const cameraStartPose = [1.76, 1.1, 1.45, -0.64, 0.76, 2.39, 1.0];
+ //SIMULATION PARAMETERS GO HERE
+
+function elapsedMs()
+{
+	return (new Date()).getTime();
+}
+
+
+class Objsim{
+	constructor(_frames){
+		this.frames = _frames;
+		this.currentFrame = 0;
+		this.shape = "I HAVE NO SHAPE YET";
+	}
+
+	hasLoaded()
+	{
+		return true;
+	}
+
+	nextFrame(){
+		while( (this.currentFrame < this.frames.length-1) && ( 1000 * this.frames[this.currentFrame+1][0] + delay < (elapsedMs() - startMs)) )
+		{
+			this.currentFrame += 1;
+		}
+	}
+	setFrameTime(time)
+	{
+		this.currentFrame = 0;
+		while( (this.currentFrame < this.frames.length-1) && ( this.frames[this.currentFrame+1][0] < time) )
+		{
+			this.currentFrame += 1;
+		}
+	}
+	showFrame(){
+		this.shape.matrix.set( this.frames[this.currentFrame][ 1],this.frames[this.currentFrame][ 2],this.frames[this.currentFrame][ 3],this.frames[this.currentFrame][ 4],
+							   this.frames[this.currentFrame][ 5],this.frames[this.currentFrame][ 6],this.frames[this.currentFrame][ 7],this.frames[this.currentFrame][ 8],
+							   this.frames[this.currentFrame][ 9],this.frames[this.currentFrame][10],this.frames[this.currentFrame][11],this.frames[this.currentFrame][12],
+							   this.frames[this.currentFrame][13],this.frames[this.currentFrame][14],this.frames[this.currentFrame][15],this.frames[this.currentFrame][16]);
+
+
+	}
+	setEnvMap(envMap)
+	{
+		this.shape.material.envMap = envMap;
+		this.shape.material.needsUpdate = true;
+	}
+}
+
+class Box extends Objsim{
+	constructor(_width, _height, _depth, _frames, _material){
+		super(_frames);
+		this.width = _width;
+		this.height = _height;
+		this.depth = _depth;
+		const geometry = new BoxBufferGeometry( this.width, this.height, this.depth);
+		const cube = new Mesh( geometry, _material );
+		cube.matrixAutoUpdate = false;
+		this.shape = cube;
+	}
+}
+
+class Ball extends Objsim{
+	constructor(_radius, _frames, _material){
+		super(_frames);
+		this.radius = _radius;
+		const geometry = new SphereBufferGeometry( this.radius, 64, 32);
+		const sphere = new Mesh( geometry, _material);
+		sphere.matrixAutoUpdate = false;
+		this.shape = sphere;
+	}
+}
+
+class Cylinder extends Objsim{
+	constructor(_radius, _height, _frames, _material){
+		super(_frames);
+		this.radius = _radius;
+		this.height = _height;
+		const geometry = new CylinderBufferGeometry( this.radius, this.radius, this.height, 20 );
+		const cylinder = new Mesh( geometry, _material);
+		cylinder.matrixAutoUpdate = false;
+		this.shape = cylinder;
+	}
+}
+
+class Cone extends Objsim{
+	constructor(_radius, _height, _frames, _material){
+		super(_frames);
+		this.radius = _radius;
+		this.height = _height;
+		const geometry = new ConeGeometry( this.radius, this.height, 20, 5, false, 0.0, 6.28 );
+		const cone = new Mesh( geometry, _material);
+		cone.matrixAutoUpdate = false;
+		this.shape = cone;
+	}
+}
+
+function signFun(x,n){
+	return Math.sign(x)*( Math.pow(Math.abs(x),n))
+}
+
+class SmoothBox extends Objsim{
+
+
+
+	constructor(_width, _height, _depth, _frames, _material){
+		super(_frames);
+		this.width = _width;
+		this.height = _height;
+		this.depth = _depth;
+
+		const geometry = new ParametricGeometry( function fun(u,v,target) {
+			let cosu = signFun(Math.cos(0.0001*Math.PI + 0.9999*Math.PI*u),0.5)
+			let sinu = signFun(Math.sin(0.0001*Math.PI + 0.9999*Math.PI*u),0.5)
+			let cosv = signFun(Math.cos(2*Math.PI*v),0.5)
+			let sinv = signFun(Math.sin(2*Math.PI*v),0.5)
+
+			let x = (_width/2)*sinu*cosv;
+			let y = (_height/2)*sinu*sinv;
+			let z = (_depth/2)*cosu;
+
+	    	target.set( x, y, z );
+
+		}, 25, 25 );
+
+
+		const smoothCube = new Mesh( geometry, _material );
+		smoothCube.matrixAutoUpdate = false;
+		this.shape = smoothCube;
+	}
+
+
+
+}
+
+class PointCloud extends Objsim{
+
+	constructor(_points, _frames, _color, _size) {
+		super(_frames);
+
+		this.color = _color;
+		this.points = _points
+		this.size = _size;
+
+		const vertices = []
+		const geometry = new BufferGeometry();
+		geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3));
+		const material = new PointsMaterial({color: this.color, size: this.size});
+		this.shape  = new Points(geometry, material);
+	}
+
+	showFrame(){
+		const vertices = [];
+
+		for (let i = this.frames[this.currentFrame][1]; i < this.frames[this.currentFrame][2]; i++) {
+			vertices.push(this.points[0][i], this.points[1][i], this.points[2][i]);
+		}
+
+		this.shape.geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3));
+
+	}
+
+	setEnvMap(envMap) {}
+
+}
+
+class RigidObject extends Objsim
+{
+
+	constructor(_frames, _list_3dobject) {
+		super(_frames);
+
+		this.shape = new Group();
+		this.shape.matrixAutoUpdate = false;
+
+		const manager = new LoadingManager();
+
+		let loader;
+
+		for (let i = 0; i < _list_3dobject.length; i++) {
+			const _3dobject = _list_3dobject[i];
+			if (_3dobject.type === 'obj') {
+				loader = new OBJLoader(manager);
+				loader.load(_3dobject.url, (root) => {
+
+					root.scale.set(_3dobject.scale, _3dobject.scale, _3dobject.scale);
+					root.applyMatrix4(_3dobject.matrix)
+
+					root.traverse(function (child) {
+						if (child instanceof Mesh) {
+							child.material = _3dobject.mesh_material;
+						}
+					});
+
+					this.shape.add(root);
+				});
+			}
+			if (_3dobject.type === 'stl') {
+				loader = new STLLoader(manager);
+				loader.load(_3dobject.url, (root) => {
+					const mesh = new Mesh(root);
+
+					mesh.scale.set(_3dobject.scale, _3dobject.scale, _3dobject.scale);
+					mesh.applyMatrix4(_3dobject.matrix)
+
+					mesh.traverse(function (child) {
+						if (child instanceof Mesh) {
+							child.material = _3dobject.mesh_material;
+						}
+					});
+
+					this.shape.add(mesh);
+				});
+			}
+			if (_3dobject.type === 'dae') {
+				loader = new ColladaLoader(manager);
+				loader.load(_3dobject.url, (root) => {
+					const group = root.scene;
+
+					group.scale.set(_3dobject.scale, _3dobject.scale, _3dobject.scale);
+					group.applyMatrix4(_3dobject.matrix)
+
+					group.traverse(function (child) {
+						if (child instanceof Mesh) {
+							child.material = _3dobject.mesh_material;
+						}
+					});
+
+					this.shape.add(group);
+				});
+			}
+		}
+
+	}
+
+	setEnvMapTemp(variable, envMap)
+	{
+		if(variable instanceof Mesh)
+		{
+			variable.material.envMap = envMap;
+			variable.material.needsUpdate  = true;
+		}
+		else if (variable instanceof Group)
+		{
+			for(let i=0; i < variable.children.length; i++)
+			{
+				this.setEnvMapTemp(variable.children[i]);
+			}
+		}
+	}
+	setEnvMap(envMap) {
+		this.setEnvMapTemp(this.shape, envMap);
+	}
+
+}
+
+class Vector extends Objsim {
+
+
+	constructor(_frames, _color, _thickness, _origin, _dir, _length) {
+		super(_frames);
+
+		this.color = _color;
+		this.thickness = _thickness
+		this.origin = new Vector3(_origin[0], _origin[1], _origin[2]);
+		this.dir =  new Vector3(_dir[0], _dir[1], _dir[2]);
+		this._length = length
+
+		this.shape = new ArrowHelper( this.dir, this.origin, this.length, this.color );
+		this.shape.line.material.linewidth = this.thickness;
+
+	}
+
+	showFrame() {
+		this.shape.setLength(this.frames[this.currentFrame][3]);
+		const dir = this.frames[this.currentFrame][2];
+		const origin = this.frames[this.currentFrame][1];
+
+		this.shape.setDirection(new Vector3(dir[0], dir[1], dir[2]));
+		this.shape.position.set(origin[0], origin[1], origin[2]);
+	}
+	setEnvMap(envMap) {}
+}
+
+class PointLightSim extends Objsim {
+
+
+	constructor(_frames) {
+		super(_frames);
+		this.shape = new PointLight(this.frames[0][1],this.frames[0][2],this.frames[0][3]);
+		this.shape.position.set(this.frames[0][4][0],this.frames[0][4][1],this.frames[0][4][2]);
+	}
+
+	showFrame() {
+		this.shape.color.set(this.frames[this.currentFrame][1]);
+		this.shape.intensity = this.frames[this.currentFrame][2];
+		this.shape.distance = this.frames[this.currentFrame][3];
+		this.shape.position.set(this.frames[this.currentFrame][4][0],this.frames[this.currentFrame][4][1],this.frames[this.currentFrame][4][2]);
+	}
+	setEnvMap(envMap) {}
+}
+
+class HTMLDiv extends Objsim{
+
+	constructor(_id, _frames){
+		super(_frames);
+		this.id = _id;
+		this.shape = undefined;
+	}
+
+	showFrame() {
+		var element = document.getElementById(this.id);
+
+		element.innerHTML = this.frames[this.currentFrame][1];
+		element.style.position = "absolute";
+		element.style = this.frames[this.currentFrame][2];
+	}
+	setEnvMap(envMap) {}
+}
+
+class Robot extends Objsim{
+
+	constructor(_objBase, _link, _frames, _htm_base_0, _htm_n_eef, _eef_frame_visible){
+		super(_frames);
+
+		this.loadedObjs = 0
+		this.links = _link;
+
+		this.totalNumberOfObjects = _objBase.length;
+
+		for(let i=0; i<this.links.length; i++)
+		{
+			this.totalNumberOfObjects+= this.links[i].model3d.length;
+		}
+
+		this.htm_base_0 = _htm_base_0;
+
+		//Function that creates a generic robot
+		const base = new Group();
+		base.name = "base";
+
+		const baseFrame = new Group();
+		baseFrame.name = "baseFrame";
+		baseFrame.applyMatrix4(this.htm_base_0);
+
+
+		//Create link groups
+		let linkGroupList = [];
+
+		for (let i = 0; i <= this.links.length; i++) {
+
+			var linkGroup = new Group();
+			linkGroup.name = "linkFrame" + i.toString();
+			linkGroupList.push(linkGroup);
+
+			linkGroup = new Group();
+			linkGroup.name = "link" + i.toString();
+			var axesHelper = new AxesHelper(0.2);
+			axesHelper.matrixAutoUpdate = false;
+			axesHelper.visible = true;
+			linkGroup.add(axesHelper)
+
+			if (i < this.links.length) {
+				linkGroup.rotateZ(this.links[i].theta);
+				linkGroup.translateZ(this.links[i].d);
+				linkGroup.rotateX(this.links[i].alpha);
+				linkGroup.translateX(this.links[i].a);
+			}
+
+
+			linkGroup.updateMatrix();
+
+			linkGroupList.push(linkGroup);
+		}
+
+		var linkGroup = new Group();
+		linkGroup.name = "eefFrame";
+		linkGroupList.push(linkGroup);
+
+		linkGroup = new Group();
+		linkGroup.name = "eef";
+		var axesHelper = new AxesHelper(0.2);
+		axesHelper.matrixAutoUpdate = false;
+		axesHelper.visible = _eef_frame_visible;
+		linkGroup.add(axesHelper);
+		linkGroup.applyMatrix4(_htm_n_eef)
+		linkGroup.updateMatrix();
+		linkGroupList.push(linkGroup);
+
+
+		base.add(baseFrame)
+		baseFrame.add(linkGroupList[0])
+
+		for (let i = 0; i < linkGroupList.length-1; i++) {
+			linkGroupList[i].add(linkGroupList[i + 1])
+		}
+
+		//Load 3D models
+
+		this.shape = base;
+		this.shape.matrixAutoUpdate = false;
+
+		this.loadObj(_objBase,"base", "base", false)
+		for (let i = 0; i < this.links.length-1; i++) {
+			this.loadObj(this.links[i].model3d,"link" + (i+1).toString(), "link" + (i).toString(), this.links[i].showFrame)
+		}
+		this.loadObj(this.links[this.links.length-1].model3d,"link" + (this.links.length).toString(), "link" + (this.links.length).toString(), false)
+
+		this.delta_config = []
+
+		for (let i = 0; i < this.links.length; i++) {
+			if(this.links[i].jointType == 0)
+			{
+				this.delta_config.push(this.shape.getObjectByName("link" + (i).toString()).rotation.z)
+			}
+			if(this.links[i].jointType == 1)
+			{
+				this.delta_config.push(this.shape.getObjectByName("link" + (i).toString()).position.z)
+
+			}
+		}
+
+	}
+
+	loadObj(obj, name1, name2, axisVisible) {
+
+		const manager = new LoadingManager();
+		const objLoader = new OBJLoader(manager);
+		const stlLoader = new STLLoader(manager);
+		const colladaLoader = new ColladaLoader(manager);
+
+		for (let i = 0; i < obj.length; i++) {
+
+
+			if (obj[i].type == "obj") {
+				objLoader.load(obj[i].url, (root) => {
+					root.scale.set(obj[i].scale, obj[i].scale, obj[i].scale);
+					root.applyMatrix4(obj[i].matrix)
+
+					root.traverse(function (child) {
+						if (child instanceof Mesh) {
+							child.material = obj[i].mesh_material;
+						}
+					});
+
+					this.shape.getObjectByName(name2).add(root);
+					this.loadedObjs += 1
+				});
+			}
+			if (obj[i].type == "stl") {
+				stlLoader.load(obj[i].url, (root) => {
+					const mesh = new Mesh(root);
+					mesh.scale.set(obj[i].scale, obj[i].scale, obj[i].scale);
+					mesh.applyMatrix4(obj[i].matrix)
+
+					mesh.traverse(function (child) {
+						if (child instanceof Mesh) {
+							child.material = obj[i].mesh_material;
+						}
+					});
+
+					this.shape.getObjectByName(name2).add(mesh);
+					this.loadedObjs += 1
+				});
+			}
+			if (obj[i].type == "dae") {
+				colladaLoader.load(obj[i].url, (root) => {
+					const group = root.scene;
+					group.scale.set(obj[i].scale, obj[i].scale, obj[i].scale);
+					group.applyMatrix4(obj[i].matrix)
+
+					group.traverse(function (child) {
+						if (child instanceof Mesh) {
+							child.material = obj[i].mesh_material;
+						}
+					});
+
+					this.shape.getObjectByName(name2).add(group);
+					this.loadedObjs += 1
+				});
+			}
+
+		}
+
+		this.shape.getObjectByName(name1).getObjectByProperty("type", "AxesHelper").visible = axisVisible;
+	}
+
+	hasLoaded()
+	{
+		return this.loadedObjs == this.totalNumberOfObjects;
+	}
+
+	//Function that updates frames
+	showFrame(){
+		//setting robot position
+		this.shape.matrix.set( this.frames[this.currentFrame][ 1],this.frames[this.currentFrame][ 2],this.frames[this.currentFrame][ 3],this.frames[this.currentFrame][ 4],
+							   this.frames[this.currentFrame][ 5],this.frames[this.currentFrame][ 6],this.frames[this.currentFrame][ 7],this.frames[this.currentFrame][ 8],
+							   this.frames[this.currentFrame][ 9],this.frames[this.currentFrame][10],this.frames[this.currentFrame][11],this.frames[this.currentFrame][12],
+							   this.frames[this.currentFrame][13],this.frames[this.currentFrame][14],this.frames[this.currentFrame][15],this.frames[this.currentFrame][16]);
+		//setting robot configuration
+
+		if(this.frames[this.currentFrame][17] != undefined){
+
+			for(let i = 0; i < this.links.length; i++){
+				const linkName = "linkFrame" + (i).toString();
+
+				if(this.links[i].jointType == 0){
+					this.shape.getObjectByName(linkName).rotation.z = this.frames[this.currentFrame][17][i] + this.delta_config[i];
+				}else if (this.links[i].jointType == 1){
+					this.shape.getObjectByName(linkName).position.z = this.frames[this.currentFrame][17][i] + this.delta_config[i];
+				}
+
+			}
+		}
+	}
+
+	setEnvMapTemp(variable, envMap)
+	{
+		if(variable instanceof Mesh)
+		{
+			variable.material.envMap = envMap;
+			variable.material.needsUpdate  = true;
+		}
+		else if (variable instanceof Group)
+		{
+			for(let i=0; i < variable.children.length; i++)
+			{
+				this.setEnvMapTemp(variable.children[i]);
+			}
+		}
+	}
+	setEnvMap(envMap) {
+		this.setEnvMapTemp(this.shape, envMap);
+	}
+}
+
+//------------------------------------------------------------
+
+//--------------- BASIC ELEMENTS OF ANY SCENE ----------------
+
+Object3D.DefaultUp = new Vector3(0,0,1); //Pointing Z axis up
+const canvas = document.getElementById('scene_'+sceneID);// Selecting canvas
+
+const scene = new Scene();//Instantiate the Scene
+scene.background = new Color(backgroundColor);//Set background color
+
+let camera;
+
+if (cameraType == "perspective") {
+	camera = new PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 100);//Instantiate a camera
+}
+if (cameraType == "orthographic") {
+	camera = new OrthographicCamera(-3.2, 3.2, 2.4, -2.4, 0.01, 100);
+}
+
+
+
+var ambientLight = new HemisphereLight('white','darkslategrey', 3);//Instantiate Ambient light
+ambientLight.intensity = ambientLightIntensity;
+scene.add(ambientLight);
+
+const controls = new OrbitControls(camera, canvas);	//Instantiate orbit controls
+//controls.target.set(0, 0, 0);//Point camera at the origin
+
+camera.position.set(cameraStartPose[0], cameraStartPose[1], cameraStartPose[2]);
+camera.rotation.set(cameraStartPose[3], cameraStartPose[4], cameraStartPose[5]);
+camera.zoom = cameraStartPose[6];
+camera.updateProjectionMatrix();
+
+const renderer = new WebGLRenderer({canvas, antialias: true});//Instantiate renderer
+renderer.physicallyCorrectLights = true;//Enable physically Correct Lights
+renderer.setSize(canvas.clientWidth, canvas.clientHeight);//Set render size
+renderer.setPixelRatio(window.devicePixelRatio);//Set pixel ratio
+
+let sceneElements = [];
+
+if (showWorldFrame) {
+	const axesHelper = new AxesHelper(0.5);
+	axesHelper.renderOrder = 1;
+	scene.add(axesHelper);
+}
+
+if (showGrid) {
+	const gridHelper = new GridHelper(6, 12);
+	scene.add(gridHelper);
+	gridHelper.rotation.x = 3.14 / 2;
+}
+
+
+
+
+
+//------------------------------------------------------------
+
+//--------------- ADDING ELEMENTS TO THIS SCENE ---------------
+
+//BEGIN DECLARATION OF THE GROUP 'var_group_id_139862864899008'
+
+
+//BEGIN DECLARATION OF THE ROBOT 'darwin_mini__arm_left'
+
+const object3d_base_darwin_mini__arm_left_list = [];
+
+
+const list_links_darwin_mini__arm_left = [];
+
+const object3d_link_0_darwin_mini__arm_left_list = [];
+
+const material_link_0_darwin_mini__arm_left_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_0_darwin_mini__arm_left_obj_0 = new Matrix4(); 
+htm_link_0_darwin_mini__arm_left_obj_0.set(-1.2682720583257433e-06,-0.9999987317275395,0.001592652411507351,0.385,0.9999996829318346,-9.75218648164183e-20,0.0007963267107332021,-0.405,-0.0007963257007739653,0.0015926529164868894,0.9999984146597762,-0.315,0.0,0.0,0.0,1.0);
+const object3d_link_0_darwin_mini__arm_left_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/darwin_ext_01.obj',
+scale: 0.004,
+matrix: htm_link_0_darwin_mini__arm_left_obj_0,
+type: 'obj',
+mesh_material: material_link_0_darwin_mini__arm_left_obj_0};
+
+object3d_link_0_darwin_mini__arm_left_list.push(object3d_link_0_darwin_mini__arm_left_obj_0);
+
+const link_0_darwin_mini__arm_left = {
+theta: 0, 
+d: 0.08, 
+a: 0.05, 
+alpha: 1.5707963267948966, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_0_darwin_mini__arm_left_list}; 
+ 
+list_links_darwin_mini__arm_left.push(link_0_darwin_mini__arm_left);
+
+const object3d_link_1_darwin_mini__arm_left_list = [];
+
+const material_link_1_darwin_mini__arm_left_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 1,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_1_darwin_mini__arm_left_obj_0 = new Matrix4(); 
+htm_link_1_darwin_mini__arm_left_obj_0.set(0.22482289738491157,-0.9743986761575443,-0.0013728488185255207,0.10632101246804787,0.9743993178758039,0.22482144772933166,0.0011340035518374795,-0.4836975363077747,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_1_darwin_mini__arm_left_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/XL-320.obj',
+scale: 0.004,
+matrix: htm_link_1_darwin_mini__arm_left_obj_0,
+type: 'obj',
+mesh_material: material_link_1_darwin_mini__arm_left_obj_0};
+
+object3d_link_1_darwin_mini__arm_left_list.push(object3d_link_1_darwin_mini__arm_left_obj_0);
+const material_link_1_darwin_mini__arm_left_obj_1 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_1_darwin_mini__arm_left_obj_1 = new Matrix4(); 
+htm_link_1_darwin_mini__arm_left_obj_1.set(0.22482289738491157,-0.9743986761575443,-0.0013728488185255207,0.10632101246804787,0.9743993178758039,0.22482144772933166,0.0011340035518374795,-0.4836975363077747,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_1_darwin_mini__arm_left_obj_1={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPO.obj',
+scale: 0.004,
+matrix: htm_link_1_darwin_mini__arm_left_obj_1,
+type: 'obj',
+mesh_material: material_link_1_darwin_mini__arm_left_obj_1};
+
+object3d_link_1_darwin_mini__arm_left_list.push(object3d_link_1_darwin_mini__arm_left_obj_1);
+const material_link_1_darwin_mini__arm_left_obj_2 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_1_darwin_mini__arm_left_obj_2 = new Matrix4(); 
+htm_link_1_darwin_mini__arm_left_obj_2.set(0.22482289738491157,-0.9743986761575443,-0.0013728488185255207,0.10632101246804787,0.9743993178758039,0.22482144772933166,0.0011340035518374795,-0.4836975363077747,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_1_darwin_mini__arm_left_obj_2={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/frm_ext_02.obj',
+scale: 0.004,
+matrix: htm_link_1_darwin_mini__arm_left_obj_2,
+type: 'obj',
+mesh_material: material_link_1_darwin_mini__arm_left_obj_2};
+
+object3d_link_1_darwin_mini__arm_left_list.push(object3d_link_1_darwin_mini__arm_left_obj_2);
+
+const link_1_darwin_mini__arm_left = {
+theta: 0, 
+d: 0, 
+a: 0.18, 
+alpha: 0, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_1_darwin_mini__arm_left_list}; 
+ 
+list_links_darwin_mini__arm_left.push(link_1_darwin_mini__arm_left);
+
+const object3d_link_2_darwin_mini__arm_left_list = [];
+
+const material_link_2_darwin_mini__arm_left_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 1,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_left_obj_0 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_left_obj_0.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,0.039375444006568894,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060603,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_left_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/XL-320.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_left_obj_0,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_left_obj_0};
+
+object3d_link_2_darwin_mini__arm_left_list.push(object3d_link_2_darwin_mini__arm_left_obj_0);
+const material_link_2_darwin_mini__arm_left_obj_1 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_left_obj_1 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_left_obj_1.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,0.039375444006568894,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060603,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_left_obj_1={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPO.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_left_obj_1,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_left_obj_1};
+
+object3d_link_2_darwin_mini__arm_left_list.push(object3d_link_2_darwin_mini__arm_left_obj_1);
+const material_link_2_darwin_mini__arm_left_obj_2 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_left_obj_2 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_left_obj_2.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,-0.1376245559934311,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_left_obj_2={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPU.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_left_obj_2,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_left_obj_2};
+
+object3d_link_2_darwin_mini__arm_left_list.push(object3d_link_2_darwin_mini__arm_left_obj_2);
+const material_link_2_darwin_mini__arm_left_obj_3 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_left_obj_3 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_left_obj_3.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,-0.1370245559934311,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_left_obj_3={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPD_2.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_left_obj_3,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_left_obj_3};
+
+object3d_link_2_darwin_mini__arm_left_list.push(object3d_link_2_darwin_mini__arm_left_obj_3);
+const material_link_2_darwin_mini__arm_left_obj_4 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_left_obj_4 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_left_obj_4.set(3.749399456654645e-33,1.2246467991473535e-16,1.0,-0.47139034886343734,1.0,-1.2246467991473532e-16,7.498798913309288e-33,-0.3987180905935498,1.2246467991473532e-16,1.0,-1.2246467991473532e-16,-0.38500000000000006,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_left_obj_4={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPO.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_left_obj_4,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_left_obj_4};
+
+object3d_link_2_darwin_mini__arm_left_list.push(object3d_link_2_darwin_mini__arm_left_obj_4);
+const material_link_2_darwin_mini__arm_left_obj_5 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_left_obj_5 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_left_obj_5.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,-0.1370245559934311,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_left_obj_5={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPD_1.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_left_obj_5,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_left_obj_5};
+
+object3d_link_2_darwin_mini__arm_left_list.push(object3d_link_2_darwin_mini__arm_left_obj_5);
+const material_link_2_darwin_mini__arm_left_obj_6 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_left_obj_6 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_left_obj_6.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,-0.1370245559934311,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_left_obj_6={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPL-2b2.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_left_obj_6,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_left_obj_6};
+
+object3d_link_2_darwin_mini__arm_left_list.push(object3d_link_2_darwin_mini__arm_left_obj_6);
+const material_link_2_darwin_mini__arm_left_obj_7 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_left_obj_7 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_left_obj_7.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,-0.1370245559934311,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.36168106610606027,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_left_obj_7={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPL-2b2.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_left_obj_7,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_left_obj_7};
+
+object3d_link_2_darwin_mini__arm_left_list.push(object3d_link_2_darwin_mini__arm_left_obj_7);
+const material_link_2_darwin_mini__arm_left_obj_8 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_left_obj_8 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_left_obj_8.set(-0.9659596979870569,-0.2586923147620205,-0.00038489975495112024,0.4552170486687829,0.00017889745664258487,-0.002155868403089312,0.9999976601108267,-0.3604710185226071,-0.258692539243894,0.9659573688908305,0.0021287613887118985,0.13684629320675168,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_left_obj_8={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPL-2b2.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_left_obj_8,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_left_obj_8};
+
+object3d_link_2_darwin_mini__arm_left_list.push(object3d_link_2_darwin_mini__arm_left_obj_8);
+const material_link_2_darwin_mini__arm_left_obj_9 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_left_obj_9 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_left_obj_9.set(-0.9659596979870569,-0.2586923147620206,-0.0003848997549511203,0.45521704866878293,0.00023311019734830395,0.0006174308480948634,-0.999999782219368,0.2958165250066798,0.25869249607282696,-0.9659595773438013,-0.0005361094990069424,-0.13730281753534415,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_left_obj_9={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPL-2b2.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_left_obj_9,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_left_obj_9};
+
+object3d_link_2_darwin_mini__arm_left_list.push(object3d_link_2_darwin_mini__arm_left_obj_9);
+const material_link_2_darwin_mini__arm_left_obj_10 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_left_obj_10 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_left_obj_10.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,-0.11562455599343108,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_left_obj_10={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPD_1.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_left_obj_10,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_left_obj_10};
+
+object3d_link_2_darwin_mini__arm_left_list.push(object3d_link_2_darwin_mini__arm_left_obj_10);
+const material_link_2_darwin_mini__arm_left_obj_11 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_left_obj_11 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_left_obj_11.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,-0.11562455599343108,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_left_obj_11={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPD_3.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_left_obj_11,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_left_obj_11};
+
+object3d_link_2_darwin_mini__arm_left_list.push(object3d_link_2_darwin_mini__arm_left_obj_11);
+const material_link_2_darwin_mini__arm_left_obj_12 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_left_obj_12 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_left_obj_12.set(0.9655464653636177,0.2602304237368869,0.00038702137466196826,-0.4697783787971199,-0.26023071011905635,0.9655455472235976,0.001331821164723301,0.10774768782396499,-2.710637894752022e-05,-0.0013866500652545775,0.9999990382329579,-0.3626438363336294,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_left_obj_12={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPL-2b2.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_left_obj_12,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_left_obj_12};
+
+object3d_link_2_darwin_mini__arm_left_list.push(object3d_link_2_darwin_mini__arm_left_obj_12);
+const material_link_2_darwin_mini__arm_left_obj_13 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_left_obj_13 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_left_obj_13.set(0.9655464653636177,0.2602304237368869,0.00038702137466196826,-0.4697783787971199,-0.26023071011905635,0.9655455472235976,0.001331821164723301,0.10774768782396499,-2.710637894752022e-05,-0.0013866500652545775,0.9999990382329579,-0.31464383633362936,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_left_obj_13={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPL-2b2.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_left_obj_13,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_left_obj_13};
+
+object3d_link_2_darwin_mini__arm_left_list.push(object3d_link_2_darwin_mini__arm_left_obj_13);
+
+const link_2_darwin_mini__arm_left = {
+theta: 0, 
+d: 0, 
+a: 0.23, 
+alpha: 0, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_2_darwin_mini__arm_left_list}; 
+ 
+list_links_darwin_mini__arm_left.push(link_2_darwin_mini__arm_left);
+
+const htm_darwin_mini__arm_left_base_0 = new Matrix4(); 
+htm_darwin_mini__arm_left_base_0.set(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
+const htm_darwin_mini__arm_left_n_eef = new Matrix4(); 
+htm_darwin_mini__arm_left_n_eef.set(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
+const var_darwin_mini__arm_left = new Robot(object3d_base_darwin_mini__arm_left_list, list_links_darwin_mini__arm_left,[[0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0007963267107332633, 0.9999996829318346, 0.14, 0.0, -0.9999996829318346, 0.0007963267107332633, 0.8200000000000001, 0, 0, 0, 1, [1.5707963267948966, 0.3, 0.0]]], htm_darwin_mini__arm_left_base_0, htm_darwin_mini__arm_left_n_eef,true);
+sceneElements.push(var_darwin_mini__arm_left);
+
+
+//BEGIN DECLARATION OF THE ROBOT 'darwin_mini__arm_right'
+
+const object3d_base_darwin_mini__arm_right_list = [];
+
+
+const list_links_darwin_mini__arm_right = [];
+
+const object3d_link_0_darwin_mini__arm_right_list = [];
+
+const material_link_0_darwin_mini__arm_right_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_0_darwin_mini__arm_right_obj_0 = new Matrix4(); 
+htm_link_0_darwin_mini__arm_right_obj_0.set(-1.2682720583257433e-06,-0.9999987317275395,0.001592652411507351,0.385,0.9999996829318346,-9.75218648164183e-20,0.0007963267107332021,-0.405,-0.0007963257007739653,0.0015926529164868894,0.9999984146597762,-0.315,0.0,0.0,0.0,1.0);
+const object3d_link_0_darwin_mini__arm_right_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/darwin_ext_01.obj',
+scale: 0.004,
+matrix: htm_link_0_darwin_mini__arm_right_obj_0,
+type: 'obj',
+mesh_material: material_link_0_darwin_mini__arm_right_obj_0};
+
+object3d_link_0_darwin_mini__arm_right_list.push(object3d_link_0_darwin_mini__arm_right_obj_0);
+
+const link_0_darwin_mini__arm_right = {
+theta: 0, 
+d: 0.08, 
+a: 0.05, 
+alpha: 1.5707963267948966, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_0_darwin_mini__arm_right_list}; 
+ 
+list_links_darwin_mini__arm_right.push(link_0_darwin_mini__arm_right);
+
+const object3d_link_1_darwin_mini__arm_right_list = [];
+
+const material_link_1_darwin_mini__arm_right_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 1,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_1_darwin_mini__arm_right_obj_0 = new Matrix4(); 
+htm_link_1_darwin_mini__arm_right_obj_0.set(0.22482289738491157,-0.9743986761575443,-0.0013728488185255207,0.10632101246804787,0.9743993178758039,0.22482144772933166,0.0011340035518374795,-0.4836975363077747,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_1_darwin_mini__arm_right_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/XL-320.obj',
+scale: 0.004,
+matrix: htm_link_1_darwin_mini__arm_right_obj_0,
+type: 'obj',
+mesh_material: material_link_1_darwin_mini__arm_right_obj_0};
+
+object3d_link_1_darwin_mini__arm_right_list.push(object3d_link_1_darwin_mini__arm_right_obj_0);
+const material_link_1_darwin_mini__arm_right_obj_1 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_1_darwin_mini__arm_right_obj_1 = new Matrix4(); 
+htm_link_1_darwin_mini__arm_right_obj_1.set(0.22482289738491157,-0.9743986761575443,-0.0013728488185255207,0.10632101246804787,0.9743993178758039,0.22482144772933166,0.0011340035518374795,-0.4836975363077747,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_1_darwin_mini__arm_right_obj_1={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPO.obj',
+scale: 0.004,
+matrix: htm_link_1_darwin_mini__arm_right_obj_1,
+type: 'obj',
+mesh_material: material_link_1_darwin_mini__arm_right_obj_1};
+
+object3d_link_1_darwin_mini__arm_right_list.push(object3d_link_1_darwin_mini__arm_right_obj_1);
+const material_link_1_darwin_mini__arm_right_obj_2 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_1_darwin_mini__arm_right_obj_2 = new Matrix4(); 
+htm_link_1_darwin_mini__arm_right_obj_2.set(0.22482289738491157,-0.9743986761575443,-0.0013728488185255207,0.10632101246804787,0.9743993178758039,0.22482144772933166,0.0011340035518374795,-0.4836975363077747,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_1_darwin_mini__arm_right_obj_2={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/frm_ext_02.obj',
+scale: 0.004,
+matrix: htm_link_1_darwin_mini__arm_right_obj_2,
+type: 'obj',
+mesh_material: material_link_1_darwin_mini__arm_right_obj_2};
+
+object3d_link_1_darwin_mini__arm_right_list.push(object3d_link_1_darwin_mini__arm_right_obj_2);
+
+const link_1_darwin_mini__arm_right = {
+theta: 0, 
+d: 0, 
+a: 0.18, 
+alpha: 0, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_1_darwin_mini__arm_right_list}; 
+ 
+list_links_darwin_mini__arm_right.push(link_1_darwin_mini__arm_right);
+
+const object3d_link_2_darwin_mini__arm_right_list = [];
+
+const material_link_2_darwin_mini__arm_right_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 1,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_right_obj_0 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_right_obj_0.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,0.039375444006568894,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060603,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_right_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/XL-320.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_right_obj_0,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_right_obj_0};
+
+object3d_link_2_darwin_mini__arm_right_list.push(object3d_link_2_darwin_mini__arm_right_obj_0);
+const material_link_2_darwin_mini__arm_right_obj_1 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_right_obj_1 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_right_obj_1.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,0.039375444006568894,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060603,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_right_obj_1={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPO.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_right_obj_1,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_right_obj_1};
+
+object3d_link_2_darwin_mini__arm_right_list.push(object3d_link_2_darwin_mini__arm_right_obj_1);
+const material_link_2_darwin_mini__arm_right_obj_2 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_right_obj_2 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_right_obj_2.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,-0.1376245559934311,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_right_obj_2={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPU.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_right_obj_2,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_right_obj_2};
+
+object3d_link_2_darwin_mini__arm_right_list.push(object3d_link_2_darwin_mini__arm_right_obj_2);
+const material_link_2_darwin_mini__arm_right_obj_3 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_right_obj_3 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_right_obj_3.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,-0.1370245559934311,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_right_obj_3={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPD_2.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_right_obj_3,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_right_obj_3};
+
+object3d_link_2_darwin_mini__arm_right_list.push(object3d_link_2_darwin_mini__arm_right_obj_3);
+const material_link_2_darwin_mini__arm_right_obj_4 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_right_obj_4 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_right_obj_4.set(3.749399456654645e-33,1.2246467991473535e-16,1.0,-0.47139034886343734,1.0,-1.2246467991473532e-16,7.498798913309288e-33,-0.3987180905935498,1.2246467991473532e-16,1.0,-1.2246467991473532e-16,-0.38500000000000006,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_right_obj_4={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPO.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_right_obj_4,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_right_obj_4};
+
+object3d_link_2_darwin_mini__arm_right_list.push(object3d_link_2_darwin_mini__arm_right_obj_4);
+const material_link_2_darwin_mini__arm_right_obj_5 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_right_obj_5 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_right_obj_5.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,-0.1370245559934311,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_right_obj_5={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPD_1.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_right_obj_5,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_right_obj_5};
+
+object3d_link_2_darwin_mini__arm_right_list.push(object3d_link_2_darwin_mini__arm_right_obj_5);
+const material_link_2_darwin_mini__arm_right_obj_6 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_right_obj_6 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_right_obj_6.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,-0.1370245559934311,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_right_obj_6={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPL-2b2.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_right_obj_6,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_right_obj_6};
+
+object3d_link_2_darwin_mini__arm_right_list.push(object3d_link_2_darwin_mini__arm_right_obj_6);
+const material_link_2_darwin_mini__arm_right_obj_7 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_right_obj_7 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_right_obj_7.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,-0.1370245559934311,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.36168106610606027,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_right_obj_7={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPL-2b2.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_right_obj_7,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_right_obj_7};
+
+object3d_link_2_darwin_mini__arm_right_list.push(object3d_link_2_darwin_mini__arm_right_obj_7);
+const material_link_2_darwin_mini__arm_right_obj_8 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_right_obj_8 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_right_obj_8.set(-0.9659596979870569,-0.2586923147620205,-0.00038489975495112024,0.4552170486687829,0.00017889745664258487,-0.002155868403089312,0.9999976601108267,-0.3604710185226071,-0.258692539243894,0.9659573688908305,0.0021287613887118985,0.13684629320675168,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_right_obj_8={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPL-2b2.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_right_obj_8,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_right_obj_8};
+
+object3d_link_2_darwin_mini__arm_right_list.push(object3d_link_2_darwin_mini__arm_right_obj_8);
+const material_link_2_darwin_mini__arm_right_obj_9 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_right_obj_9 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_right_obj_9.set(-0.9659596979870569,-0.2586923147620206,-0.0003848997549511203,0.45521704866878293,0.00023311019734830395,0.0006174308480948634,-0.999999782219368,0.2958165250066798,0.25869249607282696,-0.9659595773438013,-0.0005361094990069424,-0.13730281753534415,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_right_obj_9={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPL-2b2.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_right_obj_9,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_right_obj_9};
+
+object3d_link_2_darwin_mini__arm_right_list.push(object3d_link_2_darwin_mini__arm_right_obj_9);
+const material_link_2_darwin_mini__arm_right_obj_10 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_right_obj_10 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_right_obj_10.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,-0.11562455599343108,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_right_obj_10={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPD_1.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_right_obj_10,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_right_obj_10};
+
+object3d_link_2_darwin_mini__arm_right_list.push(object3d_link_2_darwin_mini__arm_right_obj_10);
+const material_link_2_darwin_mini__arm_right_obj_11 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_right_obj_11 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_right_obj_11.set(0.25869198713146185,-0.9659589434377189,-0.001332436362900432,-0.11562455599343108,0.9659595341728109,0.2586905159633287,0.0011812244803286144,-0.48711343066176127,-0.0007963257007739833,-0.0015926529164867532,0.9999984146597762,-0.3136810661060602,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_right_obj_11={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPD_3.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_right_obj_11,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_right_obj_11};
+
+object3d_link_2_darwin_mini__arm_right_list.push(object3d_link_2_darwin_mini__arm_right_obj_11);
+const material_link_2_darwin_mini__arm_right_obj_12 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_right_obj_12 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_right_obj_12.set(0.9655464653636177,0.2602304237368869,0.00038702137466196826,-0.4697783787971199,-0.26023071011905635,0.9655455472235976,0.001331821164723301,0.10774768782396499,-2.710637894752022e-05,-0.0013866500652545775,0.9999990382329579,-0.3626438363336294,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_right_obj_12={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPL-2b2.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_right_obj_12,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_right_obj_12};
+
+object3d_link_2_darwin_mini__arm_right_list.push(object3d_link_2_darwin_mini__arm_right_obj_12);
+const material_link_2_darwin_mini__arm_right_obj_13 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__arm_right_obj_13 = new Matrix4(); 
+htm_link_2_darwin_mini__arm_right_obj_13.set(0.9655464653636177,0.2602304237368869,0.00038702137466196826,-0.4697783787971199,-0.26023071011905635,0.9655455472235976,0.001331821164723301,0.10774768782396499,-2.710637894752022e-05,-0.0013866500652545775,0.9999990382329579,-0.31464383633362936,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__arm_right_obj_13={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPL-2b2.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__arm_right_obj_13,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__arm_right_obj_13};
+
+object3d_link_2_darwin_mini__arm_right_list.push(object3d_link_2_darwin_mini__arm_right_obj_13);
+
+const link_2_darwin_mini__arm_right = {
+theta: 0, 
+d: 0, 
+a: 0.23, 
+alpha: 0, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_2_darwin_mini__arm_right_list}; 
+ 
+list_links_darwin_mini__arm_right.push(link_2_darwin_mini__arm_right);
+
+const htm_darwin_mini__arm_right_base_0 = new Matrix4(); 
+htm_darwin_mini__arm_right_base_0.set(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
+const htm_darwin_mini__arm_right_n_eef = new Matrix4(); 
+htm_darwin_mini__arm_right_n_eef.set(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
+const var_darwin_mini__arm_right = new Robot(object3d_base_darwin_mini__arm_right_list, list_links_darwin_mini__arm_right,[[0, -0.9999987317275395, -1.2682720583256946e-06, -0.0015926524115072898, -0.00022297140830815598, 0.0015926529164868282, -0.0007963257007740266, -0.9999984146597762, -0.13999982244185555, 0.0, -0.9999996829318346, 0.0007963267107332633, 0.8200000000000001, 0, 0, 0, 1, [1.5707963267948966, 0.3, 0.0]]], htm_darwin_mini__arm_right_base_0, htm_darwin_mini__arm_right_n_eef,true);
+sceneElements.push(var_darwin_mini__arm_right);
+
+
+//BEGIN DECLARATION OF THE ROBOT 'darwin_mini__leg_left'
+
+const object3d_base_darwin_mini__leg_left_list = [];
+
+
+const list_links_darwin_mini__leg_left = [];
+
+const object3d_link_0_darwin_mini__leg_left_list = [];
+
+const material_link_0_darwin_mini__leg_left_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_0_darwin_mini__leg_left_obj_0 = new Matrix4(); 
+htm_link_0_darwin_mini__leg_left_obj_0.set(4.040209491725849e-17,7.659288243437587e-17,1.0,-0.3500000000000001,0.2955202066613395,-0.955336489125606,6.123233995736766e-17,-0.11499999999999996,0.955336489125606,0.2955202066613395,-6.123233995736766e-17,-0.487,0.0,0.0,0.0,1.0);
+const object3d_link_0_darwin_mini__leg_left_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPD_1.obj',
+scale: 0.004,
+matrix: htm_link_0_darwin_mini__leg_left_obj_0,
+type: 'obj',
+mesh_material: material_link_0_darwin_mini__leg_left_obj_0};
+
+object3d_link_0_darwin_mini__leg_left_list.push(object3d_link_0_darwin_mini__leg_left_obj_0);
+const material_link_0_darwin_mini__leg_left_obj_1 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.8,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0.5,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_0_darwin_mini__leg_left_obj_1 = new Matrix4(); 
+htm_link_0_darwin_mini__leg_left_obj_1.set(-0.08070844820311819,-5.092848506728798e-08,-0.9967377520635216,0.3532260803214362,0.9967377520633212,6.320878987374457e-07,-0.08070844820313426,-0.14446265056974686,6.341362302932331e-07,-0.9999999999997989,-2.524897130566292e-10,0.5797611495470048,0.0,0.0,0.0,1.0);
+const object3d_link_0_darwin_mini__leg_left_obj_1={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/XL-320-2.obj',
+scale: 0.004,
+matrix: htm_link_0_darwin_mini__leg_left_obj_1,
+type: 'obj',
+mesh_material: material_link_0_darwin_mini__leg_left_obj_1};
+
+object3d_link_0_darwin_mini__leg_left_list.push(object3d_link_0_darwin_mini__leg_left_obj_1);
+
+const link_0_darwin_mini__leg_left = {
+theta: 0, 
+d: 0.055, 
+a: 0.035, 
+alpha: 1.5707963267948966, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_0_darwin_mini__leg_left_list}; 
+ 
+list_links_darwin_mini__leg_left.push(link_0_darwin_mini__leg_left);
+
+const object3d_link_1_darwin_mini__leg_left_list = [];
+
+const material_link_1_darwin_mini__leg_left_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_1_darwin_mini__leg_left_obj_0 = new Matrix4(); 
+htm_link_1_darwin_mini__leg_left_obj_0.set(-0.27154693695611287,0.962425197628238,-7.785979431544625e-17,-0.265,0.962425197628238,0.27154693695611287,1.201638868420767e-16,-0.49,1.3679134120015529e-16,-4.2304092526630435e-17,-1.0,0.317,0.0,0.0,0.0,1.0);
+const object3d_link_1_darwin_mini__leg_left_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/frm_ext_02.obj',
+scale: 0.004,
+matrix: htm_link_1_darwin_mini__leg_left_obj_0,
+type: 'obj',
+mesh_material: material_link_1_darwin_mini__leg_left_obj_0};
+
+object3d_link_1_darwin_mini__leg_left_list.push(object3d_link_1_darwin_mini__leg_left_obj_0);
+const material_link_1_darwin_mini__leg_left_obj_1 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_1_darwin_mini__leg_left_obj_1 = new Matrix4(); 
+htm_link_1_darwin_mini__leg_left_obj_1.set(3.749399456654644e-33,1.0,-6.123233995736766e-17,-0.57,1.0,3.749399456654644e-33,1.2246467991473532e-16,-0.39999999999999997,1.2246467991473532e-16,-6.123233995736766e-17,-1.0,0.317,0.0,0.0,0.0,1.0);
+const object3d_link_1_darwin_mini__leg_left_obj_1={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPO.obj',
+scale: 0.004,
+matrix: htm_link_1_darwin_mini__leg_left_obj_1,
+type: 'obj',
+mesh_material: material_link_1_darwin_mini__leg_left_obj_1};
+
+object3d_link_1_darwin_mini__leg_left_list.push(object3d_link_1_darwin_mini__leg_left_obj_1);
+const material_link_1_darwin_mini__leg_left_obj_2 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.8,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0.5,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_1_darwin_mini__leg_left_obj_2 = new Matrix4(); 
+htm_link_1_darwin_mini__leg_left_obj_2.set(-0.08070844820311819,-5.092848506728798e-08,-0.9967377520635216,0.3532260803214363,0.9967377520633212,6.320878987374457e-07,-0.08070844820313426,-0.14446265056974686,6.341362302932331e-07,-0.9999999999997989,-2.524897130566292e-10,0.5797611495470048,0.0,0.0,0.0,1.0);
+const object3d_link_1_darwin_mini__leg_left_obj_2={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/XL-320-2.obj',
+scale: 0.004,
+matrix: htm_link_1_darwin_mini__leg_left_obj_2,
+type: 'obj',
+mesh_material: material_link_1_darwin_mini__leg_left_obj_2};
+
+object3d_link_1_darwin_mini__leg_left_list.push(object3d_link_1_darwin_mini__leg_left_obj_2);
+
+const link_1_darwin_mini__leg_left = {
+theta: 0, 
+d: 0, 
+a: 0.185, 
+alpha: 0, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_1_darwin_mini__leg_left_list}; 
+ 
+list_links_darwin_mini__leg_left.push(link_1_darwin_mini__leg_left);
+
+const object3d_link_2_darwin_mini__leg_left_list = [];
+
+const material_link_2_darwin_mini__leg_left_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__leg_left_obj_0 = new Matrix4(); 
+htm_link_2_darwin_mini__leg_left_obj_0.set(6.123233995736766e-17,1.0,0.0,0.05399999999999999,1.0,-6.123233995736766e-17,1.2246467991473532e-16,-0.2710000000000001,1.2246467991473532e-16,-7.498798913309288e-33,-1.0,0.37999999999999995,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__leg_left_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/mini_cr_calf.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__leg_left_obj_0,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__leg_left_obj_0};
+
+object3d_link_2_darwin_mini__leg_left_list.push(object3d_link_2_darwin_mini__leg_left_obj_0);
+const material_link_2_darwin_mini__leg_left_obj_1 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__leg_left_obj_1 = new Matrix4(); 
+htm_link_2_darwin_mini__leg_left_obj_1.set(3.749399456654644e-33,1.0,-6.123233995736766e-17,-0.5559999999999999,1.8369701987210297e-16,-6.123233995736766e-17,-1.0,0.31699999999999995,-1.0,-7.498798913309288e-33,-1.8369701987210297e-16,0.4,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__leg_left_obj_1={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPO.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__leg_left_obj_1,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__leg_left_obj_1};
+
+object3d_link_2_darwin_mini__leg_left_list.push(object3d_link_2_darwin_mini__leg_left_obj_1);
+const material_link_2_darwin_mini__leg_left_obj_2 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.8,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0.5,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__leg_left_obj_2 = new Matrix4(); 
+htm_link_2_darwin_mini__leg_left_obj_2.set(-0.08070844820311819,-5.092848506728798e-08,-0.9967377520635216,0.3532260803214363,0.9967377520633212,6.320878987374457e-07,-0.08070844820313426,-0.14446265056974686,6.341362302932331e-07,-0.9999999999997989,-2.524897130566292e-10,0.5797611495470048,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__leg_left_obj_2={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/XL-320-2.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__leg_left_obj_2,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__leg_left_obj_2};
+
+object3d_link_2_darwin_mini__leg_left_list.push(object3d_link_2_darwin_mini__leg_left_obj_2);
+const material_link_2_darwin_mini__leg_left_obj_3 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__leg_left_obj_3 = new Matrix4(); 
+htm_link_2_darwin_mini__leg_left_obj_3.set(3.749399456654644e-33,1.0,-6.123233995736766e-17,-0.3989999999999999,1.0,3.749399456654644e-33,1.2246467991473532e-16,-0.39999999999999997,1.2246467991473532e-16,-6.123233995736766e-17,-1.0,0.317,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__leg_left_obj_3={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPO.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__leg_left_obj_3,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__leg_left_obj_3};
+
+object3d_link_2_darwin_mini__leg_left_list.push(object3d_link_2_darwin_mini__leg_left_obj_3);
+
+const link_2_darwin_mini__leg_left = {
+theta: 0, 
+d: 0, 
+a: 0.171, 
+alpha: 1.5707963267948966, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_2_darwin_mini__leg_left_list}; 
+ 
+list_links_darwin_mini__leg_left.push(link_2_darwin_mini__leg_left);
+
+const object3d_link_3_darwin_mini__leg_left_list = [];
+
+const material_link_3_darwin_mini__leg_left_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.8,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0.5,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_3_darwin_mini__leg_left_obj_0 = new Matrix4(); 
+htm_link_3_darwin_mini__leg_left_obj_0.set(0.08070844820311812,5.0928484883515715e-08,0.9967377520635216,-0.3582260803214362,6.341362303394398e-07,-0.9999999999997989,-2.5248990116570613e-10,0.33776114954700476,0.9967377520633212,6.32087898798676e-07,-0.08070844820313419,-0.1484626505697469,0.0,0.0,0.0,1.0);
+const object3d_link_3_darwin_mini__leg_left_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/XL-320-2.obj',
+scale: 0.004,
+matrix: htm_link_3_darwin_mini__leg_left_obj_0,
+type: 'obj',
+mesh_material: material_link_3_darwin_mini__leg_left_obj_0};
+
+object3d_link_3_darwin_mini__leg_left_list.push(object3d_link_3_darwin_mini__leg_left_obj_0);
+const material_link_3_darwin_mini__leg_left_obj_1 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_3_darwin_mini__leg_left_obj_1 = new Matrix4(); 
+htm_link_3_darwin_mini__leg_left_obj_1.set(0.955336489125606,0.29552020666133944,7.498798913309288e-33,-0.48700000000000004,0.29552020666133944,-0.955336489125606,1.232595164407831e-32,-0.2399999999999999,1.0806444003655503e-32,-9.559384764212774e-33,-1.0,0.341,0.0,0.0,0.0,1.0);
+const object3d_link_3_darwin_mini__leg_left_obj_1={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPD_1.obj',
+scale: 0.004,
+matrix: htm_link_3_darwin_mini__leg_left_obj_1,
+type: 'obj',
+mesh_material: material_link_3_darwin_mini__leg_left_obj_1};
+
+object3d_link_3_darwin_mini__leg_left_list.push(object3d_link_3_darwin_mini__leg_left_obj_1);
+const material_link_3_darwin_mini__leg_left_obj_2 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_3_darwin_mini__leg_left_obj_2 = new Matrix4(); 
+htm_link_3_darwin_mini__leg_left_obj_2.set(-1.0,-1.2246467991473532e-16,1.2246467991473532e-16,0.3399999999999999,1.2246467991473532e-16,6.123233995736766e-17,1.0,-0.49,-1.2246467991473532e-16,1.0,-6.123233995736765e-17,0.20100000000000004,0.0,0.0,0.0,1.0);
+const object3d_link_3_darwin_mini__leg_left_obj_2={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/foot.obj',
+scale: 0.004,
+matrix: htm_link_3_darwin_mini__leg_left_obj_2,
+type: 'obj',
+mesh_material: material_link_3_darwin_mini__leg_left_obj_2};
+
+object3d_link_3_darwin_mini__leg_left_list.push(object3d_link_3_darwin_mini__leg_left_obj_2);
+const material_link_3_darwin_mini__leg_left_obj_3 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_3_darwin_mini__leg_left_obj_3 = new Matrix4(); 
+htm_link_3_darwin_mini__leg_left_obj_3.set(-1.0,-1.2246467991473532e-16,1.2246467991473532e-16,0.3399999999999999,1.2246467991473532e-16,6.123233995736766e-17,1.0,-0.49,-1.2246467991473532e-16,1.0,-6.123233995736765e-17,0.20100000000000004,0.0,0.0,0.0,1.0);
+const object3d_link_3_darwin_mini__leg_left_obj_3={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/sole.obj',
+scale: 0.004,
+matrix: htm_link_3_darwin_mini__leg_left_obj_3,
+type: 'obj',
+mesh_material: material_link_3_darwin_mini__leg_left_obj_3};
+
+object3d_link_3_darwin_mini__leg_left_list.push(object3d_link_3_darwin_mini__leg_left_obj_3);
+
+const link_3_darwin_mini__leg_left = {
+theta: 0, 
+d: -0.125, 
+a: 0, 
+alpha: -1.5707963267948966, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_3_darwin_mini__leg_left_list}; 
+ 
+list_links_darwin_mini__leg_left.push(link_3_darwin_mini__leg_left);
+
+const htm_darwin_mini__leg_left_base_0 = new Matrix4(); 
+htm_darwin_mini__leg_left_base_0.set(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
+const htm_darwin_mini__leg_left_n_eef = new Matrix4(); 
+htm_darwin_mini__leg_left_n_eef.set(1,0,0,0.037,0.0,1,0,-0.025,0,0,1,-0.129,0,0,0,1);
+const var_darwin_mini__leg_left = new Robot(object3d_base_darwin_mini__leg_left_list, list_links_darwin_mini__leg_left,[[0, 3.749399456654644e-33, 6.123233995736766e-17, 1.0, 0.0, -1.0, 6.123233995736766e-17, 0.0, -0.1, -6.123233995736766e-17, -1.0, 6.123233995736766e-17, 0.52, 0, 0, 0, 1, [1.5707963267948966, 0.0, 0.0, 1.5707963267948966]]], htm_darwin_mini__leg_left_base_0, htm_darwin_mini__leg_left_n_eef,true);
+sceneElements.push(var_darwin_mini__leg_left);
+
+
+//BEGIN DECLARATION OF THE ROBOT 'darwin_mini__leg_right'
+
+const object3d_base_darwin_mini__leg_right_list = [];
+
+
+const list_links_darwin_mini__leg_right = [];
+
+const object3d_link_0_darwin_mini__leg_right_list = [];
+
+const material_link_0_darwin_mini__leg_right_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_0_darwin_mini__leg_right_obj_0 = new Matrix4(); 
+htm_link_0_darwin_mini__leg_right_obj_0.set(4.040209491725849e-17,7.659288243437587e-17,1.0,-0.3500000000000001,0.2955202066613395,-0.955336489125606,6.123233995736766e-17,-0.11499999999999996,0.955336489125606,0.2955202066613395,-6.123233995736766e-17,-0.487,0.0,0.0,0.0,1.0);
+const object3d_link_0_darwin_mini__leg_right_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPD_1.obj',
+scale: 0.004,
+matrix: htm_link_0_darwin_mini__leg_right_obj_0,
+type: 'obj',
+mesh_material: material_link_0_darwin_mini__leg_right_obj_0};
+
+object3d_link_0_darwin_mini__leg_right_list.push(object3d_link_0_darwin_mini__leg_right_obj_0);
+const material_link_0_darwin_mini__leg_right_obj_1 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.8,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0.5,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_0_darwin_mini__leg_right_obj_1 = new Matrix4(); 
+htm_link_0_darwin_mini__leg_right_obj_1.set(-0.08070844820311819,-5.092848506728798e-08,-0.9967377520635216,0.3532260803214362,0.9967377520633212,6.320878987374457e-07,-0.08070844820313426,-0.14446265056974686,6.341362302932331e-07,-0.9999999999997989,-2.524897130566292e-10,0.5797611495470048,0.0,0.0,0.0,1.0);
+const object3d_link_0_darwin_mini__leg_right_obj_1={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/XL-320-2.obj',
+scale: 0.004,
+matrix: htm_link_0_darwin_mini__leg_right_obj_1,
+type: 'obj',
+mesh_material: material_link_0_darwin_mini__leg_right_obj_1};
+
+object3d_link_0_darwin_mini__leg_right_list.push(object3d_link_0_darwin_mini__leg_right_obj_1);
+
+const link_0_darwin_mini__leg_right = {
+theta: 0, 
+d: 0.055, 
+a: 0.035, 
+alpha: 1.5707963267948966, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_0_darwin_mini__leg_right_list}; 
+ 
+list_links_darwin_mini__leg_right.push(link_0_darwin_mini__leg_right);
+
+const object3d_link_1_darwin_mini__leg_right_list = [];
+
+const material_link_1_darwin_mini__leg_right_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_1_darwin_mini__leg_right_obj_0 = new Matrix4(); 
+htm_link_1_darwin_mini__leg_right_obj_0.set(-0.27154693695611287,0.962425197628238,-7.785979431544625e-17,-0.265,0.962425197628238,0.27154693695611287,1.201638868420767e-16,-0.49,1.3679134120015529e-16,-4.2304092526630435e-17,-1.0,0.317,0.0,0.0,0.0,1.0);
+const object3d_link_1_darwin_mini__leg_right_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/frm_ext_02.obj',
+scale: 0.004,
+matrix: htm_link_1_darwin_mini__leg_right_obj_0,
+type: 'obj',
+mesh_material: material_link_1_darwin_mini__leg_right_obj_0};
+
+object3d_link_1_darwin_mini__leg_right_list.push(object3d_link_1_darwin_mini__leg_right_obj_0);
+const material_link_1_darwin_mini__leg_right_obj_1 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_1_darwin_mini__leg_right_obj_1 = new Matrix4(); 
+htm_link_1_darwin_mini__leg_right_obj_1.set(3.749399456654644e-33,1.0,-6.123233995736766e-17,-0.57,1.0,3.749399456654644e-33,1.2246467991473532e-16,-0.39999999999999997,1.2246467991473532e-16,-6.123233995736766e-17,-1.0,0.317,0.0,0.0,0.0,1.0);
+const object3d_link_1_darwin_mini__leg_right_obj_1={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPO.obj',
+scale: 0.004,
+matrix: htm_link_1_darwin_mini__leg_right_obj_1,
+type: 'obj',
+mesh_material: material_link_1_darwin_mini__leg_right_obj_1};
+
+object3d_link_1_darwin_mini__leg_right_list.push(object3d_link_1_darwin_mini__leg_right_obj_1);
+const material_link_1_darwin_mini__leg_right_obj_2 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.8,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0.5,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_1_darwin_mini__leg_right_obj_2 = new Matrix4(); 
+htm_link_1_darwin_mini__leg_right_obj_2.set(-0.08070844820311819,-5.092848506728798e-08,-0.9967377520635216,0.3532260803214363,0.9967377520633212,6.320878987374457e-07,-0.08070844820313426,-0.14446265056974686,6.341362302932331e-07,-0.9999999999997989,-2.524897130566292e-10,0.5797611495470048,0.0,0.0,0.0,1.0);
+const object3d_link_1_darwin_mini__leg_right_obj_2={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPO.obj',
+scale: 0.004,
+matrix: htm_link_1_darwin_mini__leg_right_obj_2,
+type: 'obj',
+mesh_material: material_link_1_darwin_mini__leg_right_obj_2};
+
+object3d_link_1_darwin_mini__leg_right_list.push(object3d_link_1_darwin_mini__leg_right_obj_2);
+
+const link_1_darwin_mini__leg_right = {
+theta: 0, 
+d: 0, 
+a: 0.185, 
+alpha: 0, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_1_darwin_mini__leg_right_list}; 
+ 
+list_links_darwin_mini__leg_right.push(link_1_darwin_mini__leg_right);
+
+const object3d_link_2_darwin_mini__leg_right_list = [];
+
+const material_link_2_darwin_mini__leg_right_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__leg_right_obj_0 = new Matrix4(); 
+htm_link_2_darwin_mini__leg_right_obj_0.set(6.123233995736766e-17,1.0,0.0,0.05399999999999999,1.0,-6.123233995736766e-17,1.2246467991473532e-16,-0.2710000000000001,1.2246467991473532e-16,-7.498798913309288e-33,-1.0,0.37999999999999995,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__leg_right_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/mini_cr_calf.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__leg_right_obj_0,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__leg_right_obj_0};
+
+object3d_link_2_darwin_mini__leg_right_list.push(object3d_link_2_darwin_mini__leg_right_obj_0);
+const material_link_2_darwin_mini__leg_right_obj_1 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__leg_right_obj_1 = new Matrix4(); 
+htm_link_2_darwin_mini__leg_right_obj_1.set(3.749399456654644e-33,1.0,-6.123233995736766e-17,-0.5559999999999999,1.8369701987210297e-16,-6.123233995736766e-17,-1.0,0.31699999999999995,-1.0,-7.498798913309288e-33,-1.8369701987210297e-16,0.4,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__leg_right_obj_1={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPO.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__leg_right_obj_1,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__leg_right_obj_1};
+
+object3d_link_2_darwin_mini__leg_right_list.push(object3d_link_2_darwin_mini__leg_right_obj_1);
+const material_link_2_darwin_mini__leg_right_obj_2 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.8,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0.5,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__leg_right_obj_2 = new Matrix4(); 
+htm_link_2_darwin_mini__leg_right_obj_2.set(-0.08070844820311819,-5.092848506728798e-08,-0.9967377520635216,0.3532260803214363,0.9967377520633212,6.320878987374457e-07,-0.08070844820313426,-0.14446265056974686,6.341362302932331e-07,-0.9999999999997989,-2.524897130566292e-10,0.5797611495470048,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__leg_right_obj_2={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/XL-320-2.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__leg_right_obj_2,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__leg_right_obj_2};
+
+object3d_link_2_darwin_mini__leg_right_list.push(object3d_link_2_darwin_mini__leg_right_obj_2);
+const material_link_2_darwin_mini__leg_right_obj_3 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_2_darwin_mini__leg_right_obj_3 = new Matrix4(); 
+htm_link_2_darwin_mini__leg_right_obj_3.set(3.749399456654644e-33,1.0,-6.123233995736766e-17,-0.3989999999999999,1.0,3.749399456654644e-33,1.2246467991473532e-16,-0.39999999999999997,1.2246467991473532e-16,-6.123233995736766e-17,-1.0,0.317,0.0,0.0,0.0,1.0);
+const object3d_link_2_darwin_mini__leg_right_obj_3={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPO.obj',
+scale: 0.004,
+matrix: htm_link_2_darwin_mini__leg_right_obj_3,
+type: 'obj',
+mesh_material: material_link_2_darwin_mini__leg_right_obj_3};
+
+object3d_link_2_darwin_mini__leg_right_list.push(object3d_link_2_darwin_mini__leg_right_obj_3);
+
+const link_2_darwin_mini__leg_right = {
+theta: 0, 
+d: 0, 
+a: 0.171, 
+alpha: 1.5707963267948966, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_2_darwin_mini__leg_right_list}; 
+ 
+list_links_darwin_mini__leg_right.push(link_2_darwin_mini__leg_right);
+
+const object3d_link_3_darwin_mini__leg_right_list = [];
+
+const material_link_3_darwin_mini__leg_right_obj_0 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.8,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0.5,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_3_darwin_mini__leg_right_obj_0 = new Matrix4(); 
+htm_link_3_darwin_mini__leg_right_obj_0.set(-0.080708448203118,-5.0928485128545406e-08,-0.9967377520635216,0.3582260803214362,6.341362302371425e-07,-0.9999999999997989,-2.524896471371371e-10,0.33776114954700476,-0.9967377520633212,-6.320878986762154e-07,0.08070844820313407,0.14546265056974683,0.0,0.0,0.0,1.0);
+const object3d_link_3_darwin_mini__leg_right_obj_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/XL-320-2.obj',
+scale: 0.004,
+matrix: htm_link_3_darwin_mini__leg_right_obj_0,
+type: 'obj',
+mesh_material: material_link_3_darwin_mini__leg_right_obj_0};
+
+object3d_link_3_darwin_mini__leg_right_list.push(object3d_link_3_darwin_mini__leg_right_obj_0);
+const material_link_3_darwin_mini__leg_right_obj_1 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_3_darwin_mini__leg_right_obj_1 = new Matrix4(); 
+htm_link_3_darwin_mini__leg_right_obj_1.set(0.955336489125606,0.29552020666133944,7.498798913309288e-33,-0.48700000000000004,0.29552020666133944,-0.955336489125606,1.232595164407831e-32,-0.2399999999999999,1.0806444003655503e-32,-9.559384764212774e-33,-1.0,0.341,0.0,0.0,0.0,1.0);
+const object3d_link_3_darwin_mini__leg_right_obj_1={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPD_1.obj',
+scale: 0.004,
+matrix: htm_link_3_darwin_mini__leg_right_obj_1,
+type: 'obj',
+mesh_material: material_link_3_darwin_mini__leg_right_obj_1};
+
+object3d_link_3_darwin_mini__leg_right_list.push(object3d_link_3_darwin_mini__leg_right_obj_1);
+const material_link_3_darwin_mini__leg_right_obj_2 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_3_darwin_mini__leg_right_obj_2 = new Matrix4(); 
+htm_link_3_darwin_mini__leg_right_obj_2.set(-1.0,-1.2246467991473532e-16,1.2246467991473532e-16,0.2799999999999999,1.2246467991473532e-16,6.123233995736766e-17,1.0,-0.49,-1.2246467991473532e-16,1.0,-6.123233995736765e-17,0.20100000000000004,0.0,0.0,0.0,1.0);
+const object3d_link_3_darwin_mini__leg_right_obj_2={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/foot.obj',
+scale: 0.004,
+matrix: htm_link_3_darwin_mini__leg_right_obj_2,
+type: 'obj',
+mesh_material: material_link_3_darwin_mini__leg_right_obj_2};
+
+object3d_link_3_darwin_mini__leg_right_list.push(object3d_link_3_darwin_mini__leg_right_obj_2);
+const material_link_3_darwin_mini__leg_right_obj_3 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_link_3_darwin_mini__leg_right_obj_3 = new Matrix4(); 
+htm_link_3_darwin_mini__leg_right_obj_3.set(-1.0,-1.2246467991473532e-16,1.2246467991473532e-16,0.2799999999999999,1.2246467991473532e-16,6.123233995736766e-17,1.0,-0.49,-1.2246467991473532e-16,1.0,-6.123233995736765e-17,0.20100000000000004,0.0,0.0,0.0,1.0);
+const object3d_link_3_darwin_mini__leg_right_obj_3={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/sole.obj',
+scale: 0.004,
+matrix: htm_link_3_darwin_mini__leg_right_obj_3,
+type: 'obj',
+mesh_material: material_link_3_darwin_mini__leg_right_obj_3};
+
+object3d_link_3_darwin_mini__leg_right_list.push(object3d_link_3_darwin_mini__leg_right_obj_3);
+
+const link_3_darwin_mini__leg_right = {
+theta: 0, 
+d: -0.125, 
+a: 0, 
+alpha: -1.5707963267948966, 
+jointType: 0, 
+showFrame: false,
+model3d: object3d_link_3_darwin_mini__leg_right_list}; 
+ 
+list_links_darwin_mini__leg_right.push(link_3_darwin_mini__leg_right);
+
+const htm_darwin_mini__leg_right_base_0 = new Matrix4(); 
+htm_darwin_mini__leg_right_base_0.set(1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0);
+const htm_darwin_mini__leg_right_n_eef = new Matrix4(); 
+htm_darwin_mini__leg_right_n_eef.set(1,0,0,-0.037,0.0,1,0,-0.025,0,0,1,-0.129,0,0,0,1);
+const var_darwin_mini__leg_right = new Robot(object3d_base_darwin_mini__leg_right_list, list_links_darwin_mini__leg_right,[[0, 3.749399456654644e-33, 6.123233995736766e-17, 1.0, 0.0, -1.0, 6.123233995736766e-17, 0.0, 0.1, -6.123233995736766e-17, -1.0, 6.123233995736766e-17, 0.52, 0, 0, 0, 1, [1.5707963267948966, 0.0, 0.0, 1.5707963267948966]]], htm_darwin_mini__leg_right_base_0, htm_darwin_mini__leg_right_n_eef,true);
+sceneElements.push(var_darwin_mini__leg_right);
+
+
+//BEGIN DECLARATION OF THE RIGID OBJECT 'darwin_mini_head'
+
+var list_object3d_darwin_mini_head = [];
+const material_darwin_mini_head_0 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_darwin_mini_head_0 = new Matrix4(); 
+htm_darwin_mini_head_0.set(0.0007963267107332633,-0.0007963264582434141,0.9999993658637698,-0.3,0.9999996829318346,6.341362302272584e-07,-0.0007963264582434141,-0.179,0.0,0.9999996829318346,0.0007963267107332633,0.37,0.0,0.0,0.0,1.0);
+const object3d_darwin_mini_head_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/darwin_head.obj',
+scale: 0.004,
+matrix: htm_darwin_mini_head_0,
+type: 'obj',
+mesh_material: material_darwin_mini_head_0};
+
+;
+list_object3d_darwin_mini_head.push(object3d_darwin_mini_head_0);
+const material_darwin_mini_head_1 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "blue",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.8,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0.5,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_darwin_mini_head_1 = new Matrix4(); 
+htm_darwin_mini_head_1.set(0.29628087292531874,-0.9551008555846923,0.0,0.177,0.9551008555846923,0.29628087292531874,0.0,-0.043,0.0,0.0,1.0,0.982,0.0,0.0,0.0,1.0);
+const object3d_darwin_mini_head_1={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/eye.obj',
+scale: 0.0009,
+matrix: htm_darwin_mini_head_1,
+type: 'obj',
+mesh_material: material_darwin_mini_head_1};
+
+;
+list_object3d_darwin_mini_head.push(object3d_darwin_mini_head_1);
+const material_darwin_mini_head_2 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "blue",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.8,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0.5,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_darwin_mini_head_2 = new Matrix4(); 
+htm_darwin_mini_head_2.set(-0.3886847533647522,-0.9213708061913953,0.0,0.171,0.9213708061913953,-0.3886847533647522,0.0,0.053,0.0,0.0,1.0,0.982,0.0,0.0,0.0,1.0);
+const object3d_darwin_mini_head_2={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/eye.obj',
+scale: 0.0009,
+matrix: htm_darwin_mini_head_2,
+type: 'obj',
+mesh_material: material_darwin_mini_head_2};
+
+;
+list_object3d_darwin_mini_head.push(object3d_darwin_mini_head_2);
+const material_darwin_mini_head_3 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.8,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0.5,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_darwin_mini_head_3 = new Matrix4(); 
+htm_darwin_mini_head_3.set(0.0007963267107332633,-0.0007963264582434141,0.9999993658637698,-0.3,0.9999996829318346,6.341362302272584e-07,-0.0007963264582434141,-0.179,0.0,0.9999996829318346,0.0007963267107332633,0.37,0.0,0.0,0.0,1.0);
+const object3d_darwin_mini_head_3={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/XL-320-2.obj',
+scale: 0.004,
+matrix: htm_darwin_mini_head_3,
+type: 'obj',
+mesh_material: material_darwin_mini_head_3};
+
+;
+list_object3d_darwin_mini_head.push(object3d_darwin_mini_head_3);
+const var_darwin_mini_head = new RigidObject([[0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0, 0, 0, 1]], list_object3d_darwin_mini_head);
+sceneElements.push(var_darwin_mini_head);
+
+
+//BEGIN DECLARATION OF THE RIGID OBJECT 'darwin_mini_chest'
+
+var list_object3d_darwin_mini_chest = [];
+const material_darwin_mini_chest_0 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_darwin_mini_chest_0 = new Matrix4(); 
+htm_darwin_mini_chest_0.set(0.0007963267107332633,-0.0007963264582434141,0.9999993658637698,-0.3,0.9999996829318346,6.341362302272584e-07,-0.0007963264582434141,-0.179,0.0,0.9999996829318346,0.0007963267107332633,0.37,0.0,0.0,0.0,1.0);
+const object3d_darwin_mini_chest_0={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/darwin_chest.obj',
+scale: 0.004,
+matrix: htm_darwin_mini_chest_0,
+type: 'obj',
+mesh_material: material_darwin_mini_chest_0};
+
+;
+list_object3d_darwin_mini_chest.push(object3d_darwin_mini_chest_0);
+const material_darwin_mini_chest_1 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#3e3f42",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.5,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_darwin_mini_chest_1 = new Matrix4(); 
+htm_darwin_mini_chest_1.set(0.0007963267107332633,-0.0007963264582434141,0.9999993658637698,-0.3,0.9999996829318346,6.341362302272584e-07,-0.0007963264582434141,-0.179,0.0,0.9999996829318346,0.0007963267107332633,0.37,0.0,0.0,0.0,1.0);
+const object3d_darwin_mini_chest_1={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/frm_body_01.obj',
+scale: 0.004,
+matrix: htm_darwin_mini_chest_1,
+type: 'obj',
+mesh_material: material_darwin_mini_chest_1};
+
+;
+list_object3d_darwin_mini_chest.push(object3d_darwin_mini_chest_1);
+const material_darwin_mini_chest_2 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 1,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_darwin_mini_chest_2 = new Matrix4(); 
+htm_darwin_mini_chest_2.set(0.27070965966125105,-0.9626610232215115,-0.00018583918306682812,0.265,-0.0005807535620299646,2.9733781497945778e-05,-0.999999830920587,0.405,0.9626608659810524,0.2707097218165882,-0.0005510195963935524,0.32,0.0,0.0,0.0,1.0);
+const object3d_darwin_mini_chest_2={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/XL-320.obj',
+scale: 0.004,
+matrix: htm_darwin_mini_chest_2,
+type: 'obj',
+mesh_material: material_darwin_mini_chest_2};
+
+;
+list_object3d_darwin_mini_chest.push(object3d_darwin_mini_chest_2);
+const material_darwin_mini_chest_3 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 1,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_darwin_mini_chest_3 = new Matrix4(); 
+htm_darwin_mini_chest_3.set(0.27070965966125105,-0.9626610232215115,-0.00018583918306682812,0.265,-0.0009524318103162434,-0.0004608803717599366,0.9999994402313082,-0.405,-0.9626605700036416,-0.2707093311273094,-0.0010416337496514346,1.305,0.0,0.0,0.0,1.0);
+const object3d_darwin_mini_chest_3={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/XL-320.obj',
+scale: 0.004,
+matrix: htm_darwin_mini_chest_3,
+type: 'obj',
+mesh_material: material_darwin_mini_chest_3};
+
+;
+list_object3d_darwin_mini_chest.push(object3d_darwin_mini_chest_3);
+const material_darwin_mini_chest_4 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.8,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0.5,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_darwin_mini_chest_4 = new Matrix4(); 
+htm_darwin_mini_chest_4.set(-0.9999987317275396,-1.2682720583256946e-06,0.0015926524115072898,0.22866548602629044,0.0015926529164868282,-0.0007963257007740267,0.9999984146597763,-0.2901424093125918,0.0,0.9999996829318346,0.0007963267107332633,0.39499999999999996,0.0,0.0,0.0,1.0);
+const object3d_darwin_mini_chest_4={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPU-2.obj',
+scale: 0.004,
+matrix: htm_darwin_mini_chest_4,
+type: 'obj',
+mesh_material: material_darwin_mini_chest_4};
+
+;
+list_object3d_darwin_mini_chest.push(object3d_darwin_mini_chest_4);
+const material_darwin_mini_chest_5 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.8,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0.5,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_darwin_mini_chest_5 = new Matrix4(); 
+htm_darwin_mini_chest_5.set(6.341362302272584e-07,-0.9999999999997989,-2.5248976921830174e-10,0.5397611495470048,0.9967377520633212,6.320878986762154e-07,-0.08070844820313432,-0.054462650569746834,0.08070844820311825,5.092848500603056e-08,0.9967377520635216,0.1617739196785637,0.0,0.0,0.0,1.0);
+const object3d_darwin_mini_chest_5={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/XL-320-2.obj',
+scale: 0.004,
+matrix: htm_darwin_mini_chest_5,
+type: 'obj',
+mesh_material: material_darwin_mini_chest_5};
+
+;
+list_object3d_darwin_mini_chest.push(object3d_darwin_mini_chest_5);
+const material_darwin_mini_chest_6 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.8,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0.5,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_darwin_mini_chest_6 = new Matrix4(); 
+htm_darwin_mini_chest_6.set(-0.9999987317275396,-1.2682720583256946e-06,0.0015926524115072898,0.22866548602629044,0.0015926529164868282,-0.0007963257007740267,0.9999984146597763,-0.4801424093125918,0.0,0.9999996829318346,0.0007963267107332633,0.39499999999999996,0.0,0.0,0.0,1.0);
+const object3d_darwin_mini_chest_6={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/SPU-2.obj',
+scale: 0.004,
+matrix: htm_darwin_mini_chest_6,
+type: 'obj',
+mesh_material: material_darwin_mini_chest_6};
+
+;
+list_object3d_darwin_mini_chest.push(object3d_darwin_mini_chest_6);
+const material_darwin_mini_chest_7 = new MeshPhysicalMaterial({
+opacity: 1,
+side: DoubleSide,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "#302b2b",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0.8,
+normalScale: new Vector2(0.5,0.5),
+refractionRatio: 0.98,
+roughness: 0.5,
+clearcoat: 0.5,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+const htm_darwin_mini_chest_7 = new Matrix4(); 
+htm_darwin_mini_chest_7.set(6.341362302272584e-07,-0.9999999999997989,-2.5248976921830174e-10,0.5397611495470048,0.9967377520633212,6.320878986762154e-07,-0.08070844820313432,-0.24446265056974684,0.08070844820311825,5.092848500603056e-08,0.9967377520635216,0.1617739196785637,0.0,0.0,0.0,1.0);
+const object3d_darwin_mini_chest_7={
+url: 'https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/DarwinMini/XL-320-2.obj',
+scale: 0.004,
+matrix: htm_darwin_mini_chest_7,
+type: 'obj',
+mesh_material: material_darwin_mini_chest_7};
+
+;
+list_object3d_darwin_mini_chest.push(object3d_darwin_mini_chest_7);
+const var_darwin_mini_chest = new RigidObject([[0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0, 0, 0, 1]], list_object3d_darwin_mini_chest);
+sceneElements.push(var_darwin_mini_chest);
+
+
+//USER INPUT GOES HERE
+
+
+
+// add stuff to the scene
+for (let i = 0; i < sceneElements.length; i++) {
+	if (typeof sceneElements[i].shape != "undefined") {
+		scene.add(sceneElements[i].shape);
+	}
+}
+
+
+
+//Add LDR to the scene
+if ( !(ldrUrls.length==0) )
+{
+	const pmremGenerator = new PMREMGenerator( renderer );
+	var ldrCubeMap = new CubeTextureLoader().load(ldrUrls, function () {
+
+		var ldrCubeRenderTarget = pmremGenerator.fromCubemap(ldrCubeMap);
+
+		ldrCubeMap.encoding = sRGBEncoding;
+
+
+		for (let i = 0; i < sceneElements.length; i++) {
+			sceneElements[i].setEnvMap(ldrCubeRenderTarget.texture);
+		}
+		scene.background = ldrCubeMap;
+	});
+	renderer.toneMappingExposure = 1.0;
+}
+
+
+
+//Add gui
+var gui = new GUI({autoPlace: false, width: "800px"});
+var customContainer = document.getElementById('canvas_container_'+sceneID);
+customContainer.appendChild(gui.domElement);
+
+var automaticPlay = true;
+var manualTime=0;
+
+gui.add({Progress: 0}, "Progress", 0, maxTime, 0.01).onChange(function (value) {
+    automaticPlay = false;
+	manualTime = value+0.0001;
+	btn.innerHTML = "&#9654";
+})
+customContainer.getElementsByClassName('c')[0].style.width = (canvas.clientWidth-20).toString()+'px';
+customContainer.getElementsByClassName('dg main')[0].style.width = canvas.clientWidth.toString()+'px';
+customContainer.getElementsByClassName('dg main')[0].style.right = '0px'; //0
+customContainer.getElementsByClassName('dg main')[0].style.top = '0px'; //550
+customContainer.getElementsByClassName('dg main')[0].style.position = 'relative'; //absolute
+customContainer.getElementsByClassName('close-button close-bottom')[0].style.height = '0px';
+customContainer.getElementsByClassName('close-button close-bottom')[0].innerHTML = '';
+customContainer.getElementsByClassName('property-name')[0].innerHTML = '';
+customContainer.getElementsByClassName('slider')[0].style.width = (canvas.clientWidth-100).toString()+'px'
+customContainer.getElementsByClassName('slider-fg')[0].style.backgroundColor = '#19bd39'
+customContainer.querySelectorAll("input[type=text]")[0].style.width = '50px';
+customContainer.querySelectorAll("input[type=text]")[0].style.color = '#19bd39';
+
+customContainer.getElementsByClassName('dg')[0].style.borderLeft = '4px solid #1a1a1a'
+customContainer.getElementsByClassName('cr')[0].style.borderLeft = '4px solid #1a1a1a'
+customContainer.getElementsByClassName('number')[0].style.borderLeft = '4px solid #1a1a1a'
+var recoveryCurrentTime = false;
+
+let btn = document.createElement("button");
+btn.style.backgroundColor = "#1a1a1a";
+btn.style.color = "#19bd39";
+btn.style.border= "none";
+btn.style.height= "28px";
+btn.style.width= "28px";
+btn.innerHTML = "||";
+btn.onclick = function () {
+
+	automaticPlay = !automaticPlay;
+
+	if(automaticPlay)
+	{
+		btn.innerHTML = "||";
+		recoveryCurrentTime = true;
+	}
+	else
+	{
+		manualTime = parseFloat(customContainer.querySelectorAll("input[type=text]")[0].value)+0.0001;
+		btn.innerHTML = "&#9654";
+	}
+
+};
+customContainer.getElementsByClassName('c')[0].style.verticalAlign= "middle"
+customContainer.getElementsByClassName('c')[0].appendChild(btn);
+//------------------------------------------------------------
+
+//Wait until all objects loaded
+
+var loadedAll = false;
+var sceneDrawn = false;
+
+
+//Get starting ms
+var startMs =  elapsedMs()
+
+//Initialize
+var heightScene;
+var heightBar;
+
+document.getElementsByClassName('controller')[0].appendChild(customContainer.getElementsByClassName('dg main')[0])
+document.getElementsByClassName('controller')[0].style.opacity="0"
+
+heightScene = document.getElementById('scene_'+sceneID).style.height;
+document.getElementById('scene_'+sceneID).style.visibility='hidden';
+document.getElementById('scene_'+sceneID).style.height='0px';
+
+heightBar = customContainer.getElementsByClassName('dg main')[0].style.height;
+customContainer.getElementsByClassName('dg main')[0].style.visibility='hidden';
+customContainer.getElementsByClassName('dg main')[0].style.height = '0px';
+
+
+//-------------------- THE ANIMATION LOOP -------------------
+
+
+
+renderer.setAnimationLoop(() => {
+
+
+	loadedAll = true;
+
+	for(let i = 0; i < sceneElements.length; i++){
+		loadedAll = loadedAll && sceneElements[i].hasLoaded();
+	}
+
+	if(!loadedAll)
+	{
+		startMs =  elapsedMs();
+	}
+	else
+	{
+		//document.getElementById('canvas_container').style.visibility = 'visible';
+		if( (elapsedMs()-startMs > delay) && !sceneDrawn)
+		{
+			document.getElementById('scene_'+sceneID).style.visibility = 'visible';
+			document.getElementById('canvas_container_'+sceneID).getElementsByClassName('dg main')[0].style.visibility = 'visible';
+			document.getElementById('scene_'+sceneID).style.height=heightScene;
+			document.getElementById('canvas_container_'+sceneID).getElementsByClassName('dg main')[0].style.height = heightBar;
+			document.getElementById('loading_screen_'+sceneID).remove();
+			sceneDrawn = true;
+		}
+	}
+
+
+	//MAGIC HAPPENS HERE!!!
+	if(loadedAll && automaticPlay)
+	{
+
+		var currentSeconds;
+		if(!recoveryCurrentTime)
+		{
+
+			for (let i = 0; i < sceneElements.length; i++) {
+				sceneElements[i].nextFrame();
+				sceneElements[i].showFrame();
+			}
+
+			currentSeconds = Math.min(0.001*Math.max(elapsedMs()-startMs-delay,0),maxTime);
+
+			var percentage = (100 * currentSeconds / (0.000001 + maxTime)).toString();
+			customContainer.getElementsByClassName('slider-fg')[0].style.width = percentage + "%";
+			customContainer.querySelectorAll("input[type=text]")[0].value = Math.round(100 * currentSeconds) / 100;
+		}
+		else
+		{
+			currentSeconds = customContainer.querySelectorAll("input[type=text]")[0].value;
+			startMs =  elapsedMs()-delay-1000*currentSeconds;
+			recoveryCurrentTime = false;
+		}
+
+	}
+	if(loadedAll && !automaticPlay)
+	{
+		for (let i = 0; i < sceneElements.length; i++) {
+			sceneElements[i].setFrameTime(manualTime);
+			sceneElements[i].showFrame();
+		}
+	}
+
+	renderer.render(scene, camera);
+});
+//------------------------------------------------------------
+ </script>
+ </body>
+ </html>
