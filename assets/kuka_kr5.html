@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <body>
+
+    <!--The canvas element below is where the simulation will be displayed-->
+    <canvas id="scene" style='width:100%; height:100%; position:absolute'></canvas>
+
+    <script type="module"> 
+      import * as UAIbot from "https://cdn.jsdelivr.net/gh/UAIbot/UAIbotJS@v1.0.1/UAIbotJS/UAIbot.js";
+      import * as Utils from "https://cdn.jsdelivr.net/gh/UAIbot/UAIbotJS@main/UAIbotJS/Utils.js";
+      import * as math from 'https://cdn.jsdelivr.net/npm/mathjs@11.6.0/+esm';
+
+      let sim = new UAIbot.Simulation(); //instantiate simulation
+      let bot = new UAIbot.Robot().create_kuka_kr5() ; //instantiate robot
+      
+      sim.add(bot); //add robot to simulation
+      
+      sim.setAnimationLoop(() => {
+        sim.render();
+      });
+      
+    </script>
+  </body>
+</html>
