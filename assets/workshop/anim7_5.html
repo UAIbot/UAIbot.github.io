@@ -3,12 +3,12 @@
 .controller:hover{opacity:1 !important;}
 </style>
 <body>
-<div id='canvas_container_1697578177400991' style='width:400px;height:500px;position:relative'>
-<div id='loading_screen_1697578177400991' style='width:400px;height:500px;position:relative; background-color: #19bd39;text-align:center;align-items:center;display:flex;justify-content:center'> 
+<div id='canvas_container_16975783815971982' style='width:400px;height:500px;position:relative'>
+<div id='loading_screen_16975783815971982' style='width:400px;height:500px;position:relative; background-color: #19bd39;text-align:center;align-items:center;display:flex;justify-content:center'> 
  <img src='https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/SVG/logo_uai_bot.svg' style='width:200px;height:114px'/>
  </div>
 <script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js'></script>
-<canvas id='scene_1697578177400991' width='400px' height='500px'></canvas>
+<canvas id='scene_16975783815971982' width='400px' height='500px'></canvas>
 <!-- USER DIVS GO HERE --><div class = 'controller' style='width:400px;height:30px;'></div>
 </div>
 
@@ -38,7 +38,7 @@ import { RoomEnvironment } from 'https://unpkg.com/three@0.126.1/examples/jsm/en
 const delay = 500; 
  const maxTime = 0; 
  const cameraType= 'perspective'; 
- const sceneID= '1697578177400991'; 
+ const sceneID= '16975783815971982'; 
  const showWorldFrame=true; 
  const showGrid=true; 
  const backgroundColor='white'; 
@@ -641,12 +641,12 @@ if (showGrid) {
 
 //--------------- ADDING ELEMENTS TO THIS SCENE ---------------
 
-//BEGIN DECLARATION OF THE FRAME 'var_frame_id_132435227939776'
+//BEGIN DECLARATION OF THE FRAME 'var_frame_id_132435227941360'
 
 
-//BEGIN DECLARATION OF THE BALL 'dummy_ball_var_frame_id_132435227939776'
+//BEGIN DECLARATION OF THE BALL 'dummy_ball_var_frame_id_132435227941360'
 
-const material_dummy_ball_var_frame_id_132435227939776 = new MeshPhysicalMaterial({
+const material_dummy_ball_var_frame_id_132435227941360 = new MeshPhysicalMaterial({
 opacity: 0,
 transparent: true,
 aoMapIntensity: 1,
@@ -675,46 +675,12 @@ transmission: 0,
 });
 
 
-const var_dummy_ball_var_frame_id_132435227939776 = new Ball(0.0001,[[0, 0.7071, 0.0, -0.7071, 0.5, 0.7071, 0.0, 0.7071, 0.5, 0.0, -1.0, 0.0, 0.0, 0, 0, 0, 1]], material_dummy_ball_var_frame_id_132435227939776);
-sceneElements.push(var_dummy_ball_var_frame_id_132435227939776);
-var var_axes_var_frame_id_132435227939776 = new AxesHelper(0.5);
-var_dummy_ball_var_frame_id_132435227939776.shape.add(var_axes_var_frame_id_132435227939776);
-var_axes_var_frame_id_132435227939776.setColors('red', 'lime', 'blue');
-sceneElements.push(var_dummy_ball_var_frame_id_132435227939776);
-
-//BEGIN DECLARATION OF THE CYLINDER 'var_cylinder_id_132435227945728'
-
-const material_var_cylinder_id_132435227945728 = new MeshPhysicalMaterial({
-opacity: 1,
-transparent: false,
-aoMapIntensity: 1,
-bumpScale: 1,
-color: "red",
-emissive: "black",
-emissiveIntensity: 1,
-envMapIntensity: 1,
-flatShading: false,
-lightMapIntensity: 1,
-metalness: 0,
-normalScale: new Vector2(1,1),
-refractionRatio: 0.98,
-roughness: 1,
-clearcoat: 0,
-clearcoatNormalScale: new Vector2(1,1),
-clearcoatRoughness: 0,
-ior: 1.5,
-reflectivity: 0.5,
-sheen: 0,
-sheenRoughness: 1,
-sheenColor: "white",
-specularIntensity: 0,
-specularColor: "white",
-transmission: 0,
-});
-
-
-const var_var_cylinder_id_132435227945728 = new Cylinder(0.1,0.3,[[0, 0.7071, -0.7071, -0.0, 0.5, 0.7071, 0.7071, -0.0, 0.5, 0.0, 0.0, 1.0, 0.0, 0, 0, 0, 1]], material_var_cylinder_id_132435227945728);
-sceneElements.push(var_var_cylinder_id_132435227945728);
+const var_dummy_ball_var_frame_id_132435227941360 = new Ball(0.0001,[[0, 0.7071, 0.0, -0.7071, 0.5, 0.7071, 0.0, 0.7071, 0.5, 0.0, -1.0, 0.0, 0.0, 0, 0, 0, 1]], material_dummy_ball_var_frame_id_132435227941360);
+sceneElements.push(var_dummy_ball_var_frame_id_132435227941360);
+var var_axes_var_frame_id_132435227941360 = new AxesHelper(0.5);
+var_dummy_ball_var_frame_id_132435227941360.shape.add(var_axes_var_frame_id_132435227941360);
+var_axes_var_frame_id_132435227941360.setColors('red', 'lime', 'blue');
+sceneElements.push(var_dummy_ball_var_frame_id_132435227941360);
 //USER INPUT GOES HERE
 
 
