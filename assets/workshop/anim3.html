@@ -3,12 +3,12 @@
 .controller:hover{opacity:1 !important;}
 </style>
 <body>
-<div id='canvas_container_16975772384525304' style='width:400px;height:500px;position:relative'>
-<div id='loading_screen_16975772384525304' style='width:400px;height:500px;position:relative; background-color: #19bd39;text-align:center;align-items:center;display:flex;justify-content:center'> 
+<div id='canvas_container_1697760119873113' style='width:400px;height:500px;position:relative'>
+<div id='loading_screen_1697760119873113' style='width:400px;height:500px;position:relative; background-color: #19bd39;text-align:center;align-items:center;display:flex;justify-content:center'> 
  <img src='https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/SVG/logo_uai_bot.svg' style='width:200px;height:114px'/>
  </div>
 <script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js'></script>
-<canvas id='scene_16975772384525304' width='400px' height='500px'></canvas>
+<canvas id='scene_1697760119873113' width='400px' height='500px'></canvas>
 <!-- USER DIVS GO HERE --><div class = 'controller' style='width:400px;height:30px;'></div>
 </div>
 
@@ -38,7 +38,7 @@ import { RoomEnvironment } from 'https://unpkg.com/three@0.126.1/examples/jsm/en
 const delay = 500; 
  const maxTime = 0; 
  const cameraType= 'perspective'; 
- const sceneID= '16975772384525304'; 
+ const sceneID= '1697760119873113'; 
  const showWorldFrame=true; 
  const showGrid=true; 
  const backgroundColor='white'; 
@@ -641,9 +641,9 @@ if (showGrid) {
 
 //--------------- ADDING ELEMENTS TO THIS SCENE ---------------
 
-//BEGIN DECLARATION OF THE BALL 'var_ball_id_132435227949184'
+//BEGIN DECLARATION OF THE BALL 'var_ball_id_139875048610048'
 
-const material_var_ball_id_132435227949184 = new MeshPhysicalMaterial({
+const material_var_ball_id_139875048610048 = new MeshPhysicalMaterial({
 opacity: 1,
 transparent: false,
 aoMapIntensity: 1,
@@ -672,13 +672,13 @@ transmission: 0,
 });
 
 
-const var_var_ball_id_132435227949184 = new Ball(0.02,[[0, 1, 0, 0, 0.5, 0, 1, 0, 0.5, 0, 0, 1, 0, 0, 0, 0, 1]], material_var_ball_id_132435227949184);
-sceneElements.push(var_var_ball_id_132435227949184);
+const var_var_ball_id_139875048610048 = new Ball(0.02,[[0, 1, 0, 0, 0.5, 0, 1, 0, 0.5, 0, 0, 1, 0, 0, 0, 0, 1]], material_var_ball_id_139875048610048);
+sceneElements.push(var_var_ball_id_139875048610048);
 
-//BEGIN DECLARATION OF THE VECTOR 'var_vector_id_132435227939776'
+//BEGIN DECLARATION OF THE VECTOR 'var_vector_id_139875048607744'
 
-const var_var_vector_id_132435227939776 = new Vector([[0, [[0], [0], [0]], [[0.707], [0.707], [0.0]], 0.7071067811865476]], 'blue',1, [[0], [0], [0]], [[0.7070967813279668], [0.7070967813279668], [0.0]], 0.7071067811865476);
-sceneElements.push(var_var_vector_id_132435227939776);
+const var_var_vector_id_139875048607744 = new Vector([[0, [[0], [0], [0]], [[0.707], [0.707], [0.0]], 0.7071067811865476]], 'blue',1, [[0], [0], [0]], [[0.7070967813279668], [0.7070967813279668], [0.0]], 0.7071067811865476);
+sceneElements.push(var_var_vector_id_139875048607744);
 //USER INPUT GOES HERE
 
 

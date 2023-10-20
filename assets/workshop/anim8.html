@@ -3,12 +3,12 @@
 .controller:hover{opacity:1 !important;}
 </style>
 <body>
-<div id='canvas_container_16975772385192528' style='width:400px;height:500px;position:relative'>
-<div id='loading_screen_16975772385192528' style='width:400px;height:500px;position:relative; background-color: #19bd39;text-align:center;align-items:center;display:flex;justify-content:center'> 
+<div id='canvas_container_16977601199729714' style='width:400px;height:500px;position:relative'>
+<div id='loading_screen_16977601199729714' style='width:400px;height:500px;position:relative; background-color: #19bd39;text-align:center;align-items:center;display:flex;justify-content:center'> 
  <img src='https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/SVG/logo_uai_bot.svg' style='width:200px;height:114px'/>
  </div>
 <script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js'></script>
-<canvas id='scene_16975772385192528' width='400px' height='500px'></canvas>
+<canvas id='scene_16977601199729714' width='400px' height='500px'></canvas>
 <!-- USER DIVS GO HERE --><div class = 'controller' style='width:400px;height:30px;'></div>
 </div>
 
@@ -38,7 +38,7 @@ import { RoomEnvironment } from 'https://unpkg.com/three@0.126.1/examples/jsm/en
 const delay = 500; 
  const maxTime = 0; 
  const cameraType= 'perspective'; 
- const sceneID= '16975772385192528'; 
+ const sceneID= '16977601199729714'; 
  const showWorldFrame=true; 
  const showGrid=true; 
  const backgroundColor='white'; 
@@ -641,12 +641,12 @@ if (showGrid) {
 
 //--------------- ADDING ELEMENTS TO THIS SCENE ---------------
 
-//BEGIN DECLARATION OF THE FRAME 'var_frame_id_132435227944528'
+//BEGIN DECLARATION OF THE FRAME 'var_frame_id_139875048618448'
 
 
-//BEGIN DECLARATION OF THE BALL 'dummy_ball_var_frame_id_132435227944528'
+//BEGIN DECLARATION OF THE BALL 'dummy_ball_var_frame_id_139875048618448'
 
-const material_dummy_ball_var_frame_id_132435227944528 = new MeshPhysicalMaterial({
+const material_dummy_ball_var_frame_id_139875048618448 = new MeshPhysicalMaterial({
 opacity: 0,
 transparent: true,
 aoMapIntensity: 1,
@@ -675,16 +675,16 @@ transmission: 0,
 });
 
 
-const var_dummy_ball_var_frame_id_132435227944528 = new Ball(0.0001,[[0, 0.7071, 0.0, -0.7071, 0.5, 0.7071, 0.0, 0.7071, 0.5, 0.0, -1.0, 0.0, 0.0, 0, 0, 0, 1]], material_dummy_ball_var_frame_id_132435227944528);
-sceneElements.push(var_dummy_ball_var_frame_id_132435227944528);
-var var_axes_var_frame_id_132435227944528 = new AxesHelper(0.5);
-var_dummy_ball_var_frame_id_132435227944528.shape.add(var_axes_var_frame_id_132435227944528);
-var_axes_var_frame_id_132435227944528.setColors('red', 'lime', 'blue');
-sceneElements.push(var_dummy_ball_var_frame_id_132435227944528);
+const var_dummy_ball_var_frame_id_139875048618448 = new Ball(0.0001,[[0, 0.7071, 0.0, -0.7071, 0.5, 0.7071, 0.0, 0.7071, 0.5, 0.0, -1.0, 0.0, 0.0, 0, 0, 0, 1]], material_dummy_ball_var_frame_id_139875048618448);
+sceneElements.push(var_dummy_ball_var_frame_id_139875048618448);
+var var_axes_var_frame_id_139875048618448 = new AxesHelper(0.5);
+var_dummy_ball_var_frame_id_139875048618448.shape.add(var_axes_var_frame_id_139875048618448);
+var_axes_var_frame_id_139875048618448.setColors('red', 'lime', 'blue');
+sceneElements.push(var_dummy_ball_var_frame_id_139875048618448);
 
-//BEGIN DECLARATION OF THE CYLINDER 'var_cylinder_id_132435227951008'
+//BEGIN DECLARATION OF THE CYLINDER 'var_cylinder_id_139875048609664'
 
-const material_var_cylinder_id_132435227951008 = new MeshPhysicalMaterial({
+const material_var_cylinder_id_139875048609664 = new MeshPhysicalMaterial({
 opacity: 1,
 transparent: false,
 aoMapIntensity: 1,
@@ -713,8 +713,8 @@ transmission: 0,
 });
 
 
-const var_var_cylinder_id_132435227951008 = new Cylinder(0.1,0.3,[[0, 0.7071, -0.7071, -0.0, 0.5, 0.7071, 0.7071, -0.0, 0.5, 0.0, 0.0, 1.0, 0.0, 0, 0, 0, 1]], material_var_cylinder_id_132435227951008);
-sceneElements.push(var_var_cylinder_id_132435227951008);
+const var_var_cylinder_id_139875048609664 = new Cylinder(0.1,0.3,[[0, 0.7071, -0.7071, -0.0, 0.5, 0.7071, 0.7071, -0.0, 0.5, 0.0, 0.0, 1.0, 0.0, 0, 0, 0, 1]], material_var_cylinder_id_139875048609664);
+sceneElements.push(var_var_cylinder_id_139875048609664);
 //USER INPUT GOES HERE
 
 
