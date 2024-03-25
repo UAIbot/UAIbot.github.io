@@ -35,7 +35,7 @@ sim = ub.Simulation()  # Instantiate simulation
 sim.save("/your/folder/path", "example")  # Run the simulation
 
 ```
-If you execute de Python code above you should see the simulation below after you open the "example.html" file at "/your/folder/path"
+If you execute the Python code above you should see the simulation below after you open the "example.html" file at "/your/folder/path"
 
 <iframe frameBorder="0" scrolling="no" src="/assets/Python_examples/creating_a_simulation.html" style="width:800px;height:650px;"></iframe>
 
@@ -43,7 +43,7 @@ Click here to see the simulation above in a new tab: [creating_a_simulation.html
 
 Note that even with an empty scenario you can already click and drag the simulation to move in space or zoom with the scroll wheel.
 
-Now let's take some time to analyze the code above. First, we import UAIbot as a Python package. Then, we instantiate the simulation using the `UAIbot.Simulation()` class. Finally, we run de simulation with the `UAIbot.Simulation.run()` method.
+Now let's take some time to analyze the code above. First, we import UAIbot as a Python package. Then, we instantiate the simulation using the `UAIbot.Simulation()` class. Finally, we run the simulation with the `UAIbot.Simulation.run()` method.
 
 ## Adding objects to the simulation
 
@@ -63,7 +63,7 @@ sim.save("/your/folder/path", "example")  # Run the simulation
 
 ```
 
-If you execute de Python code above you should see the simulation below after you open the "example.html" file at "/your/folder/path"
+If you execute the Python code above you should see the simulation below after you open the "example.html" file at "/your/folder/path"
 
 <iframe frameBorder="0" scrolling="no" src="/assets/Python_examples/adding_objects_to_the_simulation.html" style="width:800px;height:650px;"></iframe>
 
@@ -98,7 +98,7 @@ sim.save("/your/folder/path", "example")  # Run the simulation
 
 ```
 
-If you execute de Python code above you should see the simulation below after you open the "example.html" file at "/your/folder/path"
+If you execute the Python code above you should see the simulation below after you open the "example.html" file at "/your/folder/path"
 
 <iframe frameBorder="0" scrolling="no" src="/assets/Python_examples/moving_simulation_elements.html" style="width:800px;height:650px;"></iframe>
 
