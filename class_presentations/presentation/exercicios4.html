@@ -16,7 +16,7 @@
         }
     </script>
     
-    <title>Lista de Exercícios</title>
+    <title>Exercise List</title>
 
     <link rel="stylesheet" href="/class_presentations/presentation/dist/reset.css">
     <link rel="stylesheet" href="/class_presentations/presentation/dist/reveal.css">
@@ -35,389 +35,234 @@
 <div class="reveal">
     <div class="slides">
 
-        <section data-menu-title="Introdução">
-            <h3>Manipuladores Robóticos</h3>
-            <h3 style="font-size:40px">Lista de Exercícios</h3>
+        <section data-menu-title="Introduction">
+            <h3>Robotic Manipulators</h3>
+            <h3 style="font-size:40px">Exercise List</h3>
             <p>
-                <img src="/class_presentations/presentation/images/exercicios4/titulo_cin_dif.svg"
+                <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
                      style="width:350px;height:auto;">
-                <br><small>Vinicius Mariano Gonçalves</small>
+                <br><small> </small>
             </p>
         </section>
 
-
-        <section data-menu-title="Exercício 1">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 1</b>
+        <section data-menu-title="Exercise 1">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
+                <b class="ttext">Exercise 1</b>
             </h3>
             <div style="width:1200px;height:800px">
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Seja \(Q(t)\) uma matriz de rotação parametrizada no tempo e diferenciável.</p>
-                    <p>Podemos afirmar que \(\det(\dot{Q}(t)) = 0\) para todo \(t\)? Justifique.</p>
-                    <p><a href="/class_presentations/presentation/respostas4.html#/1"><b
-                            class="hlink">Resposta</b></a></p>
+                    <p>Consider the robot on the side, which has one revolute joint and one prismatic joint.</p>
+                    <p>Assume that when \(q_1=0\), the axis \(z_e\) is aligned with \(x_0\).</p>
+                    <p>Assume that when \(q_2=0\), the center of the end-effector frame \(\mathcal{F}_e\) is at point \(P\).</p>
+                    <p>The figure shows the positive direction of rotation/translation of both joints.</p>
+                    <p>Compute its direct kinematics for the end-effector, i.e., the MTH \(H_0^{e}(q)\).</p>
+                    <p><a href="/class_presentations/presentation/respostas3.html#/1"><b class="hlink">Answer</b></a></p>
                 </div>
-                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
-                    <div style="display:table-cell;vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/exercicios4/titulo_cin_dif.svg"
-                             style="width:400px;height:auto;">
-                    </div>
-                </div>
-            </div>
 
-        </section>
-
-        <section data-menu-title="Exercício 2">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 2</b>
-            </h3>
-            <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Suponha um corpo com velocidades lineares e angulares \(v(t), \omega(t)\) não nulas para todo
-                        \(t\).</p>
-                    <p>Assuma também que \(v(t)\) e \(\omega(t)\) são vetores paralelos, para todo \(t\).</p>
-                    <p>Podemos afirmar que, nessa situação, para todo tempo \(t\), existirá <b class="itext">ao
-                        menos</b> uma partícula \(P\) no corpo com velocidade
-                        <b class="itext">nula</b> (medida com relação ao referencial \(\mathcal{F}_0\))? Justifique.</p>
-                    <p><a href="/class_presentations/presentation/respostas4.html#/2"><b
-                            class="hlink">Resposta</b></a></p>
-                </div>
-                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
-                    <div style="display:table-cell;vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/exercicios4/titulo_cin_dif.svg"
-                             style="width:400px;height:auto;">
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <section data-menu-title="Exercício 3">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 3</b>
-            </h3>
-            <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Considere um referencial móvel \(\mathcal{F}_{m}\). Seja \(z(t)\) e \(\omega(t)\) o eixo \(z\) do
-                        seu referencial
-                        e sua velocidade angular, ambas escritas com relação a um referencial fixo
-                        \(\mathcal{F}_0\). </p>
-                    <p>Podemos afirmar que \(\frac{d}{dt}z(t)\) e \(\omega(t)\) são vetores ortogonais? Justifique.</p>
-                    <p><a href="/class_presentations/presentation/respostas4.html#/3"><b
-                            class="hlink">Resposta</b></a></p>
-                </div>
-                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
-                    <div style="display:table-cell;vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/exercicios4/titulo_cin_dif.svg"
-                             style="width:400px;height:auto;">
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <section data-menu-title="Exercício 4">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 4</b>
-            </h3>
-            <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Seja \(A\) uma matriz antisimétrica genérica \(3 \times 3\).</p>
-                    <p>Podemos afirmar que sempre existe um vetor tridimensional \(a\) tal que \(S(a)=A\)?
-                        Justifique.</p>
-                    <p><a href="/class_presentations/presentation/respostas4.html#/4"><b
-                            class="hlink">Resposta</b></a></p>
-                </div>
-                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
-                    <div style="display:table-cell;vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/exercicios4/titulo_cin_dif.svg"
-                             style="width:400px;height:auto;">
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <section data-menu-title="Exercício 5">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 5</b>
-            </h3>
-            <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Podemos afirmar que para todo vetor tridimensional \(a\), existe um vetor não nulo \(b\) tal que
-                        \(S(a)b=0_{3 \times 1}\)? Justifique. </p>
-                    <p><a href="/class_presentations/presentation/respostas4.html#/5"><b
-                            class="hlink">Resposta</b></a></p>
-                </div>
-                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
-                    <div style="display:table-cell;vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/exercicios4/titulo_cin_dif.svg"
-                             style="width:400px;height:auto;">
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <section data-menu-title="Exercício 6">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 6</b>
-            </h3>
-            <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Considere um corpo rígido. Seja \(P\) o centro do referencial \(\mathcal{F}_{obj}\) grudado no
-                        objeto.</p>
-                    <p>Seja \(R\) o raio da <b class="itext">menor</b> esfera centrada em \(P\) que engloba todo o
-                        objeto. Note que esse valor de
-                        \(R\) será constante.</p>
-                    <p>Prove que a velocidade escalar de qualquer partícula no tempo \(t\) não pode ultrapassar
-                        \(\|v(t)\|+R\|\omega(t)\|\), em que
-                        \(v(t)\) e \(\omega(t)\) são os vetores velocidade linear e angular do objeto (respectivos ao
-                        referencial \(\mathcal{F}_{obj}\)). </p>
-                    <p><a href="/class_presentations/presentation/respostas4.html#/6"><b
-                            class="hlink">Resposta</b></a></p>
-                </div>
-                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
-                    <div style="display:table-cell;vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/exercicios4/titulo_cin_dif.svg"
-                             style="width:400px;height:auto;">
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <section data-menu-title="Exercício 7">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 7</b>
-            </h3>
-            <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>(a) Calcule os vetores velocidade linear e angular da terra (com relação ao referencial grudado
-                        no seu centro e medidos no referencial \(\mathcal{F}_0\)) do
-                        <a href="/class_presentations/presentation/exercicios2.html#/8"><b
-                            class="hlink">Exercício 7 de Representação Espacial</b></a> .</p>
-                    <p>(b) Calcule os vetores velocidade linear e angular do brinquedo (com relação ao referencial
-                        grudado no seu centro e medidos no referencial \(\mathcal{F}_0\)) do
-                        <a href="/class_presentations/presentation/exercicios2.html#/12"><b
-                            class="hlink">Exercício 11 de Representação Espacial</b></a>.</p>
-                    <p>Note que os cálculos estarão em função dos respectivos parâmetros e do tempo \(t\).</p>
-                    <p><a href="/class_presentations/presentation/respostas4.html#/7"><b
-                            class="hlink">Resposta</b></a></p>
-                </div>
-                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
-                    <div style="display:table-cell;vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/exercicios4/titulo_cin_dif.svg"
-                             style="width:400px;height:auto;">
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <section data-menu-title="Exercício 8">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 8</b>
-            </h3>
-            <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Calcule a Jacobiana Geométrica para o robô ao lado, do Exercício 1 de Cinemática Direta.</p>
-                    <p><a href="/class_presentations/presentation/respostas4.html#/9"><b
-                            class="hlink">Resposta</b></a></p>
-                </div>
-                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
-                    <div style="display:table-cell;vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/exercicios4/robo_1_tr.png"
-                             style="width:400px;height:auto;">
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <section data-menu-title="Exercício 9">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 9</b>
-            </h3>
-            <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Calcule a Jacobiana Geométrica para o robô ao lado, do Exercício 2 de Cinemática Direta.</p>
-                    <p><a href="/class_presentations/presentation/respostas4.html#/10"><b
-                            class="hlink">Resposta</b></a></p>
-                </div>
                 <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/exercicios4/robo_2_tr.png"
-                             style="width:500px;height:auto;">
-                    </div>
-                </div>
-            </div>
-
-        </section>
-
-        <section data-menu-title="Exercício 10">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 10</b>
-            </h3>
-            <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Podemos afirmar que em um robô com apenas juntas lineares a matriz \(J_\omega(q)\) é nula?
-                        Justifique.</p>
-                    <p><a href="/class_presentations/presentation/respostas4.html#/13"><b
-                            class="hlink">Resposta</b></a></p>
-                </div>
-                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
-                    <div style="display:table-cell;vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/exercicios4/titulo_cin_dif.svg"
+                        <img src="/class_presentations/presentation/images/exercicios3/robo_1_tr.png"
                              style="width:400px;height:auto;">
                     </div>
                 </div>
             </div>
-
         </section>
 
-        <section data-menu-title="Exercício 11">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 11</b>
+        <section data-menu-title="Exercise 2">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
+                <b class="ttext">Exercise 2</b>
+            </h3>
+            <div style="width:1200px;height:800px;font-size:25px; text-align:justify; text-justify: inter-word">
+                <p>Consider the manipulator below, with three revolute joints.</p>
+                <div style="vertical-align: middle; text-align: center; align-items: center">
+                    <img src="/class_presentations/presentation/images/exercicios3/robo_2_tr.png"
+                         style="width:600px;height:auto;text-align: center">
+                </div>
+            </div>
+        </section>
+
+        <section data-menu-title="Exercise 2 (cont.)">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
+                <b class="ttext">Exercise 2</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>O vetor <b class="itext">aceleração angular</b> \(\alpha\) é a derivada temporal do vetor
-                        velocidade angular,
-                        \(\alpha = \dot{\omega}\).</p>
-                    <p>Dito isso, podemos afirmar que, em um determinado instante de tempo \(t\), o efetuador do robô
-                        pode ter
-                        <b class="itext">aceleração angular \(\alpha(t)\) não-nula</b> tendo uma <b class="itext">aceleração
-                            de juntas \(\ddot{q}(t)\) nula</b>?
-                        Justifique.</p>
-                    <p><a href="/class_presentations/presentation/respostas4.html#/14"><b
-                            class="hlink">Resposta</b></a></p>
+                <div style="width:60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Assume the \(x_0\) axis is aligned with the line of the first joint, and that a displacement along \(z_0\)
+                       causes the center of the reference frame \(\mathcal{F}_0\) to move to that line.</p>
+                    <p>Also assume that the lines of the first two joints are parallel, and that the second and third
+                       lines are orthogonal.</p>
+                    <p>(a) Create the four Denavit-Hartenberg frames.</p>
+                    <p>(b) Derive the \(3 \times 4 = 12\) parameters.</p>
+                    <p>(c) Using those frames, compute the direct kinematics from frame \(\mathcal{F}_0\) to the
+                       end-effector frame \(\mathcal{F}_e\).</p>
+                    <p><a href="/class_presentations/presentation/respostas3.html#/3"><b class="hlink">Answer</b></a></p>
                 </div>
-                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/exercicios4/titulo_cin_dif.svg"
+                        <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
                              style="width:400px;height:auto;">
                     </div>
                 </div>
             </div>
-
         </section>
 
-        <section data-menu-title="Exercício 12">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 12</b>
+        <section data-menu-title="Exercise 3">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
+                <b class="ttext">Exercise 3</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Sejam \(\xi_{d1}, \xi_{d2} \in \mathbb{R}^6\) velocidade desejadas para o efetuador. Suponha que
-                        em uma dada configuração
-                        \(q\) é possível encontrar velocidade de juntas \(\dot{q}_1\) e \(\dot{q}_2\) que realizam essa
-                        velocidades, respectivamente.</p>
-                    <p>Podemos então afirmar que, para essa mesma configuração \(q\), existe uma velocidade de junta
-                        \(\dot{q}_3\) que realize a velocidade
-                        \(\xi_{d3} = \xi_{d1}+\xi_{d2}\)? Justifique.</p>
-                    <p><a href="/class_presentations/presentation/respostas4.html#/15"><b
-                            class="hlink">Resposta</b></a></p>
+                <div style="width:60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Does a Denavit-Hartenberg frame necessarily have its center within the link to which it is
+                       attached? Justify.</p>
+                    <p><a href="/class_presentations/presentation/respostas3.html#/7"><b class="hlink">Answer</b></a></p>
                 </div>
-                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+
+                <div style="width:40%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/exercicios4/titulo_cin_dif.svg"
+                        <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
                              style="width:400px;height:auto;">
                     </div>
                 </div>
             </div>
-
         </section>
 
-        <section data-menu-title="Exercício 13">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 13</b>
+        <section data-menu-title="Exercise 4">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
+                <b class="ttext">Exercise 4</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>(a) Use o <b class="itext">UAIBot</b> para descobrir se a configuração</p>
-                    $$q = (0 \ \ 1{,}57 \ \ 0{,}1 \ \ 0{,}1 \ \ 0{,}1 \ \ 0)^T \ rad$$
-
-                    <p>do robô <b class="itext">Staubli TX60</b> é singular (use a função <b class="itext">Robot.create_staubli_tx60</b> para criá-lo). </p>
-                    <p>Use a função <b class="itext">numpy.linalg.eig</b> do Numpy, que calcula autovalores, para calcular os valores singulares.
-                        Considere um valor singular como nulo se ele for menor que \(10^{-5}\).</p>
-
-                    <p>(b) Se ela não for singular, use o UAIBot para descobrir qual deve ser a velocidade de junta nessa
-                    configuração que faça o efetuador ter uma velocidade de 1m/s em \(z_0\) e todas as outras componentes
-                    de velocidade 0.</p>
-
-                    <p><a href="/class_presentations/presentation/respostas4.html#/16"><b
-                            class="hlink">Resposta</b></a></p>
+                <div style="width:60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Can we have two different Denavit-Hartenberg frames for the same robot that share the same
+                       center? Justify.</p>
+                    <p><a href="/class_presentations/presentation/respostas3.html#/8"><b class="hlink">Answer</b></a></p>
                 </div>
-                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+
+                <div style="width:40%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/exercicios4/robo_3.png"
+                        <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
                              style="width:400px;height:auto;">
                     </div>
                 </div>
             </div>
-
         </section>
 
-        <section data-menu-title="Exercício 14">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 14</b>
+        <section data-menu-title="Exercise 5">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
+                <b class="ttext">Exercise 5</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>(a) Use o <b class="itext">UAIBot</b> para calcular qual é a velocidade \(\xi\) do efetuador na configuração
-                    inicial do robô <b class="itext">Epson T6</b> quando apenas a primeira junta roda com velocidade de 1 rad/s (use a função <b class="itext">Robot.create_epson_t6</b> para criá-lo).</p>
-                    <p>(b) Verifique se o resultado faz sentido.</p>
-
-                    <p><a href="/class_presentations/presentation/respostas4.html#/17"><b
-                            class="hlink">Resposta</b></a></p>
+                <div style="width:60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>We know that a transformation between two generic frames requires at least 6 numbers.</p>
+                    <p>Knowing that, explain why the transformation between two Denavit-Hartenberg frames requires fewer
+                       parameters (4 in this case).</p>
+                    <p><a href="/class_presentations/presentation/respostas3.html#/9"><b class="hlink">Answer</b></a></p>
                 </div>
-                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+
+                <div style="width:40%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/exercicios4/robo_4.png"
+                        <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
                              style="width:400px;height:auto;">
                     </div>
                 </div>
             </div>
-
         </section>
 
-        <section data-menu-title="Exercício 15">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 15</b>
+        <section data-menu-title="Exercise 6">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
+                <b class="ttext">Exercise 6</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Um erro  comum para iniciantes em robótica é o seguinte: seja \(\phi(t) = (\gamma(t) \ \beta(t) \ \alpha(t))^T \in \mathbb{R}^{3 \times 1}\) os ângulos de Euler
-                    do efetuador que se move (ângulos x, y e z, respectivamente). Então, é comum achar que \(\frac{d}{dt}\phi(t) = \omega(t)\).</p>
-                    <p>Isso não é verdade, no geral (só em casos muito específicos)! Mostre isso utilizando o <b class="itext">UAIBot</b> .</p>
-                    <p>Faça algum robô fazer algum movimento de juntas. Calcule \(\omega(t)\) e \(\frac{d}{dt}\phi(t)\) (use a função
-                    <b class="itext">Utils.euler_angles</b>). Mostre que eventualmente eles serão diferentes. </p>
-                    <p><a href="/class_presentations/presentation/respostas4.html#/18"><b
-                            class="hlink">Resposta</b></a></p>
+                <div style="width:60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Can we always guarantee that the inverse kinematics problem has a solution? Justify.</p>
+                    <p><a href="/class_presentations/presentation/respostas3.html#/10"><b class="hlink">Answer</b></a></p>
                 </div>
-                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+
+                <div style="width:40%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/exercicios4/titulo_cin_dif.svg"
+                        <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
                              style="width:400px;height:auto;">
                     </div>
                 </div>
             </div>
+        </section>
 
+        <section data-menu-title="Exercise 7">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px">
+                <b class="ttext">Exercise 7</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width:50%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Consider the scenario on the side, which can be created with the following code in UAIBot:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+import numpy as np
+
+#Create the scenario
+robot = ub.Robot.create_abb_crb(ub.Utils.trn([0,0,0.2]))
+
+texture_table = ub.Texture(
+    url='https://raw.githubusercontent.com/viniciusmgn/uaibot_content/master/contents/Textures/rough_metal.jpg',
+    wrap_s='RepeatWrapping', wrap_t='RepeatWrapping', repeat=[1, 1])
+
+material_table = ub.MeshMaterial(texture_map=texture_table, roughness=1, metalness=1, opacity=1)
+table1 = ub.Box(name="table1", htm = ub.Utils.trn([0.8,0,0.15]), width=0.5, depth=0.5, height=0.4, mesh_material=material_table)
+table2 = ub.Box(name="table2", htm = ub.Utils.trn([0,-0.8,0.15]), width=0.5, depth=0.5, height=0.4, mesh_material=material_table)
+table3 = ub.Box(name="table3", htm = ub.Utils.trn([0,0,0.1]), width=0.3, depth=0.3, height=0.2, mesh_material=material_table)
+obstacle = ub.Box(name="obstacle", htm = ub.Utils.trn([0.8,-0.8,0.5]), width=0.6, depth=0.6, height=1, mesh_material=material_table)
+
+material_cube = ub.MeshMaterial(roughness=1, metalness=1, opacity=1, color="purple")
+cube = ub.Box(name="cube", htm = ub.Utils.trn([0.8,0,0.4]), width=0.1, depth=0.1, height=0.1, mesh_material=material_cube)
+
+sim = ub.Simulation.create_sim_factory([robot, table1, table2, table3, obstacle, cube])
+                    </code></pre>
+                </div>
+
+                <div style="width:50%; float:right; text-align:left; vertical-align:top; display:table">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/exercicios3/anim1.html"
+                            style="width:500px;height:550px">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+
+        <section data-menu-title="Exercise 7 (cont.)">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px">
+                <b class="ttext">Exercise 7</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width:50%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Create UAIBot code so that it picks up the purple block on one table and delivers it to the other
+                       one, without colliding with the obstacles. The robot must pick and place the object from above!</p>
+                    <p>Use inverse kinematics and linear interpolation as shown 
+                       <a href="/class_presentations/presentation/aula3.html#/61"><b class="hlink">in this example</b></a> 
+                       from Lecture 3.</p>
+                    <p>Use the function <b class="itext">robot.attach_object(cube)</b> to make the end-effector pick up
+                       the object when it is in the correct pose.</p>
+                    <p>The <b class="itext">ikm</b> function accepts a parameter <b class="itext">q0</b>, trying to find
+                       an inverse kinematics solution close to <b class="itext">q0</b>. Use that to your advantage.</p>
+                    <p><a href="/class_presentations/presentation/respostas3.html#/11"><b
+                            class="hlink">Answer</b></a></p>
+                </div>
+                <div style="width:5%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                </div>
+                <div style="width:45%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/exercicios3/anim1.html"
+                            style="width:500px;height:550px">
+                    </iframe>
+                </div>
+            </div>
         </section>
 
     </div>
@@ -431,12 +276,9 @@
         color: #34eb5e;
     }
 
+    /* Removing the UFMG logo from the background */
     body {
-        background-image: url(/class_presentations/presentation/images/aula1/logo_ufmg.svg) !important;
         background-color: black;
-        background-size: 8% !important;
-        background-repeat: no-repeat !important;
-        background-position: 96% 3% !important;
     }
 
     .itext {
@@ -453,6 +295,7 @@
     .hlink:hover {
         text-decoration: underline;
     }
+
     /* width */
     ::-webkit-scrollbar {
         width: 20px;
@@ -502,7 +345,6 @@
     });
     var frames = document.getElementsByTagName("iframe");
 
-
     Reveal.on('slidechanged', event => {
         for (let i = 0; i < frames.length; ++i) {
             frames[i].contentWindow.location.reload(true);
@@ -511,4 +353,3 @@
 </script>
 </body>
 </html>
-

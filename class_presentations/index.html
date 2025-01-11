@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv='cache-control' content='no-cache'>
     <meta http-equiv='expires' content='0'>
     <meta http-equiv='pragma' content='no-cache'>
@@ -16,7 +16,7 @@
         }
     </script>
 
-    <title>Manipuladores Robóticos</title>
+    <title>Robotic Manipulators</title>
 
     <link rel="stylesheet" href="/class_presentations/presentation/dist/reset.css">
     <link rel="stylesheet" href="/class_presentations/presentation/dist/reveal.css">
@@ -24,8 +24,6 @@
 
     <!-- Theme used for syntax highlighted code -->
     <link rel="stylesheet" href="/class_presentations/presentation/plugin/highlight/monokai.css">
-
-
 </head>
 
 <body>
@@ -34,33 +32,64 @@
 
         <video autoplay muted loop playsinline class="background-video">
             <source src="/class_presentations/presentation/images/aula1/g1.mp4" type="video/mp4">
-            <!-- Add more source tags if you have multiple video formats -->
+            <!-- Add more source tags if needed -->
             Your browser does not support the video tag.
         </video>
 
-        <img src="/class_presentations/presentation/images/aula1/logo_ufmg.svg" class="logo">
+        <!-- UFMG logo removed -->
 
         <section>
-            <h3>Manipuladores Robóticos</h3>
-            <h3 style="font-size: 20pt">Vinicius Mariano Gonçalves</h3>
+            <h3>Robotic Manipulators</h3>
+            <h3 style="font-size: 20pt"> </h3>
             <ul>
-                <li><a href="/class_presentations/presentation/aula1.html"><b class="hlink">1: Introdução ao curso</b></a>
-                    <br></li>
-                <li><a href="/class_presentations/presentation/aula2.html"><b class="hlink">2: Descrição espacial</b></a>
-                    (<a href="/class_presentations/presentation/exercicios2.html"><b class="hlink">Exercícios</b></a>)<br></li>
-                <li><a href="/class_presentations/presentation/aula3.html"><b class="hlink">3: Cinemática direta e inversa</b></a>
-                    (<a href="/class_presentations/presentation/exercicios3.html"><b class="hlink">Exercícios</b></a>)<br></li>
-                <li><a href="/class_presentations/presentation/aula4.html"><b class="hlink">4: Cinemática diferencial</b></a>
-                    (<a href="/class_presentations/presentation/exercicios4.html"><b class="hlink">Exercícios</b></a>)<br></li>
-                <li><a href="/class_presentations/presentation/aula5.html"><b class="hlink">5: Controle cinemático</b></a>
-                    (<a href="/class_presentations/presentation/exercicios5.html"><b class="hlink">Exercícios</b></a>)<br></li>
+                <li>
+                    <a href="/class_presentations/presentation/aula1.html">
+                        <b class="hlink">1: Introduction to the course</b>
+                    </a>
+                    <br>
+                </li>
+                <li>
+                    <a href="/class_presentations/presentation/aula2.html">
+                        <b class="hlink">2: Spatial description</b>
+                    </a>
+                    (<a href="/class_presentations/presentation/exercicios2.html">
+                        <b class="hlink">Exercises</b>
+                    </a>)
+                    <br>
+                </li>
+                <li>
+                    <a href="/class_presentations/presentation/aula3.html">
+                        <b class="hlink">3: Direct and inverse kinematics</b>
+                    </a>
+                    (<a href="/class_presentations/presentation/exercicios3.html">
+                        <b class="hlink">Exercises</b>
+                    </a>)
+                    <br>
+                </li>
+                <li>
+                    <a href="/class_presentations/presentation/aula4.html">
+                        <b class="hlink">4: Differential kinematics</b>
+                    </a>
+                    (<a href="/class_presentations/presentation/exercicios4.html">
+                        <b class="hlink">Exercises</b>
+                    </a>)
+                    <br>
+                </li>
+                <li>
+                    <a href="/class_presentations/presentation/aula5.html">
+                        <b class="hlink">5: Kinematic control</b>
+                    </a>
+                    (<a href="/class_presentations/presentation/exercicios5.html">
+                        <b class="hlink">Exercises</b>
+                    </a>)
+                    <br>
+                </li>
             </ul>
-
-
         </section>
 
     </div>
 </div>
+
 <style>
     .reveal .progress {
         color: #34eb5e;
@@ -70,18 +99,10 @@
         color: #34eb5e;
     }
 
-    /* body {
-        background-image: url(/class_presentations/presentation/images/aula1/logo_ufmg.svg) !important;
-        background-color: black;
-        background-size: 8% !important;
-        background-repeat: no-repeat !important;
-        background-position: 96% 3% !important;
-    } */
-
     .itext {
         color: #34eb5e;
     }
-    .hlink{
+    .hlink {
         color: #f5bf42;
     }
     .hlink:hover {
@@ -89,10 +110,10 @@
     }
 
     .reveal {
-    position: relative;
-    width: 100%;
-    height: 100vh; /* Full viewport height */
-    overflow: hidden;
+        position: relative;
+        width: 100%;
+        height: 100vh; /* Full viewport height */
+        overflow: hidden;
     }
 
     .slides {
@@ -103,26 +124,26 @@
         z-index: -1;
     }
 
-    .logo {
-    position: absolute;
-    top: 3%;
-    right: 4%;
-    width: 8%; /* Adjust size as needed */
-    z-index: 10; /* Ensures it appears above the video and overlay */
-}
+    /* .logo {
+        position: absolute;
+        top: 3%;
+        right: 4%;
+        width: 8%;
+        z-index: 10;
+    } */
 
     .background-video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    z-index: -1; /* Keeps the video behind the content */
-    filter: brightness(50%) blur(2px); /* Adjust as needed */
-}
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        z-index: -1; /* Keeps the video behind the content */
+        filter: brightness(50%) blur(2px); /* Adjust as needed */
+    }
 
     section {
         position: relative;
@@ -130,9 +151,8 @@
         color: white; /* Adjust text color for readability */
         padding: 20px;
     }
-
-
 </style>
+
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async
         src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
@@ -153,8 +173,8 @@
         maxScale: 2.0,
         plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
     });
-    var frames = document.getElementsByTagName("iframe");
 
+    var frames = document.getElementsByTagName("iframe");
 
     Reveal.on('slidechanged', event => {
         for (let i = 0; i < frames.length; ++i) {
@@ -164,4 +184,3 @@
 </script>
 </body>
 </html>
-
