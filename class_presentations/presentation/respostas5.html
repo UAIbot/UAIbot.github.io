@@ -1,0 +1,490 @@
+<!doctype html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+
+    <script>
+        // Check if the site is being served from GitHub Pages
+        if (window.location.hostname === "viniciusmgn.github.io") {
+            document.write('<base href="/aulas_manipuladores/">');
+        } else {
+            document.write('<base href="/">');  // Local development base
+        }
+    </script>
+    
+    <title>Lista de Exercícios</title>
+
+    <link rel="stylesheet" href="presentation/dist/reset.css">
+    <link rel="stylesheet" href="presentation/dist/reveal.css">
+    <link rel="stylesheet" href="presentation/dist/theme/black.css">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="presentation/plugin/highlight/monokai.css">
+    <style>
+        .reveal .slides section {
+            padding: 20px; /* Adjust the value as needed */
+        }
+    </style>
+</head>
+
+<body>
+<div class="reveal">
+    <div class="slides">
+
+        <section>
+            <h3>Manipuladores Robóticos</h3>
+            <h3 style="font-size:40px">Lista de Exercícios</h3>
+            <p>
+                <img src="presentation/images/exercicios5/titulo_cc.png"
+                     style="width:500px;height:auto;">
+                <br><small>Vinicius Mariano Gonçalves</small>
+            </p>
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 1 - Resposta</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Não! Ela é diferenciável, mas ela zera quando \(\|s_e(q)-s_d\|^2\) é um número inteiro.
+                    Portanto, ela zera, por exemplo, quando \(\|s_e(q)-s_d\|^2 = 1\) (ou seja, quando a distância
+                    entre a posição atual e a desejada é 1).</p>
+                    <p><a href="presentation/exercicios5.html#/1"><b
+                            class="hlink">Voltar</b></a></p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br>
+                        <img src="presentation/images/exercicios5/titulo_cc.png"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 2 - Resposta</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Não! Se \(r_T(q)\) é uma função de tarefa para \(\mathcal{T}\), então não é difícil ver que \(r_1(q)=r_T(q)\) e \(r_2(q)=-r_T(q)\) são
+                    funções de tarefa para \(\mathcal{T}\).</p>
+                    <p>Mas \(r_1(q)+r_2(q)\) é o vetor nulo. Portanto, não é uma função de tarefa para \(\mathcal{T}\).</p>
+                    <p><a href="presentation/exercicios5.html#/2"><b
+                            class="hlink">Voltar</b></a></p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br>
+                        <img src="presentation/images/exercicios5/titulo_cc.png"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 3 - Resposta</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Sim! Primeiro, se \(f(q)\) é diferenciável, \(\|f(q)\|^2\) também o é. Ainda, a soma de funções
+                        diferenciáveis é diferenciável. Portanto \(r_3(q)\) é diferenciável.</p>
+                    <p>Ainda, \(r_3(q) = 0\) se e somente se \(r_1(q)\) e \(r_2(q)\) são nulos. Como \(r_1,r_2\) são
+                    funções de tarefa para \(\mathcal{T}\), ambas são nulas se e somente se \(q \in \mathcal{T}\).</p>
+                    <p><a href="presentation/exercicios5.html#/3"><b
+                            class="hlink">Voltar</b></a></p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br>
+                        <img src="presentation/images/exercicios5/titulo_cc.png"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 4 - Resposta</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Não. Na verdade, \(\det(Q(q)-Q_d) = 0\) para quaisquer matrizes de rotação \(Q\) e \(Q_d\).</p>
+                    <p>Para ver isso, use (i) para escrever \(r = \det((QQ_d^T - I_{3 \times 3})Q_d\). Usando
+                    (ii) e o fato que \(det(Q_d)=1\), temos \(r = \det(QQ_d^T- I_{3 \times 3})\). Note que
+                    \(R = QQ_d\) também é uma matriz de rotação, e portanto (usando (iii)) tem sempre autovalor
+                    1. Portanto \(\det(R-\lambda I_{3 \times 3}) = 0\) para \(\lambda=1\). Isso mostra que \(r=0\).</p>
+                    <p><a href="presentation/exercicios5.html#/4"><b
+                            class="hlink">Voltar</b></a></p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br>
+                        <img src="presentation/images/exercicios5/titulo_cc.png"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 5 - Resposta</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Sim. Note que \(\|M\|_F^2 = 0\) se e somente se a matriz \(M\) é a matriz nula.</p>
+                    <p>Então \(r(q) = 0\) se e somente se \(I_{3 \times 3} - Q(q)Q_d^T=0_{3 \times 3}\). Manipulando
+                    essa equação, ela é equivalente à equação \(Q(q)=Q_d\). Isso mostra que \(r(q)=0\) se e somente se
+                    \(q \in \mathcal{T}\).</p>
+                    <p>Como \(Q(q)\) é uma função diferenciável em \(q\), \(\|M\|_F^2\) é uma função diferenciável nas componentes
+                    \(M\) e a composição de funções diferenciáveis também é diferenciável, \(r(q)\) também é diferenciável.</p>
+                    <p><a href="presentation/exercicios5.html#/5"><b
+                            class="hlink">Voltar</b></a></p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br>
+                        <img src="presentation/images/exercicios5/titulo_cc.png"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 6 - Resposta</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Usando \(\|w\|^2 = w^Tw\) e derivando \(r(q,t)\) no tempo \(t\), temos:</p>
+                    $$\frac{d}{dt}r(q,t) = 2(s_e(q){-}s_d(t))^T\left(\frac{d}{dt}s_e(q){-}\frac{d}{dt}s_d(t)\right) .$$
+                    <p>Como \(\frac{d}{dt}s_e(q) = J_v(q) \dot{q}\), temos, após separar os termos:</p>
+                    $$\frac{d}{dt}r(q,t) = 2(s_e(q){-}s_d(t))^TJ_v(q) \dot{q} -2(s_e(q){-}s_d(t))^T\dot{s}_d(t).$$
+                    <p>Comparando com o resultado da regra da cadeira, \(\dot{r} = J_r\dot{q} + \frac{\partial r}{\partial t}\), temos:</p>
+                    $$J_r(q,t) = 2(s_e(q){-}s_d(t))^TJ_v(q) \ \ , \ \ \frac{\partial r}{\partial t}(q,t) = -2(s_e(q){-}s_d(t))^T\dot{s}_d(t).$$
+                    <p><a href="presentation/exercicios5.html#/6"><b
+                            class="hlink">Voltar</b></a></p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br>
+                        <img src="presentation/images/exercicios5/titulo_cc.png"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 7  - Resposta</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Resolvendo a equação \(\dot{r} = -Kr\), temos \(r(q(t)) = e^{-Kt}r(q(0))\).</p>
+                    <p>Como \(r = s_e-s_d\), isso implica \(s_e = s_d + e^{-Kt}(s_{e0}-s_{d})\) em que
+                    \(s_{e0} = s_e(q(0))\). </p>
+                    <p>Embora \(p(t) = s_e(q(t))\) seja uma função não linear de \(t\), quando desenhamos essa
+                    expressão parametrizada no tempo temos uma reta no espaço \(p \in \mathbb{R}^3\). Uma maneira de ver isso
+                    é que o vetor velocidade da trajetória, \(\frac{d}{dt} p = -Ke^{-Kt}(s_{e0}-s_{d})\), é um vetor com direção e sentido
+                    (embora não módulo) constante, uma vez que \(Ke^{-Kt}\) é um escalar.</p>
+                    <p><a href="presentation/exercicios5.html#/7"><b
+                            class="hlink">Voltar</b></a></p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br>
+                        <img src="presentation/images/exercicios5/titulo_cc.png"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 8 - Resposta</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Considerando a equação \(\frac{dr}{dt} = -K\sqrt{r}\), podemos resolvê-la por separação da variável
+                    (uma vez que \(r\) é um escalar).</p>
+                    <p>Assim \(\int_0^t \frac{dr(s)}{\sqrt{r(s)}} = \int_0^t(-Kds)\). E portanto:</p>
+                    $$(2\sqrt{r(s)}) |_{s=0}^{s=t} = (-Ks)  |_{s=0}^{s=t} \ \rightarrow \ 2\sqrt{r} - 2\sqrt{r_0} = -Kt.$$
+                    <p>Assim \(\sqrt{r(t)} = \sqrt{r_0} - \frac{K}{2}t\). Como \(\sqrt{r} \geq 0\), essa equação é válida
+                    para \(t \leq 2\frac{\sqrt{r_0}}{K}\). Para \(t > \frac{\sqrt{r_0}}{K}\), por continuidade, \( \sqrt{r(t)}  = 0\). Assim: </p>
+                    $$r(q(t)) =
+                    \left\{
+                    \begin{array}{ll}
+                     (\sqrt{r_0} - \frac{K}{2}t)^2 & \mbox{se } t \leq 2\frac{\sqrt{r_0}}{K} \\
+                    0 & \mbox{se } t > 2\frac{\sqrt{r_0}}{K}
+                    \end{array}
+                    \right.$$
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br>
+                        <img src="presentation/images/exercicios5/titulo_cc.png"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 8 - Resposta</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Então, \(r(q(t)\) cai com uma parábola até \(r=0\) e, depois, permanece constante em \(0\).</p>
+                    <p>O tempo de convergência é portanto \(t_{con} = 2\frac{\sqrt{r_0}}{K}\). </p>
+                    <br><br>
+
+                    <p><a href="presentation/exercicios5.html#/8"><b
+                            class="hlink">Voltar</b></a></p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br>
+                        <img src="presentation/images/exercicios5/titulo_cc.png"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 9 - Resposta</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Seja \(F(r) = (F_1 \ \ F_2 \ \ F_3)^T\). Notamos que \(J_r(q) = J_v(q)\). Usando
+                    a expressão da Jacobiana geométrica obtida na Aula 3, temos que a equação
+                    \(J_r(q)^TF = 0_{3 \times 1}\) pode ser escrita como:</p>
+                    $$\LARGE{\Big(}\normalsize{}\begin{array}{ccc}
+                        -s_1{-}s_{12} & 0 & c_1{+}c_{12}  \\
+                        -s_{12} & 0 & c_{12}
+                        \end{array}\LARGE{\Big)}\normalsize{}\LARGE{\Bigg(}\normalsize{}\begin{array}{c}
+                        F_1 \\
+                        F_2 \\
+                        F_3
+                        \end{array}\LARGE{\Bigg)}\normalsize{} =
+                    \LARGE{\Big(}\normalsize{}\begin{array}{c}
+                        0 \\
+                        0
+                        \end{array}\LARGE{\Big)}\normalsize{}.$$
+                    <p>Note que a variável \(F_2\) é irrelevante. A equação anterior é portanto equivalente ao sistema
+                    \(2 \times 2\):</p>
+                    $$\LARGE{\Big(}\normalsize{}\begin{array}{cc}
+                        -s_1{-}s_{12}  & c_1{+}c_{12}  \\
+                        -s_{12} &  c_{12}
+                        \end{array}\LARGE{\Big)}\normalsize{}\LARGE{\Big(}\normalsize{}\begin{array}{c}
+                        F_1 \\
+                        F_3
+                        \end{array}\LARGE{\Big)}\normalsize{} =
+                    \LARGE{\Big(}\normalsize{}\begin{array}{c}
+                        0 \\
+                        0
+                        \end{array}\LARGE{\Big)}\normalsize{}.$$
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br>
+                        <img src="presentation/images/exercicios5/exemplocinematicainv.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 9 - Resposta</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Estamos interessados em soluções em que \(r(q) \not= 0_{3 \times 1}\). Como \(F(r)=-r\), isso significa que
+                    estamos interessados em soluções em que \(F \not= 0_{3 \times 1}\). Dado o sistema anterior, só há soluções
+                    não nulas para \((F_1 \ \ F_3)^T\) (e portanto para \(F\)) se e somente se o determinante da matriz 2x2 é 0.</p>
+                    <p>Calculando o determinante e usando a regra da soma de senos, descobrimos que isso ocorre quando
+                    \(\sin(q_2)=0\). Usando \(q_2=0\) e substituindo na equação 2x2 anterior, além de usar o valor de
+                    \(F(r)=-r\), \(r=s_e-s_d\) e a cinemática direta do robô (que nos permite calcular \(s_e\)) temos:</p>
+                     $$\LARGE{\Big(}\normalsize{}\begin{array}{cc}
+                        -2s_1  & 2c_1  \\
+                        -s_1 &  c_1
+                        \end{array}\LARGE{\Big)}\normalsize{}\LARGE{\Big(}\normalsize{}\begin{array}{c}
+                        -2c_1 \\
+                        -(2s_1-1)
+                        \end{array}\LARGE{\Big)}\normalsize{} =
+                    \LARGE{\Big(}\normalsize{}\begin{array}{c}
+                        0 \\
+                        0
+                        \end{array}\LARGE{\Big)}\normalsize{}.$$
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br>
+                        <img src="presentation/images/exercicios5/exemplocinematicainv.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 9 - Resposta</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Desenvolvendo a equação, chegamos a conclusão que ela tem solução se e somente se \(\cos(q_1)=0\).</p>
+                    <p>Portanto, temos duas configurações em que o controlador falha: \(q_A = (\frac{\pi}{2} \ \ 0)^T\) e
+                    \(q_B = (-\frac{\pi}{2} \ \ 0)^T\). Ou seja, se o robô está todo esticado na vertical (para cima ou para baixo).</p>
+                    <p>Se começarmos exatamente em uma dessas configurações, o controlador falhará.
+                        Entretanto, se fizermos a simulação, descobriremos que qualquer pequena perturbação fará o robô
+                    convergir para o alvo.</p>
+                    <p><a href="presentation/exercicios5.html#/9"><b
+                            class="hlink">Voltar</b></a></p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br>
+                        <img src="presentation/images/exercicios5/exemplocinematicainv.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</div>
+<style>
+    .reveal .progress {
+        color: #34eb5e;
+    }
+
+    .reveal .controls {
+        color: #34eb5e;
+    }
+
+    body {
+        background-image: url(presentation/images/aula1/logo_ufmg.svg) !important;
+        background-color: black;
+        background-size: 8% !important;
+        background-repeat: no-repeat !important;
+        background-position: 96% 3% !important;
+    }
+
+    .itext {
+        color: #8af2a2;
+    }
+    .ttext {
+        color: #34eb5e;
+    }
+
+    .hlink {
+        color: #f5bf42;
+    }
+
+    .hlink:hover {
+        text-decoration: underline;
+    }
+    /* width */
+    ::-webkit-scrollbar {
+        width: 20px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 10px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #34eb5e;
+        border-radius: 10px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #01b82b;
+    }
+
+    ::-webkit-scrollbar-corner {
+        background: rgba(0, 0, 0, 0);
+    }
+</style>
+
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+<script src="presentation/dist/reveal.js"></script>
+<script src="presentation/plugin/notes/notes.js"></script>
+<script src="presentation/plugin/markdown/markdown.js"></script>
+<script src="presentation/plugin/highlight/highlight.js"></script>
+<script src="presentation/plugin/menu/menu.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        hash: true,
+        width: 1200,
+        height: 700,
+        margin: 0,
+        minScale: 0.2,
+        maxScale: 2.0,
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu]
+    });
+    var frames = document.getElementsByTagName("iframe");
+
+
+    Reveal.on('slidechanged', event => {
+        for (let i = 0; i < frames.length; ++i) {
+            frames[i].contentWindow.location.reload(true);
+        }
+    });
+</script>
+</body>
+</html>
+

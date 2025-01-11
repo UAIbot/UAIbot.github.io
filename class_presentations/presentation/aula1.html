@@ -1,0 +1,1561 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+
+    <script>
+        // Check if the site is being served from GitHub Pages
+        if (window.location.hostname === "viniciusmgn.github.io") {
+            document.write('<base href="/aulas_manipuladores/">');
+        } else {
+            document.write('<base href="/">');  // Local development base
+        }
+    </script>
+
+    <title>Aula 1 - Manipuladores Robóticos</title>
+
+    <link rel="stylesheet" href="presentation/dist/reset.css">
+    <link rel="stylesheet" href="presentation/dist/reveal.css">
+    <link rel="stylesheet" href="presentation/dist/theme/black.css">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="presentation/plugin/highlight/monokai.css">
+    <style>
+        .reveal .slides section {
+            padding: 20px; /* Adjust the value as needed */
+        }
+    </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="reveal">
+    <div class="slides">
+
+
+        <section>
+            <h3>Manipuladores Robóticos</h3>
+            <h3 style="font-size:40px">Aula 1: Introdução ao curso</h3>
+            <p>
+                <img src="presentation/images/aula1/intro_fig_1.png">
+                <br>
+                <small>Vinicius Mariano Gonçalves</small>
+            </p>
+
+        </section>
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Tópicos abordados</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <ul>
+                        <li>Informações iniciais</li>
+                        <br>
+                        <li>Escopo da disciplina</li>
+                        <br>
+                        <li>Aplicações</li>
+                        <br>
+                        <li>Conceitos básicos</li>
+                        <br>
+                        <li>Ementa da disciplina</li>
+                        <br>
+                        <li>Robótica na UFMG</li>
+                        <br>
+                        <li>Mercado de trabalho</li>
+                        <br>
+                        <li>O simulador UAIBot</li>
+                        <br>
+                        <li>Trabalho prático</li>
+                    </ul>
+
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula1/manip.png" style="width:300px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Algumas informações</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <p><b class="itext">Prof</b>: Vinicius Mariano Gonçalves</p>
+                    <p><b class="itext">Sala</b>: 2120 (DEE)</p>
+                    <p><b class="itext">E-mail</b>: vinicius.marianog@gmail.com</p>
+                    <p><b class="itext">Pontos:</b></p>
+                    <ul>
+                        <li>Duas provas de 35 pontos cada.</li>
+                        <li>15 pontos na primeira parte do trabalho prático.</li>
+                        <li>15 pontos na apresentação do trabalho prático.</li>
+                    </ul>
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: center">
+                    <br><br>
+                    <img src="presentation/images/aula1/manip.png" style="width:300px;height:auto;">
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Livro Texto</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 40%; float:left; font-size:25px; text-align:left">
+                    <p><b class="itext">Robotics, Modelling, Planning and Control</b></p>
+                    <p>Bruno Siciliano</p>
+                    <p>Lorenzo Sciavicco</p>
+                    <p>Luigi Villani</p>
+                    <p>Giuseppe Oriolo</p>
+                </div>
+
+                <div style="width: 60%; float:right; text-align:center; vertical-align: center">
+                    <img src="presentation/images/aula1/img_book.png"
+                         style="width:300px;height:auto;">
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Escopo da disciplina</h3>
+            <p style="font-size:25px;text-align:left">Classificação por tipo de movimento:</p>
+            <div style="width:1200px;height:400px">
+                <div style="width: 25%; height:400px; display:flex; float:left; font-size:25px; text-align:left; vertical-align: center; align-items: center">
+                    <img src="presentation/images/aula1/manip.png"
+                         style="width:300px;height:auto;">
+                </div>
+                <div style="width: 25%; height:400px; display:flex; float:left; font-size:25px; text-align:left; vertical-align: center; align-items: center">
+                    <img src="presentation/images/aula1/humanoid.png"
+                         style="width:300px;height:auto;">
+                </div>
+                <div style="width: 25%; height:400px; display:flex;  float:left; font-size:25px; text-align:left; vertical-align: center; align-items: center">
+                    <img src="presentation/images/aula1/mobilebase.png"
+                         style="width:300px;height:auto;">
+                </div>
+                <div style="width: 25%; height:400px; display:flex;  float:left; font-size:25px; text-align:left; vertical-align: center; align-items: center">
+                    <img src="presentation/images/aula1/snakerobot.png"
+                         style="width:300px;height:auto;">
+                </div>
+            </div>
+            <div style="width:1200px;height:100px">
+                <div style="width: 25%; height:100px; float:left; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    Base fixa
+                </div>
+                <div style="width: 25%; height:100px; float:left; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    Pernas
+                </div>
+                <div style="width: 25%; height:100px;  float:left; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    Rodas
+                </div>
+                <div style="width: 25%; height:100px;  float:left; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    Chacoalhando
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Escopo da disciplina</h3>
+            <div style="width:1200px;height:800px">
+
+                <div style="width: 50%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Nesta disciplina, nosso foco são os robôs <b class="itext">manipuladores</b>:</p>
+                    <ul>
+                        <li>Base fixa, "soldada" no chão.</li>
+                        <li>Conjunto de <b class="itext">elos (links)</b> rígidos conectados por <b
+                                class="itext">juntas</b> que movem o robô.
+                        </li>
+                        <li>Conjunto de <b class="itext">motores</b> movem as juntas.</li>
+                        <li><b class="itext">Efetuador</b> interage com o ambiente.</li>
+                    </ul>
+                    <br>
+                    <br>
+                    <p>Entretanto, a maioria dos conceitos apresentados nesta disciplina são aplicáveis em robótica, no
+                        geral.</p>
+
+                    <p>Estamos interessados na <b class="itext">modelagem matemática</b> desses robôs e no seu
+                        <b class="itext">controle</b>.</p>
+                </div>
+                <div style="width: 10%"></div>
+                <div style="width: 40%; height:600px; float:right; display:table; text-align:center; vertical-align: middle">
+                    <div style="vertical-align: middle; display:table-cell">
+                        <img src="presentation/images/aula1/manip.png"
+                             style="width:300px;height:auto;vertical-align: center">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Aplicações</h3>
+            <p>
+                <img src="presentation/images/aula1/intro_fig_1.png">
+                <br>
+            </p>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Aplicações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Solda Robótica</b></h3>
+
+
+            <div style="width:1200px;height:500px">
+                <video width="800" height="600" controls>
+                    <source src="presentation/images/aula1/welding.mp4" type="video/mp4">
+                </video>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Aplicações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Setor Automotivo</b></h3>
+
+
+            <div style="width:1200px;height:500px">
+                <video width="800" height="600" controls>
+                    <source src="presentation/images/aula1/fanuc.mp4" type="video/mp4">
+                </video>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Aplicações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Setor Farmacêtico</b></h3>
+
+
+            <div style="width:1200px;height:500px">
+                <video width="800" height="600" controls>
+                    <source src="presentation/images/aula1/manipulation.mp4" type="video/mp4">
+                </video>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Aplicações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Cirurgias</b></h3>
+
+
+            <div style="width:1200px;height:500px">
+                <video width="800" height="600" controls>
+                    <source src="presentation/images/aula1/surgery.mp4" type="video/mp4">
+                </video>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Conceitos básicos</h3>
+            <p>
+                <img src="presentation/images/aula1/intro_fig_1.png">
+                <br>
+            </p>
+        </section>
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Conceitos básicos</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Tipos de
+                juntas</b></h3>
+            <div style="width:1200px;height:450px">
+                <div style="width: 45%; height:450px; float:left; font-size:25px; text-align:center">
+                    <iframe scrolling="no"
+                            src="presentation/images/aula1/junta_revoluta_robo.html"
+                            style="width:450px;height:450px"></iframe>
+                    <div style="width: 100%; height:50px;  float:left; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                        revoluta (ou rotativa)
+                    </div>
+                </div>
+                <div style="width: 45%; height:450px; float:left; font-size:25px; text-align:center">
+                    <iframe scrolling="no"
+                            src="presentation/images/aula1/junta_prismatica_robo.html"
+                            style="width:450px;height:450px"></iframe>
+                    <div style="width: 100%; height:50px;  float:left; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                        prismática (ou linear)
+                    </div>
+                </div>
+            </div>
+            <div style="width:1200px;height:300px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                <br>Há outras (esférica, cilíndrica), mas essas são as básicas.
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Conceitos básicos</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Graus de
+                Liberdade (Degrees of Freedom)</b></h3>
+            <div style="width:1200px;height:50px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                Número de juntas rotativas e lineares <b class="itext">independentes</b>:
+            </div>
+            <div style="width:1200px;height:450px">
+                <div style="width: 50%; height:500px; float:left; font-size:25px; text-align:center">
+                    <iframe scrolling="no"
+                            src="presentation/images/aula1/robo_tres_graus.html"
+                            style="width:500px;height:450px"></iframe>
+                    <div style="width: 100%; height:50px;  float:left; font-size:25px; text-align:center; vertical-align: top; align-items: center">
+                        2 rotativas + 1 linear = 3 graus
+                    </div>
+                </div>
+                <div style="width: 50%; height:500px; float:left; font-size:25px; text-align:center">
+                    <iframe scrolling="no"
+                            src="presentation/images/aula1/robo_seis_graus.html"
+                            style="width:500px;height:450px"></iframe>
+                    <div style="width: 100%; height:50px;  float:left; font-size:25px; text-align:center; vertical-align: top; align-items: center">
+                        6 rotativas = 6 graus
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Conceitos básicos</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Graus de
+                Liberdade (Degrees of Freedom)</b></h3>
+
+            <div style="width:1200px;height:500px">
+                <div style="width: 50%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p><b class="itext">Restrições</b> podem reduzir os graus de liberdade.<br></p>
+                    <p>O robô ao lado, que normalmente tem 6 graus de liberdade, está restrito a ficar com seu efetuador
+                        "preso" no chão.<br></p>
+                    <p>Quatro restrições:<br></p>
+                    <ul>
+                        <li>Posiçao z (altura) no efetuador fixa;</li>
+                        <li>Rotação em x no efetuador está fixa;</li>
+                        <li>Rotação em y no efetuador está fixa;</li>
+                        <li>Rotação em z no efetuador está fixa.</li>
+                    </ul>
+                    <p>6 juntas - 4 restrições = <b class="itext">2 graus de liberdade.</b><br></p>
+
+                </div>
+                <div style="width: 50%; height:500px; float:left; font-size:25px; text-align:center">
+                    <iframe scrolling="no"
+                            src="presentation/images/aula1/juntas_restricao.html"
+                            style="width:500px;height:450px"></iframe>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Conceitos básicos</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Graus de
+                Liberdade (Degrees of Freedom)</b></h3>
+
+            <div style="width:1200px;height:500px">
+                <div style="width: 60%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>No exemplo anterior, a restrição não erá "física", no sentido que a imposição de que o
+                        robo tenha o efetuador grudado no chão foi imposta pelo programador.<br></p>
+                    <p>Em alguns casos, a restrição é estrutural do robô. Veja a <b class="itext">Plataforma
+                        de Stewart</b> ao lado.<br></p>
+                    <p>Cada um dos "braços" tem 1 junta prismática, 2 rotativas (na ponta inferior) e 3 rotativas (na junta superior);<br></p>
+                    <p>Entretanto, temos 30 restrições, e portanto 6 x 6 - 30= <b class="itext">6 graus de
+                        liberdade</b>.<br></p>
+                    <p>Não trataremos esse tipo de robô, em que o número de graus de liberdade não é o número de
+                        juntas ("<b class="itext">cadeia fechada</b>"), neste curso.</p>
+
+
+                </div>
+                <div style="width: 40%; height:500px; float:left; font-size:25px; text-align:center">
+                    <img src="presentation/images/aula1/stewart_platform.png"
+                         style="width:300px;height:auto;vertical-align: center">
+                    <p>Plataforma de Stewart</p>
+                </div>
+            </div>
+
+        </section> -->
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Conceitos básicos</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Área de
+                Trabalho (Workspace)</b></h3>
+
+
+            <div style="width:1200px;height:500px">
+
+                <div style="width:1200px;height:50px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    É o conjunto de pontos no espaço tridimensional que o <b class="itext">efetuador</b>
+                    consegue alcançar:<br>
+                </div>
+                <div style="width:1200px;height:500px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    <img src="presentation/images/aula1/areatrabalho.svg"
+                         style="width:550px;height:auto;">
+                </div>
+
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Conceitos básicos</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configurações
+                clássicas de robôs</b></h3>
+
+
+            <div style="width:1200px;height:500px">
+                <div style="width: 60%; height:400px; float:left; font-size:25px; text-align:left">
+
+                    <p><b class="itext">Cartesiano</b>: três juntas lineares.<br></p>
+                    <p>As três juntas são ortogonais.<br></p>
+                    <p>A área de trabalho é uma caixa.<br></p>
+                    <p>Muito simples de modelar/controlar.<br></p>
+                    <p>Não é possível controlar a orientação do efetuador.<br></p>
+                    <p>Muito utilizado em impressão 3D, por exemplo.<br></p>
+                </div>
+                <div style="width: 40%; height:500px; float:left; font-size:25px; text-align:center">
+                    <img src="presentation/images/aula1/robo_cartesiano.png"
+                         style="width:400px;height:auto;vertical-align: center">
+                </div>
+            </div>
+
+
+            <script>
+
+            </script>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Conceitos básicos</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configurações
+                clássicas de robôs</b></h3>
+
+
+            <div style="width:1200px;height:500px">
+                <div style="width: 60%; height:400px; float:left; font-size:25px; text-align:left">
+
+                    <p><b class="itext">Cilíndrico</b>: duas juntas lineares e uma rotativa.<br></p>
+                    <p>Rapidez e precisão boa no controle (grosso modo: juntas rotativas são mais rápidas que lineares).<br>
+                    </p>
+                    <p>A área de trabalho é um cilindro.<br></p>
+                    <p>Utilizado em tarefas de <span style="font-style: italic">pick and place</span>.<br></p>
+                </div>
+                <div style="width: 40%; height:500px; float:left; font-size:25px; text-align:center">
+                    <img src="presentation/images/aula1/robo_cilindrico.png"
+                         style="width:300px;height:auto;vertical-align: center">
+                </div>
+            </div>
+
+            <script>
+
+            </script>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Conceitos básicos</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configurações
+                clássicas de robôs</b></h3>
+
+
+            <div style="width:1200px;height:500px">
+                <div style="width: 60%; height:400px; float:left; font-size:25px;  text-align:justify; text-justify: inter-word">
+
+                    <p><b class="itext">SCARA (Selective Compliance Articulated Robot Arm)</b>: duas juntas rotativas e
+                        uma linear.<br></p>
+                    <p>Muito rápido (mais que o cilíndrico).<br></p>
+                    <p>A área de trabalho é um cilindro.<br></p>
+                    <p><b class="itext">Compliance ("Compliança")</b> é a capacidade de um sistema de ser
+                        flexível e se adaptar à força que nele age. Os robôs SCARA têm uma leve compliança nos eixos x e
+                        y (mas não no z), permitindo que suas juntas rotativas se movam um pouco reagindo a uma força. De
+                        certa forma, é o oposto de <b class="itext">rigidez</b>.<br></p>
+                    <p>Usado em tarefas que exigem a aplicação de uma força (ex: inserir uma peça dentro de outra).<br>
+                    </p>
+                </div>
+                <div style="width: 40%; height:500px; float:left; font-size:25px; text-align:center">
+                    <img src="presentation/images/aula1/robo_scara.png"
+                         style="width:400px;height:auto;vertical-align: center">
+                </div>
+            </div>
+            <script>
+
+            </script>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Ementa da disciplina</h3>
+            <p>
+                <img src="presentation/images/aula1/intro_fig_1.png">
+                <br>
+            </p>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Ementa da disciplina</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <ul>
+                        <li>Descrição espacial</li>
+                        <br>
+                        <li>Cinemática direta e inversa</li>
+                        <br>
+                        <li>Cinemática diferencial</li>
+                        <br>
+                        <li>Controle cinemático</li>
+                        <br>
+                        <li>Dinâmica de sistemas</li>
+                        <br>
+                        <li>Controle dinâmico</li>
+                        <br>
+                        <li>ROS</li>
+                    </ul>
+
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: center">
+                    <br><br>
+                    <img src="presentation/images/aula1/manip.png" style="width:300px;height:auto;">
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Ementa da disciplina</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Descrição
+                espacial</b></h3>
+
+
+            <div style="width:1200px;height:600px">
+                <div style="width: 45%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <div style="position:relative;">
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="0">
+                            <p><b class="itext">Objetivo</b>: descrever o movimento do robô.<br></p>
+                            <p>Nossos manipuladores são formados por <b class="itext">corpos rígidos</b> (os
+                                elos) conectados sequencialmente.
+                                Descrevendo o movimento deles, descrevemos o movimento do robô.<br></p>
+                            <p>Corpos rígidos são objetos que não podem ser deformados, quebrados ou grudados.</p>
+                            <p>Como descrever o movimento desses objetos?</p>
+                        </div>
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="1">
+                            <p>No ensino médio, aprendemos a fazer a descrição de movimento de uma <b
+                                    class="itext">partícula</b>
+                                no espaço tridimensional.
+                                Para isso, dado um referencial \(\mathcal{F}_0\), fornecemos a todo instante de tempo
+                                \(t\)
+                                as coordenadas
+                                \(x(t)\), \(y(t)\) e \(z(t)\) da partícula em \(\mathcal{F}_0\).<br></p>
+                            <p>Note que em uma partícula a rotação é irrelevante (suas dimensões são desprezíveis, ou
+                                seja, não tem volume).<br></p>
+                            <p>O movimento de corpos rígidos pode ser descrito "grudando" um referencial no objeto e
+                                descrevendo o
+                                movimento
+                                (translação + rotação) desse referencial. Será necessário fornecer mais informação que
+                                \(x(t)\), \(y(t)\) e \(z(t)\).<br></p>
+                            <p>Posição + orientação = <b class="itext">pose</b> do objeto.<br></p>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 0%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 55%; height:600px; float:left; font-size:25px; text-align:center">
+                    <iframe scrolling="no"
+                            src="presentation/images/aula1/descricao_espacial.html"
+                            style="width:500px;height:550px"></iframe>
+                </div>
+            </div>
+
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Ementa da disciplina</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Cinemática direta
+                e inversa</b></h3>
+
+
+            <div style="width:1200px;height:600px">
+                <div style="width: 60%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <div style="position:relative;">
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="0">
+                            <p><b class="itext">Objetivo</b>: descrever o movimento do efetuador do robô, um corpo
+                                rígido.<br></p>
+                            <p>Como o único movimento do robô é utilizando suas <b class="itext">juntas</b>,
+                                há de existir um mapeamento matemático entre a posição atual das juntas (variáveis no
+                                tempo)
+                                e os parâmetros estruturais do robô (fixos) na descrição matemática da pose do efetuador
+                                com relação a um
+                                referencial \(\mathcal{F}_0\).
+                                <br></p>
+                        </div>
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="1">
+                            <p>Seja \(q\) um vetor com a posição de todas as juntas e \(T\) a descrição
+                                do efetuador em \(\mathcal{F}_0\), então deve existir uma função matemática \(f\) tal
+                                que
+                                \(T = f(q)\).<br></p>
+                            <p>A função \(f\) é chamada de <b class="itext">cinemática direta</b> do efetuador;<br></p>
+                            <p>Permite calcular onde o efetuador está em função das juntas móveis, cuja posição está no
+                                vetor \(q\).<br></p>
+                            <p>A <b class="itext">cinemática inversa</b> resolve o problema contrário: dado uma pose
+                                \(T\), qual é o valor das juntas \(q\) tal que \(T=f(q)\)? <br></p>
+                        </div>
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="2">
+                            <p>Os dois problemas são importantes, pois controlaremos a posição das juntas \(q\)
+                                objetivando fazer com que o efetuador alcance uma determinada pose \(T\). As duas
+                                funções fazem as duas ligações possíveis entre essas duas quantias.<br></p>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 40%; float:right; text-align:left; vertical-align: center">
+                    <img src="presentation/images/aula1/cinematicadir.svg"
+                         style="width:400px;height:auto;">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Ementa da disciplina</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Cinemática
+                diferencial</b></h3>
+
+
+            <div style="width:1200px;height:600px">
+                <div style="width: 55%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <div style="position:relative;">
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="0">
+                            <p><b class="itext">Objetivo</b>: descrever o movimento do efetuador do robô, um
+                                corpo rígido.<br></p>
+                            <p>As cinemáticas diretas e inversas mapeiam <b class="itext">posições</b> (das juntas) em
+                                <b class="itext">"posições"</b> do efetuador (no caso de um corpo rígido, por "posição"
+                                entenda "pose").
+                                <br></p>
+                            <p>Em controle, isso não é o suficiente. Precisamos relacionar <b
+                                    class="itext">velocidades</b> também.
+                                <br></p>
+                        </div>
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="1">
+                            <p>Um corpo rígido tem dois vetores velocidades, ambos vetores tridimensionais:
+                                <br></p>
+                            <ul>
+                                <li>A <b class="itext">velocidade linear, \(v\)</b><br></li>
+                                <li>A <b class="itext">velocidade angular, \(\omega\)</b><br></li>
+                            </ul>
+                            <p>O objetivo da <b class="itext">cinemática diferencial</b> é o seguinte: dado que em um
+                                instante
+                                de tempo a posição das juntas é \(q\) e a <b class="itext">velocidade instantânea</b>
+                                das juntas é
+                                \(\dot{q}\), determine o valor de \(v\) e \(w\) naquele mesmo instante de tempo.<br></p>
+                            <p>Portanto, existem funções \(g_v\) e \(g_{\omega}\) tal que \(v=g_v(q,\dot{q})\) e
+                                \(\omega=g_{\omega}(q,\dot{q})\).<br></p>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 5%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 40%; float:right; text-align:left; vertical-align: center">
+                    <img src="presentation/images/aula1/cinematicadif.svg"
+                         style="width:400px;height:auto;">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Ementa da disciplina</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Controle
+                cinemático</b></h3>
+
+
+            <div style="width:1200px;height:600px">
+                <div style="width: 55%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <div style="position:relative;">
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="0">
+                            <p><b class="itext">Objetivo</b>: controlar as juntas do robô para atingir uma determinada
+                                pose no efetuador.<br></p>
+                            <p>Aqui faremos uma hipótese (muito razoável) sobre o robô: que ele tem uma interface de
+                                programação que nos permite
+                                enviar, a cada ciclo de controle, a velocidade de cada junta desejada para o robô, aqui
+                                chamada de \(u\).
+                                <br></p>
+                            <p>Assumimos que ele segue perfeitamente esse comando enviado. Portanto, consideramos um <b
+                                    class="itext">sistema de controle</b>
+                                em que a <b class="itext">variável manipulada \(u\)</b> é a <b class="itext">velocidade
+                                    da juntas desejada</b> e a
+                                <b class="itext">variável de processo \(q\)</b> é a <b class="itext">posição das
+                                    juntas</b>. O modelo que relaciona
+                                as duas é <b class="itext">$$\dot{q} = u.$$</b>
+                                <br></p>
+                        </div>
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="1">
+                            <p>O objetivo então é, dada uma pose desejada para o efetuador \(T_{des}\), criar um <b
+                                    class="itext">controlador</b> (algoritmo)
+                                utilizando a posição das juntas atual \(q\) (portanto em malha fechada) que garanta que
+                                o efetuador sairá da sua pose inicial (qualquer seja ela)
+                                e chegue na pose desejada: </b></p>
+                            $$u = h(q)$$
+                            <p>É chamado de controle <b class="itext">cinemático</b> pois abstrai a <b class="itext">dinâmica</b>
+                                do sistema, isso é,
+                                as forças/torques que agem no robô, e as massas/momentos de inércia envolvidas.
+                                <br></p>
+                            <p>O controlador usa a cinemática direta e a cinemática diferencial para calcular a ação de
+                                controle.
+                                <br></p>
+                        </div>
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="2">
+                            <p>Controle, no geral, <b class="itext">não linear</b> pois a função \(h(q)\) é, no geral,
+                                não linear.</b>
+                                <br></p>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 45%; float:right; text-align:left; vertical-align: center">
+                    <div class="vim_indicator current-visible fragment"
+                         data-fragment-index="0" style="position:absolute;top:300px;">
+                        <img src="presentation/images/aula1/contcinematico1.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                    <div class="vim_indicator current-visible fragment"
+                         data-fragment-index="1" style="position:absolute;top:300px;">
+                        <img src="presentation/images/aula1/contcinematico2.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                    <div class="vim_indicator current-visible fragment"
+                         data-fragment-index="2" style="position:absolute;top:150px;">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula1/controlecinematico.html"
+                                style="width:550px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Ementa da disciplina</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Dinâmica de
+                sistemas</b></h3>
+
+
+            <div style="width:1200px;height:600px">
+                <div style="width: 60%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <div style="position:relative;">
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="0">
+                            <p><b class="itext">Objetivo</b>: controlar as juntas do robô para atingir uma determinada
+                                pose no efetuador, mas agora
+                                sem considerar que o robô tem uma interface de controle de alto nível de velocidade.
+                                Atuaremos diretamente
+                                no <b class="itext">torque</b> dos motores que movem as juntas.<br></p>
+                            <p>Portanto, agora não mais estamos falando de <b class="itext">cinemática</b>, mas sim de
+                                <b class="itext">dinâmica</b>, uma vez
+                                que as forças/torques que agem no robô e as massas/momentos de inércia de seus corpos
+                                rígidos são relevantes.
+                                <br></p>
+                            <br></p>
+                        </div>
+
+                    </div>
+                    <div style="position:relative;">
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="1">
+                            <p>Temos portanto que aprender a escrever as <b class="itext">equações de dinâmica</b> do
+                                sistema, ou seja,
+                                uma equação diferencial que relaciona a evolução da posição e a velocidade de todas as
+                                partículas
+                                do robô dados os parâmetros do sistema (como as massas e momentos de inércia) com as
+                                forças
+                                (que podem ser variáveis).<br></p>
+                            <p>Como o movimento de todas as partículas do robô é uma consequência <b class="itext">somente</b>
+                                ao movimento das juntas (pois
+                                são corpos rígidos) e assumindo que a única força que age no sistema são os torques em
+                                cada motor, <b class="itext">\(\tau\)</b>, desejamos
+                                obter a equação diferencial <b class="itext">$$\ddot{q} = F(q,\dot{q},\tau)$$</b> que
+                                relaciona essas quantias.
+                                <br></p>
+                            <br></p>
+                        </div>
+
+                    </div>
+                    <div style="position:relative;">
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="2">
+                            <p>Aplicar as <b class="itext">Leis de Newton</b> em cada uma das (infinitas) partículas
+                                que formam o robô não é factível. Felizmente, há várias maneiras de contornar esse
+                                problema...<br></p>
+                        </div>
+
+                    </div>
+                </div>
+                <div style="width: 40%; float:right; text-align:left; vertical-align: center;">
+                    <img src="presentation/images/aula1/contdinamico1.svg"
+                         style="width:400px;height:auto;position:absolute;top:300px">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Ementa da disciplina</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Controle
+                dinâmico</b></h3>
+
+
+            <div style="width:1200px;height:600px">
+                <div style="width: 55%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <div style="position:relative;">
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="0">
+                            <p><b class="itext">Objetivo</b>: controlar as juntas do robô para atingir uma determinada
+                                pose no efetuador, mas agora
+                                sem considerar que o robô tem uma interface de controle de alto nível de velocidade.
+                                Atuaremos diretamente
+                                no <b class="itext">torque</b> dos motores que movem as juntas.<br></p>
+                            <p>Utilizando o modelo dinâmico do robô, \(\ddot{q}=F(q,\dot{q})\), podemos projetar uma lei
+                                de controle
+                                $$\tau = h(q, \dot{q})$$ utilizando a posição e a velocidade das juntas para alcançar
+                                uma pose desejada \(T_{des}\).
+                                <br></p>
+                        </div>
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="1">
+                            <p>Aqui assumimos que as únicas forças que agem no robô vêm dos motores, e portanto são
+                                completamente
+                                controláveis. Portanto, não haverá força externa (como contato do robô com o
+                                ambiente).</b>
+                                <br></p>
+                            <p>Uma das maneiras de projetar o controle dinâmico é começando a partir do controle
+                                cinemático.
+                                <br></p>
+                        </div>
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="2">
+                            <p>Controle, no geral, <b class="itext">não linear</b> pois a função \(h(q,\dot{q})\) é, no
+                                geral, não linear.</b>
+                                <br></p>
+                            <p><b class="itext">Q</b>: Qual a vantagem do controle dinâmico sobre o cinemático? <br>
+                                <b class="itext">R</b>: Com ele podemos implementar certos tipos de tarefas que
+                                não seriam possíveis usando controle cinemático. Em especial, ele serve como base para o
+                                <b class="itext">controle de força</b> (que não veremos neste curso), onde consideramos
+                                forças externas agindo no robô. Tal controle é necessário quando temos tarefas em que o robô
+                                deve fazer uma força controlada no ambiente.
+                                <br></p>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:5%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 40%; float:right; text-align:left; vertical-align: center">
+                    <div class="vim_indicator current-visible fragment"
+                         data-fragment-index="0" style="position:absolute;top:300px;">
+                        <img src="presentation/images/aula1/contdinamico1.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                    <div class="vim_indicator current-visible fragment"
+                         data-fragment-index="1" style="position:absolute;top:300px;">
+                        <img src="presentation/images/aula1/contdinamico2.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                    <div class="vim_indicator current-visible fragment"
+                         data-fragment-index="2" style="position:absolute;top:150px;">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula1/controlecinematico.html"
+                                style="width:500px;height:500px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+
+<section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Ementa da disciplina</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">ROS</b></h3>
+
+
+            <div style="width:1200px;height:600px">
+                <div style="width: 50%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <div style="position:relative;">
+                            <p><b class="itext">ROS (Robotic Operating System)</b>: é um software amplamente utilizado na academia e a indústria
+                                para intermediar a comunicação entre códigos de controle (códigos em C++, Python, etc...) e os robôs;<br></p>
+                            <p>Permite a reutilização do código em robôs diferentes, pois abstrai detalhes de comunicação específicos de cada
+                                robô (ou seja, comunica com os <span style="font-style: italic">drivers</span> de cada robô).
+                                <br></p>
+                            <p>É similar ao conceito de <b class="itext">OPC</b> em automação.
+                                <br></p>
+                            <p>Veremos noções introdutórias desse software nesta disciplina.
+                                <br></p>
+
+                            <p><a href="https://www.ros.org/"> <b
+                                    class="hlink">https://www.ros.org/</b></a>.
+                                <br></p>
+                    </div>
+                </div>
+                <div style="width: 10%; height:400px; float:left; font-size:25px; text-align:left"></div>
+                <div style="width: 40%; float:right; text-align:left; vertical-align: center;">
+                    <div style="position:absolute; top:200px">
+                    <br><br>
+                    <img src="presentation/images/aula1/logo_ros.png"
+                         style="width:400px;height:auto">
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Robótica na UFMG</h3>
+            <p>
+                <img src="presentation/images/aula1/intro_fig_1.png">
+                <br>
+            </p>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Robótica na UFMG<br></h3>
+
+            <div style="width:1200px;height:500px">
+
+                <div style="width:1200px;height:50px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    Vários grupos, na Ciência da Computação, Engenharia Elétrica/Eletrônica e Engenharia Mecânica.<br>
+                </div>
+                <div style="width:1200px;height:500px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    <img src="presentation/images/aula1/timedcc.png"
+                         style="width:650px;height:auto;">
+                </div>
+
+            </div>
+            <script>
+
+            </script>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:40px">Robótica na UFMG</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">CORO</b></h3>
+            <div style="width:1200px;height:600px">
+                <div style="width: 50%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Um dos pioneiros na robótica da Escola de Engenharia foi o professor <b class="itext">Guilherme
+                        Pereira</b>, que
+                        fundou o laboratório <b class="itext">CORO</b> em 2004.<br></p>
+                    <p>Desde 2018 é professor da <b class="itext">West Virginia University</b>.
+                        <br></p>
+                </div>
+                <div style="width: 20%; float:right; text-align:left; vertical-align: center"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: center">
+                    <img src="presentation/images/aula1/guilherme.png"
+                         style="width:200px;height:auto;"><br>
+                    <img src="presentation/images/aula1/logocoro.svg"
+                         style="width:200px;height:auto;">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:40px">Robótica na UFMG</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">MACRO</b></h3>
+            <div style="width:1200px;height:600px">
+                <div style="width: 50%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Atualmente, temos o grupo <b class="itext">MACRO</b>, formado por docentes do depto. de elétrica
+                        e
+                        eletrônica.</p>
+                    <p>Formado por 6 docentes e vários discentes.</p>
+                    <p><a href="https://macro.eng.ufmg.br/"><b class="hlink">https://macro.eng.ufmg.br/</b></a></p>
+                    <p> Eu (Vinicius) sou um dos membros, trabalhando com controle baseado em otimização aplicado a
+                        diversos tipos de robôs: manipuladores, manipuladores móveis, humanoides, drones, aviões
+                        autônomos.</p>
+                </div>
+
+                <div style="width: 10%; float:right; text-align:left; vertical-align: center"></div>
+                <div style="width: 40%; float:right; text-align:left; vertical-align: center">
+                    <img src="presentation/images/aula1/logo_macro.png"
+                         style="width:300px;height:auto;position:absolute;top:200px">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:40px">Robótica na UFMG</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">Membros do
+                MACRO</b></h3>
+
+            <div style="width:1200px;height:600px">
+                <div style="width:1200px;height:200px">
+                    <div style="width: 50%; height:200px; float:left; font-size:25px; text-align:left">
+                        <div style="width: 30%; height:200px; float:left; font-size:25px; text-align:left">
+                            <img src="presentation/images/aula1/img_armando.png"
+                                 style="width:150px;height:auto;">
+                        </div>
+                        <div style="width: 70%; height:200px; float:left; font-size:20px; text-align:left">
+                            <br> <b class="itext">Armando Alves Neto (DELT)</b> <br>
+                            Controle, robótica, computação, modelagem, eletrônica e visão computacional.
+                        </div>
+                    </div>
+                    <div style="width: 50%; height:200px; float:left; font-size:25px; text-align:left">
+                        <div style="width: 30%; height:200px; float:left; font-size:25px; text-align:left">
+                            <img src="presentation/images/aula1/img_guilherme.png"
+                                 style="width:150px;height:auto;">
+                        </div>
+                        <div style="width: 70%; height:200px; float:left; font-size:20px; text-align:left">
+                            <br> <b class="itext">Guilherme Raffo (DELT)</b> <br>
+                            Veículos autônomos, sistemas com atraso, controle
+                            não-linear, controle robusto e sistemas subatuados.
+                        </div>
+                    </div>
+                </div>
+                <div style="width:1200px;height:200px">
+                    <div style="width: 50%; height:200px; float:left; font-size:25px; text-align:left">
+                        <div style="width: 30%; height:200px; float:left; font-size:25px; text-align:left">
+                            <img src="presentation/images/aula1/img_gustavo.png"
+                                 style="width:150px;height:auto;">
+                        </div>
+                        <div style="width: 70%; height:200px; float:left; font-size:20px; text-align:left">
+                            <br> <b class="itext">Gustavo Medeiros (DEE)</b> <br>
+                            Automação e robótica aplicada à monitoração
+                            ambiental, agricultura, mineração e sistemas de produção de óleo e gás.
+                        </div>
+                    </div>
+                    <div style="width: 50%; height:200px; float:left; font-size:25px; text-align:left">
+                        <div style="width: 30%; height:200px; float:left; font-size:25px; text-align:left">
+                            <img src="presentation/images/aula1/img_luciano.png"
+                                 style="width:150px;height:auto;">
+                        </div>
+                        <div style="width: 70%; height:200px; float:left; font-size:20px; text-align:left">
+                            <br> <b class="itext">Luciano Pimenta (DELT)</b> <br>
+                            Robótica cooperativa, robótica móvel, robótica aérea,
+                            planejamento de movimento, teoria de controle e coordenação
+                            de sistemas multi-agentes.
+                        </div>
+                    </div>
+                </div>
+                <div style="width:1200px;height:200px">
+                    <div style="width: 50%; height:200px; float:left; font-size:25px; text-align:left">
+                        <div style="width: 30%; height:200px; float:left; font-size:25px; text-align:left">
+                            <img src="presentation/images/aula1/img_ranier.png"
+                                 style="width:150px;height:auto;">
+                        </div>
+                        <div style="width: 70%; height:200px; float:left; font-size:20px; text-align:left">
+                            <br> <b class="itext">Janier Garcia (DELT)</b> <br>
+                            Sistemas embarcados. Sistemas para processamento e execução de
+                            tarefas usando fusão e sensoriamento.
+                        </div>
+                    </div>
+                    <div style="width: 50%; height:200px; float:left; font-size:25px; text-align:left">
+                        <div style="width: 30%; height:200px; float:left; font-size:25px; text-align:left">
+                            <img src="presentation/images/aula1/img_vinicius.jpg"
+                                 style="width:150px;height:auto;">
+                        </div>
+                        <div style="width: 70%; height:200px; float:left; font-size:20px; text-align:left">
+                            <br> <b class="itext">Vinicius Gonçalves (DEE)</b> <br>
+                            Controle de movimento aplicados a vários tipos de robôs (manipuladores, humanóides, drones).
+                            Intersecção entre robótica e otimização.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Robótica na UFMG<br></h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">Equipe XQUAD</b>
+            </h3>
+
+            <div style="width:1200px;height:500px">
+
+                <div style="width:1200px;height:50px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    <div style="width: 45%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                        <p>Equipe de competição de quadrotores da UFMG; </p>
+                        <p>Formado primariamente por alunos de pós-graduação em
+                            Engenharia Elétrica.</p>
+                        <p>Cooperação entre CORO e VERLAB.</p>
+                        <p>Em 2019, sétimo lugar na <b class="itext">AlphaPilot Challenge</b>. Foi o unico time da
+                            América Latina
+                            classificado.</p>
+                        
+                    </div>
+                    <div style="width: 5%; float:right; text-align:left; vertical-align: center"></div>
+                    <div style="width: 50%; float:right; text-align:left; vertical-align: center">
+                        <img src="presentation/images/aula1/timexquad.png"
+                             style="width:450px;height:auto;position:absolute;top:100px">
+                    </div>
+                </div>
+
+
+            </div>
+            <script>
+
+            </script>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Robótica na UFMG<br></h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">Cooperação
+                Internacional</b></h3>
+
+            <div style="width:1200px;height:500px">
+
+                <div style="width:1200px;height:50px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    Cooperação de pesquisa com diversas universidades ao redor do mundo:<br>
+                </div>
+                <div style="width:1200px;height:500px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    <img src="presentation/images/aula1/logo_universidades.png"
+                         style="width:800px;height:auto;">
+                </div>
+
+            </div>
+            <script>
+
+            </script>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Mercado de trabalho</h3>
+            <p>
+                <img src="presentation/images/aula1/intro_fig_1.png">
+                <br>
+            </p>
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Mercado de Trabalho<br></h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">No Brasil</b>
+            </h3>
+
+
+            <div style="width:1200px;height:600px">
+                <div style="width: 50%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <div style="position:relative;">
+
+                        <p>O mercado de trabalho no Brasil é, infelizmente, ainda incipiente e limitado.<br></p>
+                        <p>Entre outros fatores, isso é consequência dos preços elevados dos robôs (um manipulador pode
+                            variar entre U$ 50.000 e U$ 100.000 dólares!!!). </p>
+                        <p>Grande parte dos roboticistas no Brasil estão em universidades.<br></p>
+                    </div>
+                </div>
+                <div style="width: 50%; float:right; text-align:left; vertical-align: center">
+                    <img src="presentation/images/aula1/mapa_brasil.svg"
+                         style="width:800px;height:auto;">
+                </div>
+            </div>
+
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Mercado de Trabalho<br></h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">No Brasil</b>
+            </h3>
+
+            <div style="width:1200px;height:500px">
+
+                <div style="width:1200px;height:50px; font-size:25px; text-align:left; vertical-align: center; align-items: center">
+                    <p>Apesar disso, existem algumas iniciativas e a expectativa é que o mercado cresça bastante,
+                        sobretudo com a redução do preço dos robôs.</b>
+                        <br><br></p>
+                </div>
+                <div style="width:1200px;height:500px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    <img src="presentation/images/aula1/noticia.png"
+                         style="width:800px;height:auto;">
+                </div>
+
+            </div>
+            <script>
+
+            </script>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Mercado de Trabalho<br></h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">No Mundo</b></h3>
+
+
+            <div style="width:1200px;height:600px">
+                <div style="width: 50%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <div style="position:relative;">
+
+                        <p>Considerando o mercado mundial, a situação melhora significativamente.<br></p>
+                        <p>Ainda é um trabalho muito especializado, de modo que uma parte relevante dos profissionais de
+                            robótica
+                            tem <b class="itext">mestrado</b> ou <b class="itext">doutorado</b>.<br></p>
+                        <p><b class="itext">Muitas</b> oportunidades de mestrado e doutorado no exterior.<br></p>
+                        <p>Veja a principal lista de robótica do mundo: <a
+                                href="https://www.lists.kit.edu/sympa/arc/robotics-worldwide/"><b class="hlink">https://www.lists.kit.edu/sympa/arc/robotics-worldwide/</b></a>.
+                            <br></p>
+                    </div>
+                </div>
+                <div style="width: 5%; float:right; text-align:left; vertical-align: middle;"></div>
+                <div style="width: 45%; float:right; text-align:left; vertical-align: middle;">
+                    <img src="presentation/images/aula1/number_installed_robots.jpeg"
+                         style="width:400px;height:auto;vertical-align: middle;position:absolute;top:200px">
+                </div>
+            </div>
+
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Mercado de Trabalho<br></h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">EMPRESAS DESENVOLVEDORAS</b>
+            </h3>
+
+            <div style="width:1200px;height:500px">
+
+                <div style="width:1200px;height:50px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    <p>Principais desenvolvedoras de robôs manipuladores industriais:</b>
+                        <br><br></p>
+                </div>
+                <div style="width:1200px;height:500px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    <img src="presentation/images/aula1/logo_empresas_industrial.svg"
+                         style="width:800px;height:auto;">
+                </div>
+
+            </div>
+            <script>
+
+            </script>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Mercado de Trabalho<br></h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">EMPRESAS DESENVOLVEDORAS</b>
+            </h3>
+
+            <div style="width:1200px;height:500px">
+
+                <div style="width:1200px;height:50px; font-size:25px; text-align:left; vertical-align: center; align-items: center">
+                    <p>A popularização dos robôs humanoides ja se iniciou!:</b>
+                        <br><br></p>
+                </div>
+                <div style="width: 1200px; height: 450px; display: flex; font-size: 25px; text-align: left; align-items: center;">
+                    <div style="width: 50%; height: 450px; display: flex; justify-content: center; align-items: center;">
+                        <video width="800" height="600" controls>
+                            <source src="presentation/images/aula1/g1.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div style="width: 50%; height: 450px; display: flex; justify-content: center; align-items: center;">
+                        <img src="presentation/images/aula1/g1_unitree.jpg" style="width: 500px; height: auto;">
+                    </div>
+                </div>
+
+            </div>
+            <script>
+
+            </script>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">UAIBot</h3>
+            <p>
+                <img src="presentation/images/aula1/intro_fig_1.png">
+                <br>
+            </p>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">UAIBot<br></h3>
+
+            <div style="width:1200px;height:600px">
+                <div style="width: 50%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <div style="position:relative;">
+
+                        <p><b class="itext">UAIBot</b> é um simulador de robótica <span style="font-style: italic">open-source</span> desenvolvido por mim
+                            (Vinicius), meu aluno Johnata Brayan e outros colaboradores.<br></p>
+                        <p>A parte de código é feita em Python, e a visualização das simulações pode ser feita
+                            no próprio navegador, <b class="itext">sem necessidade de instalar nenhum programa</b>.<br>
+                        </p>
+                        <p>As animações geradas são arquivos .html que podem ser vistos em qualquer navegador.<br></p>
+                        <p>Usaremos esse simulador na disciplina.<br></p>
+                        <p>Github do projeto:<br> <a
+                                href="https://github.com/UAIbot/UAIbotPy"><b class="hlink">https://github.com/UAIbot/UAIbotPy</b></a>
+                            .<br></p>
+                    </div>
+                </div>
+                <div style="width: 5%; float:right; text-align:left; vertical-align: middle;"></div>
+                <div style="width: 45%; float:right; text-align:left; vertical-align: middle;">
+                    <img src="presentation/images/aula1/logouaibot.svg"
+                         style="width:500px;height:auto;vertical-align: middle;position:absolute;top:200px">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">UAIBot<br></h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">Instalação</b></h3>
+
+            <div style="width:1200px;height:600px">
+                <div style="width: 50%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <div style="position:relative;">
+
+                        <p>Há várias maneiras de usar\instalar o UAIBot:<br></p>
+                        <p>Usando uma IDE (como o <b class="itext">Pycharm</b>), digite no terminal:<br></p>
+                        <p>
+                        <pre><code class="language-console" style="text-align:left">
+>>pip install uaibot
+                        </code></pre>
+                        </p>
+                        <p>Após a instação, teste rodando uma simulação já instalada no pacote. Para isso, rode o seguinte código em Python:<br></p>
+                        <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+
+sim = ub.Demo.control_demo_1()
+sim.save('C:\\','teste_controle_1')
+                        </code></pre>
+                        Vá na pasta (C:\) e abra o arquivo HTML criado para ver a simulação.
+                    </div>
+                </div>
+                <div style="width: 5%; float:right; text-align:left; vertical-align: middle;"></div>
+                <div style="width: 45%; float:right; text-align:left; vertical-align: middle;">
+                    <img src="presentation/images/aula1/logouaibot.svg"
+                         style="width:500px;height:auto;vertical-align: middle;position:absolute;top:200px">
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">UAIBot</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">GOOGLE COLAB</b></h3>
+
+
+            <div style="width:1200px;height:600px">
+                <div style="width: 50%; height:400px; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <div style="position:relative;">
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="0">
+                          <p>Se não quiser usar IDEs no Desktop, você pode usar a plataforma colaborativa online <a href="https://colab.research.google.com/"><b
+                                class="hlink">Google Colab</b></a>, deixando tudo no
+                            navegador. <br></p>
+                        <p>No Google Colab, rode o comando para instalar o UAIBot<br></p>
+                        <p>
+                        <pre><code class="language-python" style="text-align:left">
+!pip install uaibot
+                        </code></pre>
+                        </p>
+                        <p>Note que isso precisa ser feito sempre que você reiniciar o Google Colab.<br></p>
+                        </div>
+                        <div style="position:absolute;top:0;" class="vim_indicator current-visible fragment"
+                             data-fragment-index="1">
+                        <p>No Google Colab não é necessário usar a função "save". As simulações já são mostradas no próprio
+                            navegador. Ao rodar o código abaixo, a simulação já será mostrada automaticamente:<br></p>
+                        <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+
+sim = ub.Demo.control_demo_1()
+                        </code></pre>
+                        </div>
+
+                    </div>
+                </div>
+                <div style="width: 5%; float:right; text-align:left; vertical-align: middle;"></div>
+                <div style="width: 45%; float:right; text-align:left; vertical-align: center">
+                    <img src="presentation/images/aula1/logouaibot.svg"
+                         style="width:500px;height:auto;vertical-align: middle;position:absolute;top:200px">
+                </div>
+            </div>
+
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">UAIBot<br></h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">DEMONSTRAÇÃO</b></h3>
+
+            <div style="width:100%;height:580px">
+
+                <div style="width:100%;height:50px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    Escrevendo em um quadro/solda em superfície plana (<b class="itext">Demo.control_demo_1( )</b>)<br>
+                </div>
+                <div style="width:100%;height:580px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+
+                    <iframe scrolling="no"
+                            src="presentation/images/aula1/democontrole1.html"
+                            style="width:790px;height:550px;right:50px;text-align: center"></iframe>
+                </div>
+
+            </div>
+            <script>
+
+            </script>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">UAIBot<br></h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">DEMONSTRAÇÃO</b></h3>
+
+            <div style="width:100%;height:580px">
+
+                <div style="width:100%;height:50px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    Dois robôs cooperando para carregar uma placa (<b class="itext">Demo.control_demo_2( )</b>):<br>
+                </div>
+                <div style="width:100%;height:580px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    <iframe scrolling="no"
+                            src="presentation/images/aula1/democontrole2.html"
+                            style="width:790px;height:550px;right:50px;text-align: center"></iframe>
+                </div>
+
+            </div>
+            <script>
+
+            </script>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">UAIBot<br></h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">DEMONSTRAÇÃO</b></h3>
+
+            <div style="width:100%;height:580px">
+
+                <div style="width:100%;height:50px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    Manipulação em ambientes restritos (<b class="itext">Demo.control_demo_3( )</b>):<br>
+                </div>
+                <div style="width:100%;height:580px; font-size:25px; text-align:center; vertical-align: center; align-items: center">
+                    <iframe scrolling="no"
+                            src="presentation/images/aula1/democontrole3.html"
+                            style="width:790px;height:550px;right:50px;text-align: center"></iframe>
+                </div>
+
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Trabalho Prático</h3>
+            <p>
+                <img src="presentation/images/aula1/intro_fig_1.png">
+                <br>
+            </p>
+        </section>
+
+        <section>
+
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Trabalho Prático<br></h3>
+
+            <div style="width:1200px;height:500px">
+
+                <div style="width:1100px;height:50px; font-size:25px; text-align:left;align-items: center; text-align:justify; text-justify: inter-word">
+                    <p>Para ao trabalho final da disciplina, vocês devem implementar no simulador UAIBot uma aplicação de robótica.<br></p>
+                    <p>Vocês devem escolher o robô adequado para a aplicação. A implementação deve observar limitações práticas do robô como
+                        <b class="itext">limites de juntas, velocidade e torque nos motores</b>, etc.<br></p>
+                    <p>Os manuais dos robôs implementados no UAIBot podem ser encontrados <a href="https://github.com/viniciusmgn/uaibot_content/tree/master/contents/Manual%20PDFs"><b class="hlink">aqui</b></a>.<br></p>
+                    <p>Há muitas ideias interessantes de aplicação <a href="https://www.kuka.com/pt-br/ramos-de-atividade/banco-de-dados-de-soluções"><b class="hlink">aqui</b></a>.<br></p>
+                    <p>Mais informações (datas, instruções, etc...) em breve, no Minha UFMG</b>.<br></p>
+                </div>
+
+
+            </div>
+        </section>
+    </div>
+</div>
+<style>
+
+    .reveal .progress {
+        color: #34eb5e;
+    }
+
+    .reveal .controls {
+        color: #34eb5e;
+    }
+
+    body {
+        background-image: url(presentation/images/aula1/logo_ufmg.svg) !important;
+        background-color: black;
+        background-size: 8% !important;
+        background-repeat: no-repeat !important;
+        background-position: 96% 3% !important;
+    }
+
+
+
+    .itext {
+        color: #8af2a2;
+    }
+    .ttext {
+        color: #34eb5e;
+    }
+    .hlink{
+        color: #f5bf42;
+    }
+    .hlink:hover {
+        text-decoration: underline;
+    }
+
+    /* width */
+    ::-webkit-scrollbar {
+        width: 20px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 10px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #01b82b;
+        border-radius: 10px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #01b82b;
+    }
+
+    ::-webkit-scrollbar-corner {
+        background: rgba(0, 0, 0, 0);
+    }
+
+
+
+</style>
+
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+<script src="presentation/dist/reveal.js"></script>
+<script src="presentation/plugin/notes/notes.js"></script>
+<script src="presentation/plugin/markdown/markdown.js"></script>
+<script src="presentation/plugin/highlight/highlight.js"></script>
+<script src="presentation/plugin/menu/menu.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        hash: true,
+        width: 1200,
+        height: 800,
+        margin: 0,
+        minScale: 0.2,
+        maxScale: 2.0,
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu]
+    });
+    var frames = document.getElementsByTagName("iframe");
+
+
+    Reveal.on('slidechanged', event => {
+        for (let i = 0; i < frames.length; ++i) {
+            frames[i].contentWindow.location.reload(true);
+        }
+    });
+
+
+</script>
+
+</body>
+</html>
+

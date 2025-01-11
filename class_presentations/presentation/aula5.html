@@ -1,0 +1,3050 @@
+<!doctype html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+
+    <script>
+        // Check if the site is being served from GitHub Pages
+        if (window.location.hostname === "viniciusmgn.github.io") {
+            document.write('<base href="/aulas_manipuladores/">');
+        } else {
+            document.write('<base href="/">');  // Local development base
+        }
+    </script>
+
+    <title>Aula 5 - Manipuladores Robóticos</title>
+
+    <link rel="stylesheet" href="presentation/dist/reset.css">
+    <link rel="stylesheet" href="presentation/dist/reveal.css">
+    <link rel="stylesheet" href="presentation/dist/theme/black.css">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="presentation/plugin/highlight/monokai.css">
+    <style>
+        .reveal .slides section {
+            padding: 20px; /* Adjust the value as needed */
+        }
+    </style>
+</head>
+
+<body>
+<div class="reveal">
+    <div class="slides">
+
+        <section>
+            <h3>Manipuladores Robóticos</h3>
+            <h3 style="font-size:40px">Aula 5: Controle Cinemático</h3>
+            <p>
+                <img src="presentation/images/aula5/titulo.png" style="width:500px;height:auto;">
+                <br><small>Vinicius Mariano Gonçalves</small>
+            </p>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Controle Cinemático</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <p>Estamos interessados em fazer o  <b class="itext">controle</b> de manipuladores robóticos.</p>
+                    <p>Para falar de controle temos que definir qual é o <b class="itext">sistema</b> a ser controlado, ou seja, precisamos
+                        especificar:</p>
+                    <ul>
+                        <li>... as <b class="itext">variáveis manipuladas</b> (entradas),</li>
+                        <li>... as <b class="itext">variáveis de processo</b> (saída),</li>
+                        <li>... o <b class="itext">modelo matemático</b> que as relaciona.</li>
+                    </ul>
+                    <p>Há várias maneiras diferentes de se fazer controle de robôs, com níveis de complexidade diferentes e respectivos
+                    sistemas diferentes. Vamos ver um pouco sobre isso antes de prosseguir.</p>
+
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Visão Geral</h3>
+            <p>
+                <img src="presentation/images/aula5/titulo.png" style="width:500px;height:auto;">
+                <br>
+            </p>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Visão Geral</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Tipos de controle</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <p>Do ponto de vista da variável manipulada (ou seja, a que podemos comandar para atingir o objetivo de controle),
+                    os robôs podem ter interface para os seguintes comandos, do mais baixo nível para o mais alto nível:</p>
+
+                    <ul>
+                        <li>O <b class="itext">torque no motor das juntas, \(\tau\)</b>,</li>
+                        <li>A <b class="itext">velocidade de configuração desejada \(\dot{q}_d\)</b>,</li>
+                        <li>A <b class="itext">configuração deejada \(q_d\)</b>,</li>
+                        <li>A <b class="itext">pose do efetuador desejada \(\hat{H}_d\)</b>.</li>
+                    </ul>
+
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Visão Geral</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Controle por torque</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Nesse caso, enviamos diretamente qual é o torque do motor em cada junta a cada instante de tempo, \(\tau_i(t)\).</p>
+                    <p>Para controlar dessa forma, temos normalmente como variáveis de processo a configuração e a velocidade de configuração atual,
+                    \(q(t), \dot{q}(t)\).</p>
+                    <p>O modelo matemático entrada/saída é dado por um (complicado) sistema de equações diferencias de segunda ordem, não linear,
+                        <b class="itext">\(\ddot{q} = f(q,\dot{q},\tau)\)</b>, dependente dos parâmetros inerciais (massas e momentos de inércia) dos robôs. Aprenderemos a calcular esse modelo na <b class="itext">Aula 6</b>.</p>
+                    <p>É (bem) raro robôs industriais terem uma interface de controle para torque, devido à elevada complexidade de se controlar
+                    e a possibilidade de causar danos no robô.</p>
+                    <p>Por outro lado, é o que permite a maior liberdade de controle. É especialmente importante se quisermos controlar a força
+                    que o robô faz no ambiente (<b class="itext">controle de força</b>).</p>
+                    <p>É essencialmente usado por pesquisadores ou pelos fabricantes dos robôs.</p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Visão Geral</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Controle por torque</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Diagrama de blocos:</p>
+
+                    <div style="vertical-align: middle; text-align: center; align-items: center">
+                        <img src="presentation/images/aula5/bloco1.svg"
+                             style="width:700px;height:auto;">
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Visão Geral</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Controle por velocidade de configuração </b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Nesse caso, assumimos que há um controlador de mais baixo nível que nos permite enviar a velocidade de configuração
+                    desejada para cada junta, \(\dot{q}_{i,d}(t)\).</p>
+                    <p>Assumindo que o controlador é bom é que o sinal de velocidade desejada é "razoável", podemos assumir que a velocidade
+                    real é igual a desejada, e portanto o modelo matemático é <b class="itext">\(\dot{q} = \dot{q}_d\)</b>.</p>
+                    <p>Nesse tipo de controle temos como variável de processo a configuração \(q\) (não é necessário medir a velocidade de configuração,
+                    a não ser se quisermos verificar que o controlador de baixo nível está seguindo o valor desejado).</p>
+                    <p>É relativamente comum em robôs industriais, nem que seja a partir da modificação de outras interfaces. Em especial, podemos
+                    "adaptar" o próximo controle (por configuração) para se tornar este.</p>
+                    <p>Nos permite uma boa flexibilidade para controlar o robô.</p>
+                    <p>É o tema desta aula.</p>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Visão Geral</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Controle por velocidade de configuração</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Diagrama de blocos:</p>
+
+                    <div style="vertical-align: middle; text-align: center; align-items: center">
+                        <img src="presentation/images/aula5/bloco2.svg"
+                             style="width:700px;height:auto;">
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Visão Geral</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Controle por  configuração</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Nesse caso, assumimos que há um controlador de mais baixo nível que me permite enviar a configuração
+                    desejada para cada junta, \(q_{i,d}(t)\).</p>
+                    <p>Assumindo que o controlador é bom é que o sinal de configuração desejada é "razoável", podemos assumir que a configuração
+                    real é igual a desejada, e portanto o modelo matemático é <b class="itext">\(q = q_d\)</b>.</p>
+                    <p>Nessa interface costumamos a fazer <b class="itext">controle em malha aberta</b> (do ponto de vista desse sistema), pois
+                    calculamos externamente a configuração desejada \(\dot{q}_d(t)\) para realizar a tarefa, enviamos para o robô, e não precisamos medir nada.
+                    Portanto, não há variável de processo. </p>
+                    <p>O <a href="presentation/aula3.html#/61"><b
+                            class="hlink">controle da Aula 3</b></a> é um exemplo de utilização dessa interface: pré-calculamos uma trajetória \(\dot{q}_d(t)\)
+                    e "mandamos" para o robô (usando o <b class="itext">.add_ani_frame</b> para simular a interface de controle de configuração).</p>
+                    <p>É bem comum em robôs industriais.</p>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Visão Geral</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Controle por configuração</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Diagrama de blocos:</p>
+
+                    <div style="vertical-align: middle; text-align: center; align-items: center">
+                        <img src="presentation/images/aula5/bloco3.svg"
+                             style="width:700px;height:auto;">
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Visão Geral</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Controle por pose</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>No nível mais alto, enviamos a pose desejada para o efetuador, \(\hat{H}_d(t)\), escrita como uma MTH
+                        ou de outra forma (geralmente 3 números de posição + 3 ângulos de Euler), com relação a um referencial fixo \(\mathcal{F}_0\).</p>
+                    <p>Uma maneira (simplificada) de pensar nesse controlador é pensar que ele faz a cinemática inversa para a pose desejada, obtando a respectiva
+                        configuração desejada, \(q_d(t) = \texttt{IK}(\hat{H}_d(t))\), e depois usa a interface anterior.
+                    </p>
+                    <p>Na verdade, cada fabricante implementa essa interface de um modo diferente.</p>
+                    <p>Todos os robôs têm, de alguma forma, uma interface desse tipo.</p>
+                    <p>Bem fácil e prático de utilizar. É, de longe, a interface mais utilizada pelos engenheiros/técnicos na indústria. </p>
+                    <p>Por outro lado, te dá um controle menor no robô. Há várias maneiras de fazer o controle, mas a interface te força a usar
+                    a que foi implementada pelo fabricante. Pode ser que essa interface não seja aplicável para o problema (ex: há colisão
+                    do robô com ele mesmo).</p>
+                </div>
+
+
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Visão Geral</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Controle por pose</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Diagrama de blocos:</p>
+
+                    <div style="vertical-align: middle; text-align: center; align-items: center">
+                        <img src="presentation/images/aula5/bloco4.svg"
+                             style="width:700px;height:auto;">
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Visão Geral</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Controle cinemático</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <p>Nesta aula, focaremos na interface de controle de <b class="itext">velocidade de configuração</b>.</p>
+                    <p>O controle nessa interface é bem mais simples que o controle por torque, e, por outro lado, fornece
+                    uma flexibilidade muito boa para fazer controle.</p>
+                    <p>Chamamos o controle nessa interface de <b class="itext">controle cinemático</b> pois
+                    o controlador não dependerá dos parâmetros inerciais (massas, momentos de inércia) do robô. Ele
+                    dependerá apenas das características geométricas da tarefa.</p>
+
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Visão Geral</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Controle cinemático</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <p>Doravante, chamaremos \(u = \dot{q}_d\), e portanto o sistema que queremos controlar é:</p>
+                    <b class="itext">$$\dot{q} = u.$$</b>
+                    <p>É um integrador simples desacoplado (independente) da configuração.</p>
+                    <p>Parece simples de controlar! Mas veremos que frequentemente usaremos
+                    <b class="itext">controladores não lineares</b>.</p>
+                    <p>Como nossa variável de processo nesse caso é apenas a configuração \(q\), nosso controlador
+                    dependerá dessa variável e (algumas vezes) explicitamente do tempo atual:</p>
+                    <b class="itext">$$u = h(q,t).$$</b>
+
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Visão Geral</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Um comentário importante</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <p>Interfaces de configuração são mais comuns do que de velocidade.</b>
+                    <p>Mas é possível utilizar a estratégia de controle cinemático com essa interface também.
+                Seja \(u(t) = \dot{q}_d(t) = h(q(t),t)\) o controlador cinemático que queremos implementar. Então:</p>
+                    $$q_d(t) = q_0 + \int_0^t h(q(s),s)ds$$
+                    <p>em que \(q_0\) é a configuração inicial do robô.</p>
+                    <p>Basta calcular esse \(q_d\) e mandar para a interface de configuração!</b>
+                    <p>Essa ideia é inclusive utilizada na implementação de controles cinemáticos no UAIBot, como veremos.</p>
+
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px">O conceito de tarefa</h3>
+            <p>
+                <img src="presentation/images/aula5/titulo.png" style="width:500px;height:auto;">
+                <br>
+            </p>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">O conceito de tarefa</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Definido o sistema que vamos trabalhar e as premissas, vamos falar
+                    dos porquê de fazermos controle: <b class="itext">a tarefa</b>.</p>
+                    <p>A tarefa nada mais é do que uma especificação do que queremos fazer com o robô.</p>
+                    <p>Consideraremos nesta disciplina apenas <b class="itext">tarefas de movimento</b>, ou seja, que não envolvem
+                    exercer força no ambiente de maneira controlada.</p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">O conceito de tarefa</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>É um conceito da robótica no geral, não só de manipuladores. No caso de manipuladores de base fixa (nosso caso),
+                    essencialmente temos variações de duas tarefas de movimento:</p>
+                    <ul>
+                        <li>Fazer com que o efetuador alcance uma determinada pose completa constante ou variante no tempo.</li>
+                        <li>Fazer com que o efetuador alcance uma pose parcial (ex: a orientação não importa, ou a rotação no eixo \(z\) do efetuador está livre) constante ou variante no tempo.</li>
+                    </ul>
+                    <p>Em robôs mais complexos, como <b class="itext">humanoides</b>, há mais diversidade de tarefas.</p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">O conceito de tarefa</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>
+                    Temos duas categorias de tarefas: as <b class="itext">invariantes no tempo</b> (alcançar uma pose fixa) e
+                    as <b class="itext">variantes no tempo</b> (rastrear uma pose variante no tempo).</p>
+                    <p>Para uma tarefa constante, note que podemos especificar uma tarefa como um
+                    <b class="itext">subconjunto do espaço de configuração</b> para qual queremos que o robô vá. </p>
+                    <p>Por exemplo, se a nossa tarefa é alcançar uma posição desejada constante para o efetuador \(s_d\), temos que
+                    </p>
+                    $$\mathcal{T} = \{ q \in \mathbb{R}^{n \times 1} \ | \ s_e(q)=s_d\}$$
+                    <p>em que \(s_e(q)\) é a posição do efetuador em função de \(q\).</p>
+                    <p>Não necessariamente é fácil calcular todos os membros desse conjunto, e isso (felizmente) não é
+                    necessário. Entretanto, é útil considerar uma tarefa invariante no tempo como um conjunto de configurações
+                    \(\mathcal{T}\).</p>
+
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">O conceito de tarefa</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 65%; float:left; font-size:25px; text-align:left">
+                    <p>
+                    Para tarefas variantes no tempo a ideia é similar. Essencialmente para cada
+                    \(t\) fixo temos um conjunto \(\mathcal{T}(t)\).</p>
+                    <p>Por exemplo, se a nossa tarefa é alcançar uma posição desejada variante no tempo para o efetuador \(s_d(t)\), temos que
+                    </p>
+                    $$\mathcal{T}(t) = \{ q \in \mathbb{R}^{n \times 1} \ | \ s_e(q)=s_d(t)\}$$
+                    <p>ou seja, para cada \(t\) fixo temos um conjunto.</p>
+                    <p>Nosso objetivo é então que a configuração \(q\) esteja no tempo \(t\) no conjunto \(\mathcal{T}(t)\).</p>
+                </div>
+
+                <div style="width: 35%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px">Funções de Tarefa</h3>
+            <p>
+                <img src="presentation/images/aula5/titulo.png" style="width:500px;height:auto;">
+                <br>
+            </p>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Definição</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Considere uma tarefa <b class="itext">invariante no tempo</b> (ex: alcançar uma pose constante).</p>
+                    <p>Como visto, do ponto de vista da configuração, isso significa que queremos convergir para qualquer configuração \(q\) em uma
+                    região \(\mathcal{T}\) do espaço de configurações.</p>
+
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Definição:</b> Para um robô/sistema com espaço de configuração \(q \in
+                            \mathbb{R}^{n \times 1}\), a <b class="itext">função de tarefa</b> para uma tarefa constante
+                            \(\mathcal{T}\)
+                            é uma função \(r: \mathbb{R}^{n \times 1} \mapsto \mathbb{R}^{g \times 1}\) que codifica matematicamente a tarefa
+                            em uma função diferenciável. Mais precisamente,
+                            ela deve ter duas propriedades:</p>
+                        <ul>
+                            <li>\(r(q) = 0_{g \times 1} \) <b class="itext">se e somente se</b> \(q \in \mathcal{T}\),</li>
+                            <li>\(r(q)\) é uma função diferenciável (ao menos uma vez) em \(q\).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Análise</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Portanto, devido às propriedades da função de tarefa, encontrar um \(q \in \mathcal{T}\) é <b class="itext">equivalente</b> a
+                    resolver a equação \(r(q)=0_{g \times 1}\).
+                    </p>
+                    <p>Note que a primeira propriedade proibe o seguinte:</p>
+                        <ul>
+                            <li>Que haja uma configuração que satisfaça a tarefa em que \(r(q)\) não se anule. Isso faz
+                            com que tenhamos a certeza que <b class="itext">todas</b> as configurações
+                            estejam contempladas em \(r(q)=0_{g \times 1}\).</li>
+                            <li>Que haja uma configuração que não satisfaça a tarefa em que \(r(q)\) se anule. Isso faz
+                            com que ao resolver \(r(q)=0_{g \times 1}\) tenhamos a certeza que nenhuma solução encontrada será "ruim" (não resolverá
+                            nossa tarefa).</li>
+                        </ul>
+                    <p>A propriedade da diferenciabilidade vai se mostrar útil em breve.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Suponha que a tarefa seja fazer a posição do efetuador, \(s_e(q)\), convergir para uma posição constante,
+                        \(s_{d}\) não nula.
+                    </p>
+                    <p>Suponha que haja mais de uma configuração em que isso seja possível. Seja \(q_d\) uma dessas configurações.
+                    Propomos três "candidatas" para a função de tarefa.</p>
+                        <ul>
+                            <li>\(r_1(q) = q - q_{d}\),</li>
+                            <li>\(r_2(q) = s_d \times s_{e}(q)\),</li>
+                            <li>\(r_3(q) = s_e(q)-s_d\).</li>
+                        </ul>
+                    <p>As três são funções de tarefa, de acordo com nossa definição?</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Podemos notar que as três são funções diferenciáveis em \(q\), já que \(s_e(q)\) vem da cinemática direta
+                        para robôs manipuladores (formada por funções infinitamente diferenciáveis como senos e cossenos).
+                    </p>
+                    <p>Para testar a primeira propriedade, podemos dividí-la em duas implicações (que devem ser mutuamente verdadeiras):</p>
+                    <ul>
+                        <li>(i) \(r(q)=0_{g \times 1} \) implica \(q \in \mathcal{T}\),</li>
+                        <li>(ii) \(q \in \mathcal{T}\) implica \(r(q)=0_{g \times 1}\).</li>
+                    </ul>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>(i) É fácil ver que primeira candidata, \(r_1(q)\) é zero somente se \(q=q_d\). Como \(q_d\) é uma configuração em
+                    que \(s_e(q_d)=s_{d}\), então temos que \(r_1(q) = 0\) implica que \(q \in \mathcal{T}\).</p>
+                    <p>(ii) Mas a recíproca, \(q \in \mathcal{T}\) implica que \(r_1(q) = 0\), não é verdadeira. Pegue outra
+                    configuração \(q_d' \not= q_d\) dentro de \(\mathcal{T}\) (nós fizemos a suposição que o conjunto tem mais de
+                    um elemento). Nesse caso, \(s(q_d') = q_d'-q_d \not=0\). </p>
+                    <p>Portanto ela <b class="itext">não</b>
+                    é uma função de tarefa pois exclui algumas configurações de \(\mathcal{T}\) ((ii) falha).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>(i) Note que a segunda candidata, \(r_2(q)\), é zero se, por exemplo, \(s_e(q)=2s_d\) (propriedade do produto vetorial).
+                    Como \(s_d\) não é o vetor nulo, \(s_d \not= 2s_d\), e portanto não é verdade que \(r_2(q) = 0\) implica que \(q \in \mathcal{T}\).
+                    </p>
+                    <p>(ii) É fácil ver que se \(s_e(q) = s_d\) então \(r_2(q)\) é zero. Então \(q \in \mathcal{T}\) implica \(r_2(q)=0\).</p>
+                    <p>Portanto ela <b class="itext">não</b>
+                    é uma função de tarefa pois produz falsos membros de \(\mathcal{T}\) ((i) falha).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>A última é a mais fácil de analisar. É fácil ver que \(r(q)=0\) se e somente se \(s_{e}(q)=s_d\), ou seja,
+                        \(q \in \mathcal{T}\).
+                    </p>
+                    <p>Portanto ela é a única que é uma função de tarefa!</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Múltiplas funções de tarefa</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Existem infinitas funções de tarefa para uma mesma tarefa. Por exemplo, para a tarefa
+                        de alcançar uma posição desejada, todas a seguir são tarefas:
+                    </p>
+                    <ul>
+                        <li>\(r(q) = \alpha (s_e(q)-s_d)\) para \(\alpha \not = 0\),</li>
+                        <li>\(r(q) = \alpha \|s_e(q)-s_d\|^2\) para \(\alpha \not = 0\),</li>
+                        <li>\(r(q) = M(s_e(q)-s_d)\) para uma matriz \(M \in \mathbb{R}^{3 \times 3}\) invertível,</li>
+                        <li>Separando \(s_e\) e \(s_d\) em seus componentes \(x,y,z\): \(r(q) = 3-e^{-(x_e(q)-x_d)^2}-e^{-(y_e(q)-y_d)^2}-e^{-(z_e(q)-z_d)^2}\).</li>
+                    </ul>
+                    <p>Note que o vetor \(r\) não é necessariamente tridimensional. Por exemplo, no segundo e no quarto exemplo, \(g\) (a dimensão do vetor) é 1.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Função de tarefa para a pose</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Quais seriam exemplos de função de tarefa para o controle completo da pose?
+                    </p>
+                    <p>Seja \(\phi_e(q) \in \mathbb{R}^{3 \times 1}\) um vetor com os ângulos de Euler da orientação do efetuador na configuração \(q\). Seja \(\phi_d \in \mathbb{R}^{3 \times 1}\) um vetor de
+                        ângulos de Euler para orientação desejada do efetuador. Uma "função de tarefa" muito utilizada na literatura, com \(g=6\), é:
+                    </p>
+                    $$r(q) = \left(\begin{array}{c} s_e(q)-s_d \\ \phi_e(q)-\phi_d \end{array}\right).$$
+                    <p>Ela não é uma função de tarefa de acordo com nossa definição pois não é diferenciável para todo \(q\) (devido a não-diferenciabilidade dos ângulos de Euler em algumas situações).</p>
+                    <p>Mesmo assim é frequemente utilizada.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Função de tarefa para a pose</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Vamos propor uma outra função de tarefa, diferenciável e (bem) mais simples de se calcular. Ela é baseada no seguinte fato: se
+                        \(u, v \in \mathbb{R}^{3 \times 1}\) são vetores unitários (\(\|u\|=\|v\|=1\)):
+                    </p>
+                    $$\frac{1}{2}\|u-v\|^2 = \frac{1}{2}(\|u\|^2+\|v^2\|-2u^Tv) = 1-u^Tv.$$
+                    <p>Dessa igualdade, é fácil concluir que se \(u,v\) são vetores unitários, \(1-u^Tv=0\) se e
+                        somente se \(u=v\).
+                    </p>
+                    <p>Sejam \(x_e(q), y_e(q), z_e(q)\) e \(s_e(q)\) as colunas 1, 2, 3 e 4 da MTH do referencial fixo para o
+                    efetuador, excluindo-se a última linha da MTH. Esses vetores tridimensionais (coluna) representam a posição do centro
+                    do efetuador e os três eixos da orientação, respectivamente.</p>
+                    <p>Faça o mesmo para a MTH que representa a pose desejada, obtendo \(x_d, y_d, z_d\) e \(s_d\).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Função de tarefa para a pose</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Temos então a seguinte função de tarefa, também com \(g=6\), mas diferenciável:
+                    </p>
+                    <b class="itext">$$r(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{c} s_e(q)-s_d \\ 1-x_d^Tx_e(q) \\ 1-y_d^T y_e(q) \\ 1-z_d^T z_e(q) \end{array}\LARGE{\Bigg)}\normalsize{}.$$</b>
+                    <p>Note que usamos o fato que os vetores \(x,y\) e \(z\) são unitários.</p>
+                    <p>Podemos usar a mesma ideia para funções de tarefa para poses parciais (ex: se não quisermos controlar a orientação dos eixos \(x\) e \(y\), basta remover as respectivas componentes).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Jacobiana de tarefa</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Vai ser útil o cálculo da chamada <b class="itext">Jacobiana de tarefa</b>:</p>
+                    <b class="itext">$$J_r(q) = \frac{\partial r}{\partial q}(q).$$</b>
+
+                    <p>Mais precisamente, seja \(r_i(q)\), \(i=1,...,g\), a i-ésima componente da função de tarefa e \(q_j\), \(j=1,...,n\), a
+                    j-ésima configuração. Então \(J_r(q) \in \mathbb{R}^{g \times n}\), e o elemento na linha i e coluna j é
+                    \(\frac{\partial r_i}{\partial q_j}(q)\).</p>
+                    <p>O cálculo da Jacobiana de tarefa é feito caso-a-caso (não há uma "fórmula geral"), entretanto, quase sempre
+                    precisamos da <b class="itext">Jacobiana geométrica</b> do efetuador para calculá-la.</b>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Jacobiana de tarefa</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Um truque útil para calcular a Jacobiana de tarefa é usar a regra da cadeia:</p>
+                    $$\frac{d}{dt}r(q) = \frac{\partial r}{\partial q}(q)\dot{q} = J_r(q)\dot{q}.$$
+                    <p>Frequentemente, é mais simples calcular \(\dot{r}\) do que \(J_r(q)\) diretamente. Nesse calculo aparecem, frequentemente, as velocidades
+                    lineares e angulares do efetuador, de onde surge a Jacobiana geométrica.</p>
+                    <p>Ao terminar o cálculo de \(\dot{r}\) e comparar os dois lados da equação, podemos inferir \(J_r(q)\).</p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Jacobiana de tarefa - Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Considere nossa função de tarefa:</p>
+                    $$r(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{c} s_e(q)-s_d \\ 1-x_d^Tx_e(q) \\ 1-y_d^T y_e(q) \\ 1-z_d^T z_e(q) \end{array}\LARGE{\Bigg)}\normalsize{}.$$
+                    <p>Vamos calcular a derivada temporal de cada uma das 4 sub-tarefas e depois "empilhar" os resultados.</p>
+
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Jacobiana de tarefa - Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Começamos por \(s_e(q)-s_d\).</p>
+                    <p>Note que \(\frac{d}{dt}(s_e(q)-s_d) = \frac{d}{dt} s_e(q)\) (já que \(s_d\) é constante). </p>
+                    <p>Mas, por definição, \(\frac{d}{dt} s_e(q)\) é a velocidade linear do efetuador! Portanto, usando as
+                    três primeiras linhas da Jacobiana geométrica:</p>
+                    <b class="itext">$$\frac{d}{dt}(s_e(q)-s_d) = v = J_v(q)\dot{q}.$$</b>
+
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Jacobiana de tarefa - Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Vamos agora trabalhar com \(1-x_d^Tx_e(q)\).</p>
+                    <p>Note que \(\frac{d}{dt}(1-x_d^Tx_e(q)) = -x_d^T \frac{d}{dt}x_e(q)\) (já que \(x_d\) é constante). </p>
+                    <p>Usando o <a href="presentation/aula4.html#/5"><b
+                            class="hlink">Teorema da Aula 4</b></a> (ver também <a href="presentation/exercicios4.html#/3"><b
+                            class="hlink">Exercício 3 da Aula 4</b></a>) </p>
+                    $$\frac{d}{dt}x_e(q) = \omega \times x_e(q)$$
+                    <p>em que \(\omega\) é a velocidade angular do efetuador.</p>
+                    <p>Agora aplicamos as <a href="presentation/aula4.html#/4"><b
+                            class="hlink">Propriedades 2 e 3 da Aula 4</b></a> para concluir que:</p>
+                    $$\frac{d}{dt}x_e(q) = -S(x_e(q))\omega.$$
+
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Jacobiana de tarefa - Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Usando a Jacobiana geométrica, \(\omega = J_{\omega}(q)\dot{q}\). Substituindo:</p>
+                    $$\frac{d}{dt}x_e(q) = -S(x_e(q))J_w(q)\dot{q}.$$
+                    <p>Usando esse fato na fórmula \(\frac{d}{dt}(1-x_d^Tx_e(q)) = -x_d^T \frac{d}{dt}x_e(q)\):</p>
+                    <b class="itext">$$\frac{d}{dt}(1-x_d^Tx_e(q)) = x_d^TS(x_e(q))J_w(q)\dot{q}.$$</b>
+                    <p>Obviamente, usando um raciocínio análogo, podemos achar fórmulas análogas para
+                    \(\frac{d}{dt}(1-y_d^Ty_e(q))\) e \(\frac{d}{dt}(1-z_d^Tz_e(q))\). </p>
+
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Jacobiana de tarefa - Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Portanto:</p>
+                    $$\frac{d}{dt} r(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{c} J_v(q)\dot{q} \\ x_d^T S(x_e(q))J_w(q)\dot{q} \\ y_d^T S(y_e(q))J_w(q)\dot{q} \\ z_d^T S(z_e(q))J_w(q)\dot{q} \end{array}\LARGE{\Bigg)}\normalsize{}.$$
+                    <p>Podemos fatorar para fora o produto por \(\dot{q}\), presente em todos os membros, à direita: </p>
+                    $$\frac{d}{dt} r(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{c} J_v(q) \\ x_d^T S(x_e(q))J_w(q) \\ y_d^T S(y_e(q))J_w(q) \\ z_d^T S(z_e(q))J_w(q) \end{array}\LARGE{\Bigg)}\normalsize{}\dot{q}.$$
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Jacobiana de tarefa - Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Como pela regra da cadeia \(\frac{d}{dt} r(q) = J_r(q) \dot{q}\), temos que, comparando os dois lados
+                        e usando o fato que a equação tem que ser verdade para todo \(\dot{q}\):</p>
+                    <b class="itext">$$J_r(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{c} J_v(q) \\ x_d^T S(x_e(q))J_w(q) \\ y_d^T S(y_e(q))J_w(q) \\ z_d^T S(z_e(q))J_w(q) \end{array}\LARGE{\Bigg)}\normalsize{}.$$</b>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Jacobiana de tarefa</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Usando esse truque e as propriedades da Jacobiana geométrica  e da matriz \(S\), podemos calcular a Jacobiana de tarefa para qualquer tarefa.</p>
+                    <p>A título de curiosidade, a Jacobiana de tarefa da "função de tarefa":</p>
+                    $$r(q) = \left(\begin{array}{c} s_e(q)-s_d \\ \phi_e(q)-\phi_d \end{array}\right).$$
+                    <p>recebe um nome especial em robótica: <b class="itext">Jacobiana analítica</b>.</p>
+                    <p>Note que (no geral, salvo casos muito partículares) \(\frac{d}{dt} \phi_e \not= \omega\) (ver também <a href="presentation/exercicios4.html#/15"><b
+                            class="hlink">Exercício 15 da Aula 4</b></a>)!</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Função de tarefa variante no tempo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Podemos também considerar tarefas variantes no tempo, \(\mathcal{T}(t)\).</p>
+                    <p>A função de tarefa agora também depende de \(t\) explicitamente, \(r(q,t)\).</p>
+                    <p>A definição da função de tarefa é bem similar ao caso de tarefas constantes:</p>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Definição:</b> Para um robô/sistema com espaço de configuração \(q \in
+                            \mathbb{R}^{n \times 1}\), a <b class="itext">função de tarefa</b>
+                            para uma tarefa variante no tempo \(\mathcal{T}(t)\) é uma função \(r: \mathbb{R}^{n \times 1} \times \mathbb{R} \mapsto \mathbb{R}^{g \times 1}\) que codifica matematicamente a tarefa
+                            em uma função diferenciável. Mais precisamente,
+                            ela deve ter duas propriedades:</p>
+                        <ul>
+                            <li>Para todo \(t\) fixo: \(r(q,t) = 0_{g \times 1} \) <b class="itext">se e somente se</b> \(q \in \mathcal{T}(t)\),</li>
+                            <li>\(r(q,t)\) é uma função diferenciável (ao menos uma vez) em \(q\) e em \(t\).</li>
+                        </ul>
+                        </div>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Função de tarefa variante no tempo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Por exemplo, para a tarefa de rastrear uma pose variante no tempo, podemos utilizar:</p>
+                    $$r(q,t) = \LARGE{\Bigg(}\normalsize{}\begin{array}{c} s_e(q)-s_d(t) \\ 1-x_d(t)^Tx_e(q) \\ 1-y_d(t)^T y_e(q) \\ 1-z_d(t)^T z_e(q) \end{array}\LARGE{\Bigg)}\normalsize{}.$$
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Termo de feedforward da tarefa</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Note que agora, pela regra da cadeia:</p>
+                    $$\frac{d}{dt} r(q,t) = \frac{\partial r}{\partial q}(q,t)\dot{q}+\frac{\partial r}{\partial t}(q,t).$$
+                    <p>Essa equação permite calcular a <b class="itext">Jacobiana de tarefa</b> \(J_r(q,t)=\frac{\partial r}{\partial q}(q,t)\), como no caso constante.</p>
+                    <p>Note que agora a Jacobiana de tarefa depende de \(t\).</p>
+                    <p>O termo que "sobra" (que não está multiplicado por \(\dot{q}\), \(\frac{\partial r}{\partial t}(q,t)\) também vai ser importante, e chamamos de <b class="itext">Feedforward de tarefa</b>.</p>
+                    <p>Só existe (não nulo) para tarefas variantes no tempo.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Termo de feedforward da tarefa</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Podemos calcular \(\frac{d}{dt} r(q,t)\) para nossa tarefa de pose variante no tempo.</p>
+                    <p>Grande parte dos cálculos feitos anteriormente para o caso constante se manterão, mas haverá um termo a mais
+                    (o Feedforward de tarefa):</p>
+                    <b class="itext">$$\frac{d}{dt} r(q,t) = \LARGE{\Bigg(}\normalsize{}\begin{array}{c} J_v(q) \\ x_d(t)^T S(x_e(q))J_w(q) \\ y_d(t)^T S(y_e(q))J_w(q) \\ z_d(t)^T S(z_e(q))J_w(q) \end{array}\LARGE{\Bigg)}\normalsize{}\dot{q} +
+                    \LARGE{\Bigg(}\normalsize{}\begin{array}{c} -\dot{s}_d(t) \\ -\dot{x}_d(t)^T x_e(q) \\-\dot{y}_d(t)^T y_e(q) \\ -\dot{z}_d(t)^T z_e(q) \end{array}\LARGE{\Bigg)}\normalsize{}.$$</b>
+                    <p>Podemos facilmente identificar a Jacobiana e o Feedforward dessa equação.</p>
+                    <p>Para que o Feedforward de tarefa existir, os sinais \(x_d(t), y_d(t), z_d(t)\) e \(s_d(t)\) têm que ser (ao menos)
+                    uma vez diferenciáveis no tempo.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Função de tarefa</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Termo de feedforward da tarefa</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+
+                    <p>O nome <b class="itext">Feedforward de tarefa</b> vem do fato que para um caso muito especial em que
+                    \(r(q,t) = q - q_d(t)\), o termo vira \(\frac{\partial r}{\partial t}(q,t) = -\dot{q}_d(t)\), que é
+                    o (oposto) do termo de feedforward em controle clássico quando a dinâmica do sistema é a de um integrador simples
+                    (o que é, no caso do controle cinemático).</p>
+                    <p>O nome, portanto, é primariamente devido a uma analogia.</p>
+                    <div style="vertical-align: middle; text-align: center; align-items: center">
+                        <img src="presentation/images/aula5/feedforward.svg"
+                             style="width:700px;height:auto;">
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">A técnica de Controle Cinemático</h3>
+            <p>
+                <img src="presentation/images/aula5/titulo.png" style="width:500px;height:auto;">
+                <br>
+            </p>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Introdução</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Vamos supor que, de alguma maneira, escolhemos a velocidade de configuração \(u\) tal que a seguinte
+                    equação seja verdadeira:</p>
+                    $$\frac{d}{dt} r(q,t) = -Kr(q,t)$$
+                    <p>para algum escalar positivo \(K\).</p>
+                    <p>Seja \(r_i\) a i-ésima função de tarefa. A equação anterior, vetorial, implica as equações escalares
+                    para \(i=1,2,...,g\):</p>
+                    $$\frac{d}{dt} r_i(q,t) = -Kr_i(q,t).$$
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Introdução</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Sabemos que a equação diferencial \(\frac{d}{dt}w(t) = -Kw(t)\) com \(K>0\) constante e
+                    \(w(t) \in \mathbb{R}\) tem como solução \(w(t) = e^{-Kt}w(0)\).</p>
+                    <p>Então, tomando \(w(t) = r_i(q(t),t)\), temos \(r_i(q(t),t) = e^{-Kt}r_i(q(0),0)\). Portanto,
+                    vetorialmente:</p>
+                    <b class="itext">$$r(q(t),t) = e^{-Kt}r(q(0),0).$$</b>
+                    <p>Assim, \(r\) <b class="itext">cai exponencialmente para zero!</b></p>
+                    <p>Podemos agora apreciar a primeira propriedade da função de tarefa: é devido a ela que podemos garantir que \(r\) ir para zero implica que a tarefa será alcançada pelo manipulador!</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Lei de controle</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>A questão agora é como escolher nossa ação de controle \(\dot{q}=u\) para garantir
+                    essa relação.</p>
+                    <p>Usando a regra da cadeia, temos a seguinte equação:</p>
+                    $$\frac{d}{dt}r(q,t) = J_r(q,t)\dot{q} + \frac{\partial r}{\partial t}(q,t) = -Kr(q,t).$$</b>
+                    <p>Portanto, se encontrarmos \(\dot{q}\) que satisfaz a equação:</p>
+                    $$J_r(q,t)\dot{q} = -Kr(q,t)-\frac{\partial r}{\partial t}(q,t).$$</b>
+                    <p>resolvemos nosso problema!</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Lei de controle</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>A equação anterior é um <b class="itext">sistema linear</b> da forma \(Au=b\), em que
+                    \(A = J_r(q,t)\), \(b=-Kr(q,t)-\frac{\partial r}{\partial t}(q,t)\) e \(u=\dot{q}\).</p>
+                    <p>Já estudamos a solução para esse tipo de sistema na <a href="presentation/aula4.html#/65"><b
+                            class="hlink">Aula 4</b></a>, inclusive considerando o caso em que há infinitas ou não há solução.</p>
+                    <p>Vamos usar a <b class="itext">pseudoinversa amortecida</b> da matriz \(A = J_r(q,t)\) para encontrar \(\dot{q}\).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Lei de controle</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Então, temos a expressão para nossa ação de controle \(u\):</p>
+                    <b class="itext">$$u= \dot{q} = -J_r(q,t)^{\dagger(\epsilon)}\Big( Kr(q,t) + \frac{\partial r}{\partial t}(q,t)\Big)$$</b>
+                    <p>para uma constante \(\epsilon > 0\).</p>
+                    <p>Há várias coisas a serem ditas sobre esse controlador.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Análise: Não-linearidade</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Primeiro, note que o controlador é da forma \(u= h(q,t)\) para uma função \(h(q,t)\) que é, no geral,
+                    <b class="itext">bastante não linear</b> tanto em \(q\) quanto em \(t\).</p>
+                    <p>A não-linearidade na variável \(q\) insere o controlador na categoria de
+                        <b class="itext">controle não linear</b> (a não-linearidade na variável independente \(t\) não importa nessa
+                        categorização).</p>
+                    <p><b class="itext">Exemplo bem específico em que ele será linear:</b> se quisermos controlar apenas a posição de um robô cartesiano
+                        usando a função de tarefa \(r(q,t) = s_e(q)-s_d(t)\).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Análise:  falibilidade do controlador</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Note também que não há uma garantia que a equação original que ensejou a expressão do controlador,
+                    \(\frac{d}{dt}r = -Kr\),  seja perfeitamente satisfeita.</p>
+                    <p>Isso acontece pois a equação linear (em \(\dot{q}\))
+                    pode não ter solução (e portanto a pseudoinversa amortecida encontra uma solução aproximada), ou mesmo por causa
+                        do fator de amortecimento \(\epsilon\). </p>
+                    <p>Portanto, o controlador pode, em algumas situações, <b class="itext">falhar</b> em chegar na solução desejada.</p>
+                    <p>A boa notícia é que, no geral, funciona muito bem, convergindo para a tarefa mesmo que não seja
+                    com a relação exponencial de decaimento da função de tarefa que foi originalmente planejada.</p>
+                    <p>Se falhar? A recomendação mais simples é chavear para um movimento aleatório do manipulador por um tempo
+                    e depois rodar o controlador novamente. </p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Análise:  restrições não contempladas</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Em aplicações reais, algumas <b class="itext">restrições</b> no movimento são importantes.</p>
+                    <p>Por exemplo, o robô não pode colidir com ele mesmo ou com o ambiente.</p>
+                    <p>Em nenhum momento isso foi considerado ao calcular o controlador.</p>
+                    <p>Para tarefas relativamente simples em ambientes bem estruturados (como uma indústria), frequentemente
+                    essa estratégia vai funcionar sem violar nenhuma restrição. Mas é sempre importante ter um algoritmo supervisor
+                    que vai, na pior das hipóteses, pelo menos parar o robô antes que alguma restrição importante (ex: colisão) esteja na iminência
+                    de ser violada.</p>
+                    <p>Há como melhorar esse controlador para considerar restrições, mas foge do escopo deste curso.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Análise:  impacto do \(K\)</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Se a relação \(\frac{d}{dt}r=-Kr\) for satisfeita, fica claro que a constante \(K\) governa o quão rápido há convergência
+                    para tarefa.</p>
+                    <p>Matematicamente falando, só há convergência em \(t \rightarrow \infty\). Mas uma "regra de engenharia" é que
+                    podemos considerar convergência em \(t = 5/K\) unidades.</p>
+                    <p>Mesmo se a relação não seja perfeitamente satisfeita, continua sendo verdade que, quanto maior \(K\), mais rápido o
+                    controlador, com a diferença em que a relação entre o tempo de convergência e \(K\) não é tão simples.</p>
+                    <p>Evidentemente, há um preço a ser pago: maior \(K\) deixa o robô mais rápido, mas exige mais velocidade
+                    dos motores e portanto maior torque. Pode ser que o robô simplesmente não consiga executar a ação de controle enviada.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Análise:  impacto do fator de amortecimento</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Quanto maior o fator de amortecimento, \(\epsilon\), mais suave vai ser ação de controle e portanto menos
+                    problema o robô terá em executá-la.</p>
+                    <p>Entretanto, mais chance há de o robô falhar em executar a tarefa, como discutido anteriormente.</p>
+                    <p>Falando de outra forma: quando menor o \(\epsilon\), mais chance de resolver a tarefa, mas mais
+                    agressivo a ação de controle (exemplo: acelerações de configuração elevadas). Portanto o robô pode
+                    ter dificuldades de executá-la.</p>
+                    <p>Como várias coisas na engenharia, há um balanço. Normalmente usamos \(\epsilon = 10^{-3}\).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Análise: cinemática inversa</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Suponha que nossa tarefa seja alcançar uma pose constante.</b>
+                    <p>Note que, se o controlador funcionar, o robô irá se mover para uma configuração \(q_{ik}\) cuja respectiva pose no efetuador será
+                justamente a pose desejada.</p>
+                    <p>Ou seja, <b class="itext">resolvemos o problema de cinemática inversa</b>! </p>
+                    <p>Em outras palavras, a técnica apresentada pode ser utilizada para (tentar) resolver o problema de cinemática inversa:
+                    use o algoritmo de controle apresentado aqui, mas sem executá-lo no robô real. Simule o seu movimento virtualmente no
+                    algoritmo usando o modelo \(\dot{q}=u\). Se houver convergência, a configuração final resolve o problema de cinemática inversa.</p>
+                    <p>Isso é, essencialmente, o que a função <b class="itext">.ikm</b> do UAIBot faz.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Generalização</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Obtivemos nossa técnica a partir da relação \(\dot{r} = -Kr\), que força que
+                        \(r \rightarrow 0_{g \times 1}\).</b>
+                    <p>Há outras alternativas. Podemos escolher outras funções \(F: \mathbb{R}^{g \times 1} \mapsto \mathbb{R}^{g \times 1}\)
+                    tal que \(\dot{r} = F(r)\) também garante \(r \rightarrow 0_{g \times 1}\).</p>
+                    <p>Nesse caso, o controlador será:</p>
+                    <b class="itext">$$u= \dot{q} = -J_r(q,t)^{\dagger(\epsilon)}\Big( F(r(q,t)) - \frac{\partial r}{\partial t}(q,t)\Big).$$</b>
+                    <p>Isso pode induzir comportamentos interessantes de convergência para o controlador.</p>
+                    <p>Quais funções \(F\) podemos escolher?</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Generalização</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <div style="background-color: #282828">
+                        <b class="ttext">Definição:</b> Uma função \(f: \mathbb{R} \mapsto \mathbb{R}\) é uma <b
+                            class="itext">função de controle escalar (FCE)</b>
+                        se é uma função contínua tal que \(f(w) > 0\) para \(w<0\), \(f(0)=0\) e \(f(w) < 0\) para \(w >
+                        0\).
+                    </div>
+                    <p>Há muitos exemplos desse tipo de função:</p>
+                    <ul>
+                        <li>\(f(w) = -Kw\) para um \(K>0\),</li>
+                        <li>\(f(w) = -K\arctan(Aw)\) para um \(A, K>0\),</li>
+                        <li>\(f(w) = -A|w|^{n-1} w\) para um \(n, A>0\).</li>
+                    </ul>
+                    <p>Em vez de usar \(F(r) = -Kr\) podemos usar uma função \(F\) tal que sua i-ésima componente é uma
+                        FCE da i-ésima componente de \(r\): \(F_i(r) = f_i(r_i)\).
+                    </p>
+                    <p>O decaimento de cada componente de \(r_i\) para zero não mais será exponencial, mas dependerá
+                    da FCE escolhida (ver este Exercício da Aula 5).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Generalização</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p><b class="itext">Por que usar uma função diferente de \(F(r)=-Kr\)?</b>
+                    Note que o decaimento exponencial tem a seguinte característica: ele é rápido no início
+                    (quando o valor da variável é relativamente grande) e devagar no final.</p>
+
+                    <p>Portanto, o respectivo controlador pode ter a característica de convergir rápido para próximo da tarefa
+                        e depois demorar muito para eliminar essa pequena distância.
+                    </p>
+                    <p>Aumentar \(K\) não é uma boa solução, pois aumenta também a velocidade na parte inicial, que já pode ser alta.
+                    A solução passa por fazer uma constante \(K\) "dinâmica". Isso implica, essencialmente, na escolha de
+                    funções \(F\) diferentes de \(F(r)=-Kr\) para \(K\) constante.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Generalização</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>O ideal seria especificar uma velocidade de queda para a função de tarefa  que fosse
+                    constante (digamos, \(A>0\)) para todo \(w\):</p>
+                                        $$f(w) =
+                    \left\{
+                    \begin{array}{ll}
+                    -A & \mbox{se} \ w > 0 \\
+                    0 & \mbox{se} \ w = 0 \\
+                    A & \mbox{se} \ w > 0 \\
+                    \end{array}
+                    \right.$$
+                    <p>Mas como essa função não é contínua, o controlador tende a ficar muito "agressivo" perto de \(w = r_i=0\). O robô ficará
+                        "vibrando" em torno de \(r_i=0\). Para evitar isso, vamos fazer uma versão contínua dessa função:
+                    </p>
+                                        $$f(w) =
+                    \left\{
+                    \begin{array}{ll}
+                    -A & \mbox{se} \ w > 0 \\
+                    -A\frac{w}{w_{tol}} & \mbox{se} \ |w| \leq w_{tol} \\
+                    A & \mbox{se} \ w > 0 \\
+                    \end{array}
+                    \right.$$
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Generalização</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Nesse caso, \(w_{tol}\) é uma tolerância para a função de tarefa. É um valor pequeno que consideramos
+                    que a i-ésima componente da tarefa já está praticamente completa quando \(|r_i| \leq w_{tol}\).</p>
+                    <p>Essa escolha de \(f(w)\) não linear permite que tenhamos uma convergência mais homogênea para cada
+                    componente da função de tarefa.</p>
+                    <p>Para ilustrar isso, consideramos duas funções \(f_1\) e \(f_2\) e a evolução das
+                    respectivas equações \(\dot{r}_1 = f_1(r_1)\) e \(\dot{r}_2 = f_2(r_2)\). </p>
+                    <p>Foram usados \(f_1(r_1) = -r_1\)
+                    e \(f_2(r_2)\) sendo a função do slide anterior com \(A=0{,}5\) e \(w_{tol}=0{,}1\). Ambas começam
+                    com o valor de 1.</p>
+                    <p>Note que com \(f_2\) temos uma convergência mais rápida, embora tenhamos no início velocidade de queda da função de tarefa
+                    menores do que com \(f_1\)!</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A técnica de Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Generalização</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+
+                     <div style="width: 50%; float:left; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/graph1.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                     <div style="width: 50%; float:right; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/graph2.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px">A simulação do controle no UAIBot</h3>
+            <p>
+                <img src="presentation/images/aula5/titulo.png" style="width:500px;height:auto;">
+                <br>
+            </p>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A simulação do controle no UAIBot</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <p>Implementaremos agora vários controladores cinemáticos usando o UAIBot.</p>
+                    <p>Vamos definir agora uma estrutura de simulação que será utilizada em todos os exemplos. O objetivo é separar claramente a parte do código
+                    que simula o robô real e a parte do código que é o controlador.</p>
+                    <p>Assim, fica bem claro como o código seria portado para o robô real (onde não haveria "simulação" do robô).</p>
+
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A simulação do controle no UAIBot</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Vamos assumir duas interfaces, que existiriam no robô real:</p>
+                    <ul>
+                        <li><b class="itext">get_configuration</b> que retorna a configuração (posição das juntas) medida do robô.
+                        Assumimos uma medição perfeita.</li>
+                        <li><b class="itext">set_configuration_speed</b> que seta a velocidade de configuração. Assumimos que
+                        o controlador de baixo nível é perfeito e a velocidade de configuração do robô real será exatamente a
+                        desejada.</li>
+                    </ul>
+                    <p>As duas funções serão chamadas uma vez por <b class="itext">ciclo de controle</b>. Assumimos
+                    que cada ciclo de controle tem a mesma duração, \(dt\), e que entre um ciclo e outro a velocidade de
+                        configuração do robô é constante.</p>
+                    <p>Escolheremos \(dt\) em nossas simulações de acordo
+                    com nossa conveniência, mas no robô real isso é limitado pela velocidade de comunicação das interfaces.</p>
+                    <p>Ainda, obviamente, o tempo do cálculo do controlador no robô real deve ser menor que \(dt\). Em nossas
+                    simulações isso não será um problema.</p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+         <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">A simulação do controle no UAIBot</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Esboço da estrutura:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+import numpy as np
+
+#O tempo entre um ciclo de controle e o outro. No mundo real
+#ele não é constante, mas assumiremos aqui que ele é. Está
+#medido em segundos
+#0.01 s = controle a 100Hz
+dt = 0.01
+#O tempo, uma variável global
+t = 0
+#Tempo máximo de simulação
+tmax = 10
+
+def get_configuration(robot):
+  #Essa função representa o ato de medir a configuração do robô
+  #no tempo atual. Assumimos que medimos a configuração perfeitamente.
+  #Devido à qualidade dos sensores, isso é razoavelmente realista.
+  return robot.q
+
+def set_configuration_speed(robot, qdot_des):
+  #Essa função simula a interface de velocidade de um robô real.
+  #A interface assume que entre um ciclo de controle e outro, a velocidade
+  #de configuração real do robô vai ser a última enviada.
+  #Assumindo um controlador perfeito, a velocidade de configuração real
+  #é a desejada.
+  #Portanto, a configuração no final do ciclo vai ser:
+  q_next = robot.q + qdot_des*dt
+  #Atualizamos a simulação para avisar que a configuração do robô mudou.
+  robot.add_ani_frame(time = t+dt, q = q_next)
+
+
+#As inicializações (ex: parâmetros do controlador) virão aqui
+
+
+#Colocaremos aqui nosso "main" do controlador, que ficará em um laço
+#durante um tempo tmax
+for i in range(round(tmax/dt)):
+
+  #################################
+  # Início da lógica de controle  #
+  #################################
+
+  #Colocaremos aqui a lógica de controle
+
+  #################################
+  # Fim da lógica de controle     #
+  #################################
+
+  #O tempo sempre vai passar no final do ciclo
+  t+=dt
+                        </code></pre>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Simulações</h3>
+            <p>
+                <img src="presentation/images/aula5/titulo.png" style="width:500px;height:auto;">
+                <br>
+            </p>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>Vamos implementar o controle de pose completa constante para o robô <b class="itext">Kuka KR5</b>.</p>
+                    <p>A pose desejada é:</p>
+                    $$\hat{H}_e = D_x(-0{,}3m)D_y(0{,}2m)D_z(-0{,}3m)H_e$$
+                    <p>em que \(H_e\) é a pose inicial do efetuador.</p>
+                    <p>Vamos usar a função de tarefa apresentada <a href="presentation/aula5.html#/31"><b
+                            class="hlink">aqui</b></a>.</p>
+                    <p>Vamos usar primeiro \(F(r) = -Kr\) com \(K=2 s^{-1}\). Usamos \(\epsilon = 10^{-3}\) na pseudoinversa
+                    amortecida.</p>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/anim4.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>O código e o resultado:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+import numpy as np
+
+
+dt = 0.01
+t = 0
+tmax = 6
+
+def get_configuration(robot):
+  return robot.q
+
+def set_configuration_speed(robot, qdot_des):
+  q_next = robot.q + qdot_des*dt
+  robot.add_ani_frame(time = t+dt, q = q_next)
+
+
+#As inicializações (ex: parâmetros do controlador) virão aqui
+robot = ub.Robot.create_kuka_kr5()
+
+#Especifica a pose desejada para o efetuador
+htm_d = ub.Utils.trn([-0.3,0.2,-0.3]) * robot.fkm()
+#Faz a extração dos elementos x_d, y_d, z_d e s_d
+x_d = htm_d[0:3,0]
+y_d = htm_d[0:3,1]
+z_d = htm_d[0:3,2]
+s_d = htm_d[0:3,3]
+
+#Cria um referencial no cenário para que seja possível ver se ele alcancou a
+#pose
+frame_d = ub.Frame(htm = htm_d)
+
+#Cria a simulação
+sim = ub.Simulation([robot,frame_d])
+
+#Captura o número de juntas do robô
+n = np.shape(robot.q)[0]
+
+#Cria a função F:
+def fun_F(r):
+  K = 2
+  return -K*r
+
+#Cria uma matriz para o histórico de função de tarefa, da ação de controle
+#e do tempo
+hist_r = np.matrix(np.zeros((6,0)))
+hist_u = np.matrix(np.zeros((n,0)))
+hist_t = []
+
+#Colocaremos aqui nosso "main" do controlador, que ficará em um laço
+#durante um tempo tmax
+for i in range(round(tmax/dt)):
+  #################################
+  # Início da lógica de controle  #
+  #################################
+
+  #Mede a configuração dos sensores
+  q = get_configuration(robot)
+
+  #Calcula a cinemática direta e Jacobiana para o efetuador nessa
+  #configuração
+  Jg, fk = robot.jac_geo(q)
+  #Faz a extração de x_e, y_e, z_e e s_e
+  x_e = fk[0:3,0]
+  y_e = fk[0:3,1]
+  z_e = fk[0:3,2]
+  s_e = fk[0:3,3]
+
+  #Monta o vetor de tarefa
+  r = np.matrix(np.zeros((6,1)))
+  r[0:3] = s_e - s_d
+  r[3] = 1- x_d.T * x_e
+  r[4] = 1- y_d.T * y_e
+  r[5] = 1- z_d.T * z_e
+
+  #Monta a Jacobiana de tarefa
+  Jr = np.matrix(np.zeros((6,n)))
+
+  Jr[0:3,:] = Jg[0:3,:]
+  Jr[3,:] = x_d.T * ub.Utils.S(x_e) * Jg[3:6,:]
+  Jr[4,:] = y_d.T * ub.Utils.S(y_e) * Jg[3:6,:]
+  Jr[5,:] = z_d.T * ub.Utils.S(z_e) * Jg[3:6,:]
+
+  #Calcula a ação de controle
+  u = ub.Utils.dp_inv(Jr,0.001)*fun_F(r)
+
+  #Guarda informações no histórico
+  hist_r = np.block([hist_r, r])
+  hist_u = np.block([hist_u, u])
+  hist_t.append(t)
+
+  #Manda a ação de controle para o robô
+  set_configuration_speed(robot, u)
+
+  #################################
+  # Fim da lógica de controle     #
+  #################################
+
+  #O tempo sempre vai passar no final do ciclo
+  t+=dt
+
+#Roda a simulação
+sim.run()
+#plota os gráficos
+ub.Utils.plot(hist_t, hist_r, "", "Tempo (s)", "Função de tarefa", "r")
+ub.Utils.plot(hist_t, hist_u, "", "Tempo (s)", "Ação (rad/s ou m/s)", "u")
+                        </code></pre>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/anim2.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Gráficos para a função de tarefa e ação de controle:</p>
+                     <div style="width: 50%; float:left; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/graph3.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                     <div style="width: 50%; float:right; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/graph4.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>Note que algumas componentes da função de tarefa, como \(r_6\), não seguiram a especificação
+                    de decaimento exponencial.</p>
+                    <p>Note também (veja ao lado) que o controle de orientação fica meio "preguiçoso" no final. Isso
+                    é devido ao fenômeno que explicamos <a href="presentation/aula5.html#/60"><b
+                            class="hlink">aqui</b></a>, advindo da escolha da função \(F(r)=-Kr\).</p>
+                    <p>Vamos tentar a função \(F(r)\) obtida aplicando a função \(f(w)\) vista <a href="presentation/aula5.html#/61"><b
+                            class="hlink">aqui</b></a> em cada componente.</p>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/anim2.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>Agora, usamos \(f(w)\) igual para todos os componentes para formar \(F(r)\).</p>
+                    <p>Os parâmetros são \(w_{tol} = 0{,}01\) e \(A=0{,}25 s^{-1}\).</p>
+                    <p>Vamos ver o que vai acontecer...</p>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/anim4.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>O código e o resultado:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+import numpy as np
+
+
+dt = 0.01
+t = 0
+tmax = 6
+
+def get_configuration(robot):
+  return robot.q
+
+def set_configuration_speed(robot, qdot_des):
+  q_next = robot.q + qdot_des*dt
+  robot.add_ani_frame(time = t+dt, q = q_next)
+
+
+#As inicializações (ex: parâmetros do controlador) virão aqui
+robot = ub.Robot.create_kuka_kr5()
+
+#Especifica a pose desejada para o efetuador
+htm_d = ub.Utils.trn([-0.3,0.2,-0.3]) * robot.fkm()
+#Faz a extração dos elementos x_d, y_d, z_d e s_d
+x_d = htm_d[0:3,0]
+y_d = htm_d[0:3,1]
+z_d = htm_d[0:3,2]
+s_d = htm_d[0:3,3]
+
+#Cria um referencial no cenário para que seja possível ver se ele alcancou a
+#pose
+frame_d = ub.Frame(htm = htm_d)
+
+#Cria a simulação
+sim = ub.Simulation([robot,frame_d])
+
+#Captura o número de juntas do robô
+n = np.shape(robot.q)[0]
+
+#Cria a função F:
+def fun_F(r):
+    A = [0.25, 0.25, 0.25, 0.25, 0.25, 0.25]
+    w_tol = [0.01, 0.01, 0.01, 0.01, 0.01, 0.01]
+    F = np.matrix(np.zeros((6, 1)))
+    for i in range(6):
+        if abs(r[i, 0]) < w_tol[i]:
+            F[i, 0] = -A[i] * (r[i, 0] / w_tol[i])
+        elif r[i, 0] >= w_tol[i]:
+            F[i, 0] = -A[i]
+        else:
+            F[i, 0] = A[i]
+    return F
+
+#Cria uma matriz para o histórico de função de tarefa, da ação de controle
+#e do tempo
+hist_r = np.matrix(np.zeros((6,0)))
+hist_u = np.matrix(np.zeros((n,0)))
+hist_t = []
+
+#Colocaremos aqui nosso "main" do controlador, que ficará em um laço
+#durante um tempo tmax
+for i in range(round(tmax/dt)):
+  #################################
+  # Início da lógica de controle  #
+  #################################
+
+  #Mede a configuração dos sensores
+  q = get_configuration(robot)
+
+  #Calcula a cinemática direta e Jacobiana para o efetuador nessa
+  #configuração
+  Jg, fk = robot.jac_geo(q)
+  #Faz a extração de x_e, y_e, z_e e s_e
+  x_e = fk[0:3,0]
+  y_e = fk[0:3,1]
+  z_e = fk[0:3,2]
+  s_e = fk[0:3,3]
+
+  #Monta o vetor de tarefa
+  r = np.matrix(np.zeros((6,1)))
+  r[0:3] = s_e - s_d
+  r[3] = 1- x_d.T * x_e
+  r[4] = 1- y_d.T * y_e
+  r[5] = 1- z_d.T * z_e
+
+  #Monta a Jacobiana de tarefa
+  Jr = np.matrix(np.zeros((6,n)))
+
+  Jr[0:3,:] = Jg[0:3,:]
+  Jr[3,:] = x_d.T * ub.Utils.S(x_e) * Jg[3:6,:]
+  Jr[4,:] = y_d.T * ub.Utils.S(y_e) * Jg[3:6,:]
+  Jr[5,:] = z_d.T * ub.Utils.S(z_e) * Jg[3:6,:]
+
+  #Calcula a ação de controle
+  u = ub.Utils.dp_inv(Jr,0.001)*fun_F(r)
+
+  #Guarda informações no histórico
+  hist_r = np.block([hist_r, r])
+  hist_u = np.block([hist_u, u])
+  hist_t.append(t)
+
+  #Manda a ação de controle para o robô
+  set_configuration_speed(robot, u)
+
+  #################################
+  # Fim da lógica de controle     #
+  #################################
+
+  #O tempo sempre vai passar no final do ciclo
+  t+=dt
+
+#Roda a simulação
+sim.run()
+#plota os gráficos
+ub.Utils.plot(hist_t, hist_r, "", "Tempo (s)", "Função de tarefa", "r")
+ub.Utils.plot(hist_t, hist_u, "", "Tempo (s)", "Ação (rad/s ou m/s)", "u")
+                        </code></pre>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/anim3.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Gráficos para a função de tarefa e ação de controle:</p>
+                     <div style="width: 50%; float:left; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/graph5.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                     <div style="width: 50%; float:right; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/graph6.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>Note que o resultado ficou visivelmente melhor, principalmente para o controle de orientação.</p>
+                    <p>Compare o gráfico da ação de controle para os dois casos: o controlador exigiu velocidades
+                        comparáveis com a do outro caso, mas conseguiu um resultado melhor.</p>
+
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/anim3.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 2</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>Faremos agora o <b class="itext">Kuka KR5</b> rastrear uma trajetória circular, cujo caminho está
+                        colocado ao lado.</p>
+                    <p>A posição desejada para o efetuador é:</p>
+                    $$s_d(t) = \LARGE{\bigg(}\normalsize{}\begin{array}{c} R\cos(\omega_d t) \\ y_c \\ z_c + R \sin(\omega_d t) \end{array}\LARGE{\Bigg)}\normalsize{}.$$
+                    <p>em que \(R=0{,}2m\), \(y_c=0{,}6m\), \(z_c=0{,}6m\) e \(\omega_d = \frac{\pi}{2} rad/s\).</p>
+                    <p>Queremos que o eixo \(z\) do efetuador esteja alinhado com o eixo \(y\) do mundo (portanto, constante).</p>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/anim5.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 2</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>Vamos usar a função de tarefa apresentada <a href="presentation/aula5.html#/42"><b
+                            class="hlink">aqui</b></a>, mas retirando as componentes de orientação para \(x\) e \(y\), pois
+                        não há restrição.</p>
+                    <p>Vamos usar primeiro \(F(r) = -Kr\) com \(K=2 s^{-1}\). Usamos \(\epsilon = 10^{-3}\) na pseudoinversa
+                    amortecida.</p>
+                    <p>Note que precisamos do termo de feedforward, conforme mostrado <a href="presentation/aula5.html#/44"><b
+                            class="hlink">aqui</b></a>, mas retirando as componentes de orientação para \(x\) e \(y\), pois
+                        não há restrição.</p>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/anim5.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 2</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>O código e o resultado:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+import numpy as np
+
+dt = 0.01
+t = 0
+tmax = 12
+
+
+def get_configuration(robot):
+  return robot.q
+
+
+def set_configuration_speed(robot, qdot_des):
+  q_next = robot.q + qdot_des * dt
+  robot.add_ani_frame(time=t + dt, q=q_next)
+
+
+# As inicializações (ex: parâmetros do controlador) virão aqui
+robot = ub.Robot.create_kuka_kr5()
+
+# Especifica a posição desejada para o efetuador
+#como uma função de t
+#Também fornece a derivada, que vai ser utilizada no feedforward
+R = 0.2
+y_c = 0.6
+z_c = 0.6
+omega_d = np.pi/2
+s_d = lambda tt: np.matrix([R * np.cos(omega_d * tt), y_c, z_c + R * np.sin(omega_d * tt)]).reshape((3, 1))
+s_d_dot = lambda tt: np.matrix([-R * omega_d * np.sin(omega_d * tt), 0, R * omega_d * np.cos(omega_d * tt)]).reshape((3, 1))
+
+
+# Especifica a orientação desejada para o eixo z do efetuador
+z_d = np.matrix([0,1,0]).reshape((3,1))
+
+# Cria uma nuvem de pontos para visualizarmos a parte de posição da referência
+pc = np.matrix(np.zeros((3,0)))
+for i in range(200):
+  pc = np.block([pc, s_d(2*np.pi*i/199)])
+
+target_pos_pc = ub.PointCloud(points=pc, size=0.03, color="purple")
+
+#Cria uma esfera para mostrar que o robô está rastreando a trajetória
+ball_tr = ub.Ball(htm = np.identity(4), radius=0.02, color="cyan")
+
+# Cria a simulação
+sim = ub.Simulation([robot, target_pos_pc, ball_tr])
+
+# Captura o número de juntas do robô
+n = np.shape(robot.q)[0]
+
+# Cria a função F:
+def fun_F(r):
+  K = 2
+  return -K * r
+
+# Cria uma matriz para o histórico de função de tarefa, da ação de controle
+# e do tempo
+hist_r = np.matrix(np.zeros((4, 0)))
+hist_u = np.matrix(np.zeros((n, 0)))
+hist_t = []
+
+# Colocaremos aqui nosso "main" do controlador, que ficará em um laço
+# durante um tempo tmax
+for i in range(round(tmax / dt)):
+  #################################
+  # Início da lógica de controle  #
+  #################################
+
+  # Mede a configuração dos sensores
+  q = get_configuration(robot)
+
+  # Calcula a cinemática direta e Jacobiana para o efetuador nessa
+  # configuração
+  Jg, fk = robot.jac_geo(q)
+  # Faz a extração de z_e e s_e
+  z_e = fk[0:3, 2]
+  s_e = fk[0:3, 3]
+
+  # Monta o vetor de tarefa
+  r = np.matrix(np.zeros((4, 1)))
+  r[0:3] = s_e - s_d(t)
+  r[3] = 1 - z_d.T * z_e
+
+  # Monta a Jacobiana de tarefa
+  Jr = np.matrix(np.zeros((4, n)))
+
+  # Monta o termo de feedforward
+  ff = np.block([[-s_d_dot(t)],[0]])
+
+  Jr[0:3, :] = Jg[0:3, :]
+  Jr[3, :] = z_d.T * ub.Utils.S(z_e) * Jg[3:6, :]
+
+
+  # Calcula a ação de controle
+  u = ub.Utils.dp_inv(Jr, 0.001) * (fun_F(r)-ff)
+
+  # Guarda informações no histórico
+  hist_r = np.block([hist_r, r])
+  hist_u = np.block([hist_u, u])
+  hist_t.append(t)
+
+  # Manda a ação de controle para o robô
+  set_configuration_speed(robot, u)
+
+  #################################
+  # Fim da lógica de controle     #
+  #################################
+
+  # O tempo sempre vai passar no final do ciclo
+  t += dt
+
+  #Atualiza a posição da bola (apenas para visualização)
+  ball_tr.add_ani_frame(time = t, htm = ub.Utils.trn(s_d(t)))
+
+# Roda a simulação
+sim.run()
+#plota os gráficos
+ub.Utils.plot(hist_t, hist_r, "", "Tempo (s)", "Função de tarefa", "r")
+ub.Utils.plot(hist_t, hist_u, "", "Tempo (s)", "Ação (rad/s ou m/s)", "u")
+                        </code></pre>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/anim6.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 2</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Gráficos para a função de tarefa e ação de controle:</p>
+                     <div style="width: 50%; float:left; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/graph7.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                     <div style="width: 50%; float:right; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/graph8.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 2</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>Novamente (veja ao lado) o controle de orientação fica "preguiçoso" durante todo o rastreamento de trajetória.
+                        </p>
+                    <p>Vamos, novamente, tentar a função \(F(r)\) obtida aplicando a função \(f(w)\) vista <a href="presentation/aula5.html#/61"><b
+                            class="hlink">aqui</b></a> em cada componente. Vamos usar os mesmos parâmetros de antes.</p>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/anim6.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 2</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>O código e o resultado:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+import numpy as np
+
+dt = 0.01
+t = 0
+tmax = 12
+
+
+def get_configuration(robot):
+  return robot.q
+
+
+def set_configuration_speed(robot, qdot_des):
+  q_next = robot.q + qdot_des * dt
+  robot.add_ani_frame(time=t + dt, q=q_next)
+
+
+# As inicializações (ex: parâmetros do controlador) virão aqui
+robot = ub.Robot.create_kuka_kr5()
+
+# Especifica a posição desejada para o efetuador
+#como uma função de t
+#Também fornece a derivada, que vai ser utilizada no feedforward
+R = 0.2
+y_c = 0.6
+z_c = 0.6
+omega_d = np.pi/2
+s_d = lambda tt: np.matrix([R * np.cos(omega_d * tt), y_c, z_c + R * np.sin(omega_d * tt)]).reshape((3, 1))
+s_d_dot = lambda tt: np.matrix([-R * omega_d * np.sin(omega_d * tt), 0, R * omega_d * np.cos(omega_d * tt)]).reshape((3, 1))
+
+
+# Especifica a orientação desejada para o eixo z do efetuador
+z_d = np.matrix([0,1,0]).reshape((3,1))
+
+# Cria uma nuvem de pontos para visualizarmos a parte de posição da referência
+pc = np.matrix(np.zeros((3,0)))
+for i in range(200):
+  pc = np.block([pc, s_d(2*np.pi*i/199)])
+
+target_pos_pc = ub.PointCloud(points=pc, size=0.03, color="purple")
+
+#Cria uma esfera para mostrar que o robô está rastreando a trajetória
+ball_tr = ub.Ball(htm = np.identity(4), radius=0.02, color="cyan")
+
+# Cria a simulação
+sim = ub.Simulation([robot, target_pos_pc, ball_tr])
+
+# Captura o número de juntas do robô
+n = np.shape(robot.q)[0]
+
+# Cria a função F:
+def fun_F(r):
+    A = 0.25
+    w_tol = [0.01, 0.01, 0.01, 0.01, 0.01, 0.01]
+    F = np.matrix(np.zeros((4, 1)))
+    for i in range(4):
+        if abs(r[i, 0]) < w_tol[i]:
+            F[i, 0] = -A * (r[i, 0] / w_tol[i])
+        elif r[i, 0] >= w_tol[i]:
+            F[i, 0] = -A
+        else:
+            F[i, 0] = A
+    return F
+
+# Cria uma matriz para o histórico de função de tarefa, da ação de controle
+# e do tempo
+hist_r = np.matrix(np.zeros((4, 0)))
+hist_u = np.matrix(np.zeros((n, 0)))
+hist_t = []
+
+# Colocaremos aqui nosso "main" do controlador, que ficará em um laço
+# durante um tempo tmax
+for i in range(round(tmax / dt)):
+  #################################
+  # Início da lógica de controle  #
+  #################################
+
+  # Mede a configuração dos sensores
+  q = get_configuration(robot)
+
+  # Calcula a cinemática direta e Jacobiana para o efetuador nessa
+  # configuração
+  Jg, fk = robot.jac_geo(q)
+  # Faz a extração de z_e e s_e
+  z_e = fk[0:3, 2]
+  s_e = fk[0:3, 3]
+
+  # Monta o vetor de tarefa
+  r = np.matrix(np.zeros((4, 1)))
+  r[0:3] = s_e - s_d(t)
+  r[3] = 1 - z_d.T * z_e
+
+  # Monta a Jacobiana de tarefa
+  Jr = np.matrix(np.zeros((4, n)))
+
+  # Monta o termo de feedforward
+  ff = np.block([[-s_d_dot(t)],[0]])
+
+  Jr[0:3, :] = Jg[0:3, :]
+  Jr[3, :] = z_d.T * ub.Utils.S(z_e) * Jg[3:6, :]
+
+
+  # Calcula a ação de controle
+  u = ub.Utils.dp_inv(Jr, 0.001) * (fun_F(r)-ff)
+
+  # Guarda informações no histórico
+  hist_r = np.block([hist_r, r])
+  hist_u = np.block([hist_u, u])
+  hist_t.append(t)
+
+  # Manda a ação de controle para o robô
+  set_configuration_speed(robot, u)
+
+  #################################
+  # Fim da lógica de controle     #
+  #################################
+
+  # O tempo sempre vai passar no final do ciclo
+  t += dt
+
+  #Atualiza a posição da bola (apenas para visualização)
+  ball_tr.add_ani_frame(time = t, htm = ub.Utils.trn(s_d(t)))
+
+# Roda a simulação
+sim.run()
+#plota os gráficos
+ub.Utils.plot(hist_t, hist_r, "", "Tempo (s)", "Função de tarefa", "r")
+ub.Utils.plot(hist_t, hist_u, "", "Tempo (s)", "Ação (rad/s ou m/s)", "u")
+                        </code></pre>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/anim7.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 2</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Gráficos para a função de tarefa e ação de controle:</p>
+                     <div style="width: 50%; float:left; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/graph9.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                     <div style="width: 50%; float:right; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/graph10.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 3</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>Vamos agora ver um exemplo de controle com dois manipuladores.
+                        Para isso, vamos usar o robô <b class="itext">Darwin Mini</b>.</p>
+                    <p>Vamos considerar que o torso e as pernas estão fixas. Então cada um dos dois braços é um
+                    manipulador fixo com <b class="itext">3 graus de liberdade</b> cada.</p>
+                    <p>Os dois braços estão segurando uma bola. Temos que fazer movimentos <b class="itext">sincronizados</b>
+                    com os dois braços para mover a bola.</p>
+                    <p>Queremos mover os dois braços de modo que o centro da bola faça a trajetória:</p>
+                    $$s_{db}(t) = (x_c \ \ R\cos(\omega_Bt) \ \ z_c {+} R\sin(\omega_Bt))^T$$
+                    <p>para \(x_c = 0{,}35m\), \(z_c=0{,}6m\), \(R=0{,}05m\) e \(\omega_B = \frac{2\pi}{3} rad/s\). </p>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/anim8.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 3</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Sejam \(q_{E}, q_{D}\) a configuração dos braços da esquerda e direita, respectivamente.
+                    Seja \(q = (q_E^T \ q_D^T)^T\) a configuração total do sistema.</p>
+                    <p>Sejam \(s_E(q_E)\) e \(s_D(q_D)\) a posição do referencial grudado nas mãos esquerda e direita, respectivamente,
+                    com relação ao referencial \(\mathcal{F}_0\).</p>
+                    <p>A primeira subtarefa (A) é que o vetor distância entre os pontos \(s_E\) e \(s_D\) deve
+                    se manter constante, mantendo o valor inicial \(s_{ED0}\).   </p>
+                    <p>Com isso, garantimos que os braços não se separarão (a bola irá cair) e não se aproximarão mais
+                    (pode pressionar a bola e ela estourar).</p>
+                    <p>A função de tarefa para essa subtarefa é</p>
+                    <b class="itext">$$r_A(q) = s_E(q_E)-s_D(q_D)-s_{ED0}.$$</b>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 3</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Agora vamos escrever a função de tarefa para garantir a segunda subtarefa (B): que o centro da bola faça a trajetória
+                    desejada \(s_{bd}(t)\).</p>
+                    <p>Como a subtarefa (A) garante que o vetor distância ficará constante, o que queremos é que:</p>
+                    $$\frac{1}{2}(s_E(q_E) + s_D(q_D)) = s_{db}(t).$$
+                    <p>Então podemos usar a função de tarefa para essa subtarefa:</p>
+                    <b class="itext">$$r_B(q,t) = \frac{1}{2}(s_E(q_E)+s_D(q_D))-s_{db}(t).$$</b>
+
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 3</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>A função de tarefa (variante no tempo) é:</p>
+                    <b class="itext">$$r(q,t) = \large{\Bigg(}\normalsize{}\begin{array}{c} r_A(q) \\ r_B(q,t) \end{array}\large{\Bigg)}\normalsize{}.$$</b>
+                    <p>Precisamos agora calcular a Jacobiana de tarefa e o termo de feedforward.</p>
+                    <p>Vamos usar o truque de <b class="itext">derivar no tempo</b> a função de tarefa.</p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 3</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Sejam \(J_{vE}(q_E)\) e \(J_{vD}(q_D)\) as Jacobianas de velocidade linear para os braços da esquerda e
+                    direita, respectivamente.</p>
+                    <p>Então:</p>
+                    $$\frac{d}{dt}r_A = \frac{d}{dt}(s_E-s_D-s_{ED0}) = J_{vE}\dot{q}_E - J_{vD}\dot{q}_D$$
+                    <p>já que \(s_{ED0}\) é constante.</p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 3</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Com relação a segunda subtarefa:</p>
+                    <p>Então:</p>
+                    $$\frac{d}{dt}r_B = \frac{d}{dt}\left(\frac{1}{2}(s_E+s_D)-s_{bd}\right) = \frac{1}{2}J_{vE}\dot{q}_E + \frac{1}{2}J_{vD}\dot{q}_D - \dot{s}_{bd}$$
+                    <p>já que \(s_{bd}(t)\) não é constante.</p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 3</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Portanto, podemos escrever, matricialmente:</p>
+                    $$\frac{d}{dt}r =  \large{\Bigg(}\normalsize{}\begin{array}{cc} J_{vE} & -J_{vD} \\ \frac{1}{2}J_{vE} & \frac{1}{2}J_{vD} \end{array}\large{\Bigg)}\normalsize{}
+                    \large{\Bigg(}\normalsize{}\begin{array}{cc} \dot{q}_E \\ \dot{q}_D \end{array}\large{\Bigg)}\normalsize{} + \large{\Bigg(}\normalsize{}\begin{array}{cc} 0_{3 \times 1} \\ -\dot{s}_{bd} \end{array}\large{\Bigg)}\normalsize{}.$$
+                    <p>Portanto, podemos extrair pela regra da cadeia (ver <a href="presentation/aula5.html#/43"><b
+                            class="hlink">este slide</b></a>):</p>
+                    <b class="itext">$$J_r = \large{\Bigg(}\normalsize{}\begin{array}{cc} J_{vE} & -J_{vD} \\ \frac{1}{2}J_{vE} & \frac{1}{2}J_{vD} \end{array}\large{\Bigg)}\normalsize{} \ , \ \frac{\partial r}{\partial t} = \large{\Bigg(}\normalsize{}\begin{array}{cc} 0_{3 \times 1} \\ -\dot{s}_{bd} \end{array}\large{\Bigg)}\normalsize{}.$$</b>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 3</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Vamos usar \(F(r)=-Kr\) com \(K = 5s^{-1}\).</p>
+                    <p>Vamos usar \(\epsilon = 10^{-3}\).</p>
+
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 3</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>O código e o resultado:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+import numpy as np
+
+dt = 0.01
+t = 0
+tmax = 12
+
+
+def get_configuration(robot):
+  return robot.q
+
+
+def set_configuration_speed(robot, qdot_des):
+  q_next = robot.q + qdot_des * dt
+  robot.add_ani_frame(time=t + dt, q=q_next)
+
+#Inicializações
+robot = ub.Robot.create_darwin_mini()
+ball = ub.Ball(htm=ub.Utils.trn([0.4,0,0.6]), radius=0.15, color="yellow")
+
+#Pega as variáveis referentes aos dois braços
+right_arm = robot.list_of_objects[0]
+left_arm = robot.list_of_objects[1]
+
+#Coloca as configurações iniciais do cenário
+right_arm.add_ani_frame(0, q=[ 0.50289982, -0.12686379, -0.0784082])
+left_arm.add_ani_frame(0, q=[ 2.63894549, -0.12686379, -0.0784082])
+
+#Parâmetros da trajetória
+radius_mov = 0.05
+omega_mov = 2*np.pi/3
+s_bd = lambda tt: np.matrix(
+    [0.35, radius_mov * np.cos(omega_mov * tt), 0.6 + radius_mov * np.sin(omega_mov * tt)]).reshape((3, 1))
+dot_s_bd = lambda tt: np.matrix(
+    [0, -omega_mov * radius_mov * np.sin(omega_mov * tt), omega_mov * radius_mov * np.cos(omega_mov * tt)]).reshape(
+    (3, 1))
+
+s_ED0 = left_arm.fkm()[0:3, 3] - right_arm.fkm()[0:3, 3]
+
+#Cria a simulação
+sim = ub.Simulation.create_sim_factory([robot, ball])
+
+# Cria a função F:
+def fun_F(r):
+  K = 5
+  return -K*r
+
+# Cria uma matriz para o histórico de função de tarefa, da ação de controle
+# e do tempo
+hist_r = np.matrix(np.zeros((4, 0)))
+hist_u = np.matrix(np.zeros((n, 0)))
+hist_t = []
+
+# Colocaremos aqui nosso "main" do controlador, que ficará em um laço
+# durante um tempo tmax
+for i in range(round(tmax / dt)):
+  #################################
+  # Início da lógica de controle  #
+  #################################
+
+# Mede as configurações dos sensores
+  q_E = get_configuration(left_arm)
+  q_D = get_configuration(right_arm)
+
+  #Calcula as Jacobianas geométricas
+  Jg_E, fk_E = left_arm.jac_geo(q_E)
+  Jg_D, fk_D = right_arm.jac_geo(q_D)
+
+  s_E = fk_E[0:3, 3]
+  s_D = fk_D[0:3, 3]
+
+  #Monta as funções de tarefa e Jacobianas
+  r = np.matrix(np.zeros((6, 1)))
+  r[0:3, 0] = s_E - s_D - s_ED0
+  r[3:6, 0] = (s_E + s_D) / 2 - s_bd(t)
+
+  Jr = np.matrix(np.zeros((6, 6)))
+  Jr[0:3, 0:3] = Jg_E[0:3, :]
+  Jr[0:3, 3:6] = -Jg_D[0:3, :]
+  Jr[3:6, 0:3] = Jg_E[0:3, :] / 2
+  Jr[3:6, 3:6] = Jg_D[0:3, :] / 2
+
+  ff = np.matrix(np.zeros((6, 1)))
+  ff[3:6, 0] = -dot_s_bd(t)
+
+  #Calcula a velocidade de configuração
+  u = ub.Utils.dp_inv(Jr,0.001) * (fun_F(r) - ff)
+
+  u_E = u[0:3, 0]
+  u_D = u[3:6, 0]
+
+  # Guarda informações no histórico
+  hist_r = np.block([hist_r, r])
+  hist_u = np.block([hist_u, u])
+  hist_t.append(t)
+
+  # Manda a ação de controle para o robô
+  set_configuration_speed(left_arm, u_E)
+  set_configuration_speed(right_arm, u_D)
+
+  #################################
+  # Fim da lógica de controle     #
+  #################################
+
+  # O tempo sempre vai passar no final do ciclo
+  t += dt
+
+  #Atualiza a posição da bola
+  ball.add_ani_frame(t, htm=ub.Utils.trn((s_E + s_D) / 2))
+
+# Roda a simulação
+sim.run()
+#plota os gráficos
+ub.Utils.plot(hist_t, hist_r, "", "Tempo (s)", "Função de tarefa", "r")
+ub.Utils.plot(hist_t, hist_u, "", "Tempo (s)", "Ação (rad/s ou m/s)", "u")
+                        </code></pre>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/anim9.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulações</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 3</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Gráficos para a função de tarefa e ação de controle:</p>
+                     <div style="width: 50%; float:left; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/graph11.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                     <div style="width: 50%; float:right; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="presentation/images/aula5/graph12.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Controle Cinemático</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Conclusão</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>O <b class="itext">controle cinemático</b> é uma maneira prática de controlar o robô
+                    assumindo que há uma interface de baixo nível que garante uma velocidade de configuração desejada.</p>
+                    <p>É aplicável em situações em que não há altas velocidades nem a necessidade de se controlar
+                    precisamente a força que é feita no ambiente.</p>
+                    <p>Há muitas outros aspectos interessantes do controle cinemático que não são abordados neste
+                    curso, como:</p>
+                    <ul>
+                        <li>Controle com restrições (ex: obstáculos);</li>
+                        <li>Priorização de tarefas;</li>
+                        <li>Controle de caminho em vez de controle de trajetória (campo vetorial).</li>
+                    </ul>
+
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</div>
+<style>
+    .reveal .progress {
+        color: #34eb5e;
+    }
+
+    .reveal .controls {
+        color: #34eb5e;
+    }
+
+    body {
+        background-image: url(presentation/images/aula1/logo_ufmg.svg) !important;
+        background-color: black;
+        background-size: 8% !important;
+        background-repeat: no-repeat !important;
+        background-position: 96% 3% !important;
+    }
+
+    .itext {
+        color: #8af2a2;
+    }
+    .ttext {
+        color: #34eb5e;
+    }
+    .hlink {
+        color: #f5bf42;
+    }
+
+    .hlink:hover {
+        text-decoration: underline;
+    }
+
+    /* width */
+    ::-webkit-scrollbar {
+        width: 20px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 10px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #34eb5e;
+        border-radius: 10px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #01b82b;
+    }
+
+    ::-webkit-scrollbar-corner {
+        background: rgba(0, 0, 0, 0);
+    }
+</style>
+
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+<script src="presentation/dist/reveal.js"></script>
+<script src="presentation/plugin/notes/notes.js"></script>
+<script src="presentation/plugin/markdown/markdown.js"></script>
+<script src="presentation/plugin/highlight/highlight.js"></script>
+<script src="presentation/plugin/menu/menu.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        hash: true,
+        width: 1200,
+        height: 800,
+        margin: 0,
+        minScale: 0.2,
+        maxScale: 2.0,
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu]
+    });
+    var frames = document.getElementsByTagName("iframe");
+
+
+    Reveal.on('slidechanged', event => {
+        for (let i = 0; i < frames.length; ++i) {
+            frames[i].contentWindow.location.reload(true);
+        }
+    });
+</script>
+</body>
+</html>
+

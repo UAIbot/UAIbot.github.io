@@ -1,0 +1,374 @@
+<!doctype html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+
+    <script>
+        // Check if the site is being served from GitHub Pages
+        if (window.location.hostname === "viniciusmgn.github.io") {
+            document.write('<base href="/aulas_manipuladores/">');
+        } else {
+            document.write('<base href="/">');  // Local development base
+        }
+    </script>
+    
+    <title>Lista de Exercícios</title>
+
+    <link rel="stylesheet" href="presentation/dist/reset.css">
+    <link rel="stylesheet" href="presentation/dist/reveal.css">
+    <link rel="stylesheet" href="presentation/dist/theme/black.css">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="presentation/plugin/highlight/monokai.css">
+    <style>
+        .reveal .slides section {
+            padding: 20px; /* Adjust the value as needed */
+        }
+    </style>
+</head>
+
+<body>
+<div class="reveal">
+    <div class="slides">
+
+        <section data-menu-title="Introdução">
+            <h3>Manipuladores Robóticos</h3>
+            <h3 style="font-size:40px">Lista de Exercícios</h3>
+            <p>
+                <img src="presentation/images/exercicios3/titulo_cin_direta.svg"
+                     style="width:350px;height:auto;">
+                <br><small>Vinicius Mariano Gonçalves</small>
+            </p>
+        </section>
+
+
+
+        <section data-menu-title="Exercício 1">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Considere o robô ao lado, com uma junta rotativa e uma prismática.</p>
+                    <p>Considere que quando \(q_1=0\) o eixo \(z_e\) esteja alinhado com \(x_0\).</p>
+                    <p>Considere que quando \(q_2=0\) o centro do referencial \(\mathcal{F}_e\) seja o ponto \(P\).</p>
+                    <p>O desenho mostra o sentido positivo de rotação/translação das duas juntas.</p>
+                    <p>Calcule a cinemática direta dele para efetuador, ou seja, a MTH \(H_0^{e}(q)\).</p>
+                    <p><a href="presentation/respostas3.html#/1"><b
+                            class="hlink">Resposta</b></a></p>
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios3/robo_1_tr.png"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <section data-menu-title="Exercício 2">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 2</b>
+
+            </h3>
+            <div style="width:1200px;height:800px;font-size:25px; text-align:justify; text-justify: inter-word">
+
+                <p>Considere o manipulador abaixo, com três juntas rotativas. </p>
+
+                <div style="vertical-align: middle; text-align: center; align-items: center">
+                    <img src="presentation/images/exercicios3/robo_2_tr.png"
+                         style="width:600px;height:auto;text-align: center">
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 2 (cont.)">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 2</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Considere que o eixo \(x_0\) está alinhado
+                        com a linha da primeira junta, e que um deslocamento em \(z_0\) faz o centro do referencial
+                        \(\mathcal{F}_0\)
+                        ir para essa linha.</p>
+                    <p>Considere também que as linhas das duas primeiras juntas são paralelas, e que a segunda e
+                        terceira linha
+                        são ortogonais.</p>
+                    <p>(a) Crie os quatro referenciais de Denavit-Hartenberg.</p>
+                    <p>(b) Derive os \(3 \times 4 = 12\) parâmetros.</p>
+                    <p>(c) Usando esses referenciais, calcule a cinemática direta do referencial \(\mathcal{F}_0\) para
+                        o referencial
+                        do efetuator, \(\mathcal{F}_e\).</p>
+                    <p><a href="presentation/respostas3.html#/3"><b
+                            class="hlink">Resposta</b></a></p>
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios3/titulo_cin_direta.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 3">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 3</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Um referencial de Denavit-Hartenberg tem que ter seu centro necessariamente dentro do elo em que
+                        está grudado? Justifique.</p>
+                    <p><a href="presentation/respostas3.html#/7"><b
+                            class="hlink">Resposta</b></a></p>
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios3/titulo_cin_direta.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 4">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 4</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Podemos ter dois referenciais de Denavit-Hartenberg, para um mesmo robô, distintos que têm o
+                        mesmo centro? Justifique.</p>
+                    <p><a href="presentation/respostas3.html#/8"><b
+                            class="hlink">Resposta</b></a></p>
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios3/titulo_cin_direta.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 5">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 5</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Sabemos que uma transformação entre dois referenciais genéricos exige, no mínimo 6 números.</p>
+                    <p>Sabendo disso, explique o porquê da transformação entre dois referenciais de Denavit-Hartenberg
+                        necessitar de
+                        menos parâmetros (no caso, 4).</p>
+                    <p><a href="presentation/respostas3.html#/9"><b
+                            class="hlink">Resposta</b></a></p>
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios3/titulo_cin_direta.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 6">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 6</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Podemos sempre garantir que o problema de cinemática inversa tem solução? Justifique.</p>
+                    <p><a href="presentation/respostas3.html#/10"><b
+                            class="hlink">Resposta</b></a></p>
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios3/titulo_cin_direta.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 7">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">Exercício 7</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Considere o cenário ao lado, que pode ser criado pelo código a seguir no UAIBot:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+import numpy as np
+
+#Cria o cenário
+robot = ub.Robot.create_abb_crb(ub.Utils.trn([0,0,0.2]))
+
+texture_table = ub.Texture(
+    url='https://raw.githubusercontent.com/viniciusmgn/uaibot_content/master/contents/Textures/rough_metal.jpg',
+    wrap_s='RepeatWrapping', wrap_t='RepeatWrapping', repeat=[1, 1])
+
+material_table = ub.MeshMaterial(texture_map=texture_table, roughness=1, metalness=1, opacity=1)
+table1 = ub.Box(name="table1", htm = ub.Utils.trn([0.8,0,0.15]), width=0.5, depth=0.5, height=0.4, mesh_material=material_table)
+table2 = ub.Box(name="table2", htm = ub.Utils.trn([0,-0.8,0.15]), width=0.5, depth=0.5, height=0.4, mesh_material=material_table)
+table3 = ub.Box(name="table3", htm = ub.Utils.trn([0,0,0.1]), width=0.3, depth=0.3, height=0.2, mesh_material=material_table)
+obstacle = ub.Box(name="obstacle", htm = ub.Utils.trn([0.8,-0.8,0.5]), width=0.6, depth=0.6, height=1, mesh_material=material_table)
+
+material_cube = ub.MeshMaterial(roughness=1, metalness=1, opacity=1, color="purple")
+cube = ub.Box(name="cube", htm = ub.Utils.trn([0.8,0,0.4]), width=0.1, depth=0.1, height=0.1, mesh_material=material_cube)
+
+sim = ub.Simulation.create_sim_factory([robot, table1, table2, table3, obstacle, cube])
+                        </code></pre>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: top; display:table">
+                            <iframe scrolling="no"
+                            src="presentation/images/exercicios3/anim1.html"
+                            style="width:500px;height:550px"></iframe>
+                </div>
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 7 (cont.)">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">Exercício 7</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Crie um código no UAIBot para que ele pegue o bloco roxo em uma mesa e entregue na outra, sem
+                    bater nos obstáculos. O robô deve pegar e entregar o objeto por cima!</p>
+                    <p>Use a cinemática inversa e interpolação linear, tal qual como <a href="presentation/aula3.html#/61"><b
+                            class="hlink">neste exemplo</b> </a> da Aula 3.
+                    </p>
+                    <p>Use a função <b class="itext">robot.attach_object(cube)</b> para fazer o efetuador pegar o objeto quando estiver na pose correta.</p>
+                    <p>A função <b class="itext">ikm</b> aceita um parâmetro <b class="itext">q0</b>, tentando encontrar uma configuração na cinemática
+                    inversa próxima de <b class="itext">q0</b>. Use isso a seu favor.</p>
+                    <p><a href="presentation/respostas3.html#/11"><b
+                            class="hlink">Resposta</b></a></p>
+                </div>
+                <div style="width: 5%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 45%; float:right; text-align:left; vertical-align: middle; display:table">
+                            <iframe scrolling="no"
+                            src="presentation/images/exercicios3/anim1.html"
+                            style="width:500px;height:550px"></iframe>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</div>
+<style>
+    .reveal .progress {
+        color: #34eb5e;
+    }
+
+    .reveal .controls {
+        color: #34eb5e;
+    }
+
+    body {
+        background-image: url(presentation/images/aula1/logo_ufmg.svg) !important;
+        background-color: black;
+        background-size: 8% !important;
+        background-repeat: no-repeat !important;
+        background-position: 96% 3% !important;
+    }
+
+    .itext {
+        color: #8af2a2;
+    }
+    .ttext {
+        color: #34eb5e;
+    }
+
+    .hlink {
+        color: #f5bf42;
+    }
+
+    .hlink:hover {
+        text-decoration: underline;
+    }
+    /* width */
+    ::-webkit-scrollbar {
+        width: 20px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 10px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #34eb5e;
+        border-radius: 10px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #01b82b;
+    }
+
+    ::-webkit-scrollbar-corner {
+        background: rgba(0, 0, 0, 0);
+    }
+</style>
+
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+<script src="presentation/dist/reveal.js"></script>
+<script src="presentation/plugin/notes/notes.js"></script>
+<script src="presentation/plugin/markdown/markdown.js"></script>
+<script src="presentation/plugin/highlight/highlight.js"></script>
+<script src="presentation/plugin/menu/menu.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        hash: true,
+        width: 1200,
+        height: 700,
+        margin: 0,
+        minScale: 0.2,
+        maxScale: 2.0,
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu]
+    });
+    var frames = document.getElementsByTagName("iframe");
+
+
+    Reveal.on('slidechanged', event => {
+        for (let i = 0; i < frames.length; ++i) {
+            frames[i].contentWindow.location.reload(true);
+        }
+    });
+</script>
+</body>
+</html>
+

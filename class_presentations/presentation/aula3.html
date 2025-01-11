@@ -1,0 +1,1725 @@
+<!doctype html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+
+    <script>
+        // Check if the site is being served from GitHub Pages
+        if (window.location.hostname === "viniciusmgn.github.io") {
+            document.write('<base href="/aulas_manipuladores/">');
+        } else {
+            document.write('<base href="/">');  // Local development base
+        }
+    </script>
+    
+    <title>Aula 3 - Manipuladores Robóticos</title>
+
+    <link rel="stylesheet" href="presentation/dist/reset.css">
+    <link rel="stylesheet" href="presentation/dist/reveal.css">
+    <link rel="stylesheet" href="presentation/dist/theme/black.css">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="presentation/plugin/highlight/monokai.css">
+    <style>
+        .reveal .slides section {
+            padding: 20px; /* Adjust the value as needed */
+        }
+    </style>
+</head>
+
+<body>
+<div class="reveal">
+    <div class="slides">
+
+        <section>
+            <h3>Manipuladores Robóticos</h3>
+            <h3 style="font-size:40px">Aula 3: Cinemática Direta e Inversa</h3>
+            <p>
+                <img src="presentation/images/aula3/titulo.svg" style="width:400px;height:auto;">
+                <br><small>Vinicius Mariano Gonçalves</small>
+            </p>
+        </section>
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Direta</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Já sabemos como descrever o movimento de um corpo rígido separadamente.</p>
+                    <p>Nosso robô é formado pela junção de corpos rígidos (os elos e o efetuador). Mas
+                        <b class="itext">eles não movem de maneira independente!</b> É o movimento das <b class="itext">juntas</b>
+                        do robô que proporciona esse movimento.</p>
+                    <p>Relacionar o movimento da junta com o movimento dos elos/efetuador é o objetivo da <b
+                            class="itext">Cinemática Direta</b>.</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Configuração</h3>
+            <p>
+                <img src="presentation/images/aula3/titulo.svg">
+                <br>
+            </p>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configuração</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Começamos com um conceito/definição importante: <b class="itext">configuração</b>.</p>
+                    <p>No contexto de robótica de manipuladores de base fixa, elos rígidos e de cadeia aberta, a <b
+                            class="itext">configuração</b>
+                        do robô em um determinado instante de tempo, <b class="itext">\(q\)</b>, nada mais é do que um
+                        vetor coluna
+                        com \(n\) elementos, em que \(n\) é o número de juntas, que tem a rotação (junta rotativa)/
+                        translação (junta linear) da junta
+                        naquele instante de tempo.</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br>
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configuração</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Qual é o sentido de rotação/translação da junta quando o valor de \(q_i\) cresce e qual é a
+                        rotação/translação
+                        correspondente ao valor nulo da junta (\(q_i=0\)) é uma questão <b class="itext">puramente de
+                            convenção</b>.</p>
+                    <p>Isso é comum na física (ao criar um referencial, você define qual é o ponto zero, qual é o
+                        sentido positivo do eixo \(x\), etc...).</p>
+                    <p>Normalmente, isso já vem definido no robô, mas pode ser facilmente mudado se lhe for
+                        conveniente.</p>
+                    <p>
+                        Veja as diversas configurações ao lado, onde é possível determinar o sentido de rotação
+                        escolhido (anti-horário)
+                        e a rotação nula para as duas juntas.
+                    </p>
+
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle; align-items: center">
+                        <div style="position:absolute;top:50px;right:50px"
+                             class="vim_indicator current-visible fragment"
+                             data-fragment-index="0">
+                            <img src="presentation/images/aula3/configmostra1.svg"
+                                 style="width:400px;height:auto;">
+                        </div>
+                        <div style="position:absolute;top:50px;right:50px"
+                             class="vim_indicator current-visible fragment"
+                             data-fragment-index="1">
+                            <img src="presentation/images/aula3/configmostra2.svg"
+                                 style="width:400px;height:auto;">
+                        </div>
+                        <div style="position:absolute;top:50px;right:50px"
+                             class="vim_indicator current-visible fragment"
+                             data-fragment-index="2">
+                            <img src="presentation/images/aula3/configmostra3.svg"
+                                 style="width:400px;height:auto;">
+                        </div>
+                        <div style="position:absolute;top:50px;right:50px"
+                             class="vim_indicator current-visible fragment"
+                             data-fragment-index="3">
+                            <img src="presentation/images/aula3/configmostra4.svg"
+                                 style="width:400px;height:auto;">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configuração</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Note que, em posse da configuração, podemos determinar a posição de qualquer partícula do
+                        robô.</p>
+                    <p>A definição geral de configuração na Mecânica é essa: <b class="itext">a informação necessária
+                        para, naquele instante de tempo,
+                        determinar a posição de qualquer partícula de um sistema</b>.</p>
+                    <p>No nosso caso, essa informação é a rotação/translação das juntas rotativas e lineares,
+                        respectivamente.</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br>
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Exemplos Simples</h3>
+            <p>
+                <img src="presentation/images/aula3/titulo.svg">
+                <br>
+            </p>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Vamos calcular um primeiro exemplo de cinemática direta. Considere o robô planar ao lado, com
+                        duas
+                        juntas rotativas.</p>
+                    <p>Os dois elos têm 0,5m.</p>
+                    <p>Calcule \(T^{e}_0(q)\), ou seja, a MTH do referencial que está grudado no efetuador,
+                        \(\mathcal{F}_e\) em relação ao referencial
+                        \(\mathcal{F}_0\), em função da configuração \(q\).</p>
+                    <p>Considere que o sentido de rotação positivo das duas juntas é o anti-horário. Ainda, que em
+                        \(q_1=q_2=0\), o robô
+                        está todo esticado para à direita.</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicadira1.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Vamos resolver o problema por partes. Primeiro, calcularemos o vetor \(s(q)\), que é o centro do
+                        referencial
+                        \(\mathcal{F}_e\) escrito no referencial \(\mathcal{F}_0\).</p>
+                    <p>Começamos traçando o vetor \(v_1\) que vai do centro de \(\mathcal{F}_0\), que é o centro da
+                        primeira junta, até o
+                        centro da segunda junta...</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicadira2.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Com uma trigonometria básica, descobrimos que a componente \(x_0\) desse vetor é <b
+                            class="itext">\(0,5\cos(q_1)\)</b>, e
+                        a componente \(z_0\) é <b class="itext">\(0,5\sin(q_1)\)</b>. A componente \(y_0\) é <b
+                                class="itext">\(0\)</b>.</p>
+                    <p>Então:
+                        $$v_1(q) = \Large{\Bigg(}\normalsize{}\begin{array}{c} 0,5\cos(q_1) \\ 0 \\ 0,5\sin(q_1)
+                        \end{array}\Large{\Bigg)}\normalsize{}.$$</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicadira3.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Vamos traçar agora o vetor \(v_2\), que vai do centro da segunda junta até o centro de
+                        \(\mathcal{F}_e\).</p>
+                    <p>Com um pouco de geometria, descobrimos que o ângulo que esse vetor faz com o eixo \(x_0\) é
+                        \(q_1+q_2\).</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicadira4.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Novamente, com uma trigonometria básica, descobrimos que a componente \(x_0\) desse vetor é <b
+                            class="itext">\(0,5\cos(q_1+q_2)\)</b>, e
+                        a componente \(z_0\) é <b class="itext">\(0,5\sin(q_1+q_2)\)</b>. A componente \(y_0\) é <b
+                                class="itext">\(0\)</b>.</p>
+                    <p>Então:
+                        $$v_2(q) = \Large{\Bigg(}\normalsize{}\begin{array}{c} 0,5\cos(q_1+q_2) \\ 0 \\ 0,5\sin(q_1+q_2)
+                        \end{array}\Large{\Bigg)}\normalsize{}.$$</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicadira6.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Portanto, o vetor \(s(q)\) é \(v_1(q)+v_2(q)\):</p>
+                    <p>Então:
+                        <b class="itext">$$s(q) = \Large{\Bigg(}\normalsize{}\begin{array}{c}
+                            0,5\cos(q_1)+0,5\cos(q_1+q_2) \\ 0 \\ 0,5\sin(q_1)+0,5\sin(q_1+q_2)
+                            \end{array}\Large{\Bigg)}\normalsize{}.$$</b></p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicadira6.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Precisamos agora achar a matriz de rotação \(Q(q)\).</p>
+                    <p>Note, pela imagem ao lado, que, desconsiderando a translação (já resolvida quando calculamos
+                        \(s(q)\)), o referencial
+                        \(\mathcal{F}_e\) é o referencial \(\mathcal{F}_0\) rodado de \(q_1+q_2\) no eixo \(y_0\) <b
+                                class="itext">no sentido horário!</b> Como definimos a rotação positiva como sendo no
+                        sentido
+                        <b class="itext">no sentido anti-horário</b>, então será uma rotação de <b class="itext">\(-(q_1+q_2\))</b>
+                        em \(y_0\).</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicadira7.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Portanto:</p>
+                    <p><b class="itext">$$ Q(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{ccc}
+                        \cos(q_1+q_2) & 0 & -\sin(q_1+q_2) \\
+                        0 & 1 & 0 \\
+                        \sin(q_1+q_2) & 0 & \cos(q_1+q_2)
+                        \end{array}\LARGE{\Bigg)}\normalsize{}$$</b></p>
+                    <p>em que usamos o fato que \(\cos(-\theta)=\cos(\theta)\) e \(\sin(-\theta)=-\sin(\theta)\).</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicadira7.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Finalmente, usando as notações \(c_1=\cos(q_1)\), \(s_1=\sin(q_1)\), \(c_{12}=\cos(q_1+q_2)\) e
+                        \(s_{12}=\sin(q_1+q_2)\):</p>
+                    <b class="itext">$$ H_0^e(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{cccc}
+                        c_{12} & 0 & -s_{12} & 0,5c_1+0,5c_{12} \\
+                        0 & 1 & 0 & 0 \\
+                        s_{12} & 0 & c_{12} & 0,5s_1+0,5s_{12} \\
+                        0 & 0 & 0 & 1
+                        \end{array}\LARGE{\Bigg)}\normalsize{}$$</b>
+                    <p>em que \(q=(q_1 \ q_2)^T\).</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicadira1.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 2</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>O próximo exemplo é similar ao primeiro, mas temos uma junta linear antes do efetuador.</p>
+                    <p>Duas juntas rotativas e uma linear.</p>
+                    <p>A terceira junta tem como sentido positivo o sentido apontado por \(x_e\). O valor \(q_3=0\)
+                        corresponde
+                        a um elo de \(0,25m\) (ver imagem ao lado).</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle; align-items: center">
+                        <div style="position:absolute;top:50px;right:50px"
+                             class="vim_indicator current-visible fragment"
+                             data-fragment-index="0">
+                            <br>
+                            <img src="presentation/images/aula3/exemplocinematicadirb1.svg"
+                                 style="width:400px;height:auto;">
+                        </div>
+                        <div style="position:absolute;top:50px;right:50px"
+                             class="vim_indicator current-visible fragment"
+                             data-fragment-index="1">
+                            <br>
+                            <img src="presentation/images/aula3/exemplocinematicadirb2.svg"
+                                 style="width:400px;height:auto;">
+                        </div>
+                        <div style="position:absolute;top:50px;right:50px"
+                             class="vim_indicator current-visible fragment"
+                             data-fragment-index="2">
+                            <br>
+                            <img src="presentation/images/aula3/exemplocinematicadirb3.svg"
+                                 style="width:400px;height:auto;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 2</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>A solução é muito parecida com a anterior. </p>
+                    <p>A diferença é o vetor \(v_2\). No Exemplo 1, usamos o valor do tamanho do elo como \(0,5m\).
+                        Agora usaremos \(0,25+q_3\). O vetor ficará então:</p>
+                    <p>Então:
+                        $$v_2(q) = \Large{\Bigg(}\normalsize{}\begin{array}{c} (0,25+q_3)\cos(q_1+q_2) \\ 0 \\
+                        (0,25+q_3)\sin(q_1+q_2)
+                        \end{array}\Large{\Bigg)}\normalsize{}.$$</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicadirb1.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 2</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>A MTH final será:</p>
+                    <p><b class="itext">$$ H_0^e(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{cccc}
+                        c_{12} & 0 & -s_{12} & 0,5c_1+(0,25+q_3)c_{12} \\
+                        0 & 1 & 0 & 0 \\
+                        s_{12} & 0 & c_{12} & 0,5s_1+(0,25+q_3)s_{12} \\
+                        0 & 0 & 0 & 1
+                        \end{array}\LARGE{\Bigg)}\normalsize{}$$</b>
+                    <p>em que \(q=(q_1 \ q_2 \ q_3)^T\).</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicadirb1.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Limite de Juntas
+                e Autocolisão</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Note que, nos dois exemplos anteriores, há combinações de configuração \(q\) que seriam
+                        inválidas.</p>
+                    <p>Por exemplo, em uma determinada configuração pode haver a colisão entre elos.</p>
+                    <p>Ou mesmo, no caso da junta linear do Exemplo 2, há claramente limites \(q_{3,min} \leq q_3 \leq
+                        q_{3,max}\), pois
+                        a junta não pode se estender indefinidamente para um lado ou para o outro.</p>
+                    <p>Juntas rotativas também podem ter limites de fábrica, criados para evitar colisões.</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Direta</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Limite de Juntas
+                e Autocolisão</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>De fato, para cada robô existe um subconjunto de valores \(q\) que são <b
+                            class="itext">proibidos</b>, devido a esses
+                        fatores. </p>
+                    <p>Nesta disciplina, vamos essencialmente <b class="itext">ignorar</b> isso. Vamos assumir que
+                        nossos controladores
+                        não guiam a configuração para esses valores proibidos.</p>
+                    <p>Isso é razoável, na verdade, pois os robôs são construídos para minimizar esse problema
+                        e as tarefas que
+                        tratamos no ambiente industrial não são extremamente complexas.</p>
+                    <p>Há técnicas para considerar explícitamente esse problema no controlador, mas fogem do escopo
+                        desta disciplina.</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">A convenção de Denavit-Hartenberg</h3>
+            <p>
+                <img src="presentation/images/aula3/titulo.svg">
+                <br>
+            </p>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <br>
+                    <p>Para robôs planares, onde não é necessário preocupar com movimentos 3D, podemos usar técnicas de
+                        geometria analítica para calcular a cinemática direta para o efetuador.</p>
+                    <p>Mas para robôs gerais isso não é muito prático, e a análise ficaria muito
+                        <tag style="font-style: italic">ad-hoc</tag>
+                        .
+                    </p>
+                    <p>Para uniformizar o processo de se calcular a cinemática direta, foi criada a
+                        <b class="itext">convenção de Denavit-Hartenberg (DH).</b></p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <br>
+                    <p>A ideia é simples: a convenção de DH diz como você deve grudar referenciais em cada um dos corpos
+                        rígidos
+                        do robô.</p>
+                    <p>Com essa convenção, há uma maneira <b class="itext">sistemática e simples</b> de ir calculando a
+                        MTH de um referencial até o próximo, até que tenhamos
+                        a MTH do referencial \(\mathcal{F}_0\) para o referencial do efetuador, \(\mathcal{F}_e\).</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <br>
+                    <p>Para um robô com \(n\) juntas, a convenção de DH cria \(n+1\) referenciais.</p>
+                    <p>Vamos dar o nome \(\mathcal{F}_{DHi}\) para esses referenciais, \(i=0,1,...,n\).</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            </h3>
+            <div style="width:1000px;height:800px">
+                <div style="font-size:25px; text-align:justify; text-justify: inter-word">
+                    <br>
+                    <p>Há uma "receita de bolo" para criar esses referenciais. Faça o seguinte para \(i=0,...,n\), em
+                        que as juntas são
+                        numeradas de \(1\) até \(n\)</p>
+                    <div style="background-color: #282828">
+                        <ul>
+                            <li>Identifique a <b class="itext">linha<sub>i</sub></b>, que é a reta infinita alinhada à
+                                <b class="itext">junta<sub>i</sub></b>;
+                            </li>
+                            <li>Identifique a <b class="itext">linha<sub>i+1</sub></b>, que é a reta infinita alinhada à
+                                <b class="itext">junta<sub>i+1</sub></b>;
+                            </li>
+                            <li>Identifique o <b class="itext">ponto<sub>i,i+1</sub></b>, que é o ponto na <b
+                                    class="itext">linha<sub>i</sub></b> mais próximo da <b
+                                    class="itext">linha<sub>i+1</sub></b>;
+                            </li>
+                            <li>Identifique o <b class="itext">ponto<sub>i+1,i</sub></b>, que é o ponto na <b
+                                    class="itext">linha<sub>i+1</sub></b> mais próximo da <b
+                                    class="itext">linha<sub>i</sub></b>;
+                            </li>
+                            <li>O <b class="itext">centro</b> de \(\mathcal{F}_{DHi}\) é o ponto <b
+                                    class="itext">ponto<sub>i+1,i</sub></b>;
+                            </li>
+                            <li>O eixo <b class="itext">\(z_{DHi}\)</b> é escolhido como sendo em uma das duas direções
+                                na <b class="itext">linha<sub>i+1</sub></b>;
+                            </li>
+                            <li>O eixo <b class="itext">\(x_{DHi}\)</b> é escolhido como o vetor que vai de <b
+                                    class="itext">ponto<sub>i,i+1</sub></b> até <b
+                                    class="itext">ponto<sub>i+1,i</sub></b>, após normalização;
+                            </li>
+                            <li>Complete o referencial \(\mathcal{F}_{DHi}\) com o eixo <b class="itext">\(y_{DHi}\)</b>
+                                pela regra da mão direita.
+                            </li>
+                        </ul>
+                    </div>
+                    <p>O referencial \(\mathcal{F}_{DHi}\) está grudado no i-ésimo elo, sendo o elo 0 a base do robô
+                        (imóvel).</p>
+
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            </h3>
+            <div style="width:1000px;height:800px">
+                <div style="font-size:25px; text-align:justify; text-justify: inter-word">
+                    <br>
+                    <p>Há alguns casos em que a regra é mal-definida, e o engenheiro tem a liberdade de escolher:</p>
+
+                    <ul style="text-align:justify; text-justify: inter-word">
+                        <li>Para \(i=0\), não existe <b class="itext">junta<sub>0</sub></b>. Então, para \(i=0\),
+                            simplesmente
+                            escolhemos o centro arbitrariamente na <b class="itext">linha<sub>1</sub></b>, e o eixo <b
+                                    class="itext">\(x_{DH0}\)</b>
+                            arbitrariamente, contanto que seja ortogonal ao eixo <b class="itext">\(z_{DH0}\)</b>.
+                        </li>
+                        <li>Se as retas <b class="itext">linha<sub>i</sub></b> e <b class="itext">linha<sub>i+1</sub></b>
+                            são paralelas, existem
+                            infinitas escolhas possíveis para o par de pontos <b class="itext">ponto<sub>i,i+1</sub></b>
+                            e <b class="itext">ponto<sub>i+1,i</sub></b>. Escolha
+                            um desses pares arbitrariamente.
+                        </li>
+                        <li>Se <b class="itext">ponto<sub>i,i+1</sub></b> =<b class="itext">ponto<sub>i+1,i</sub></b>, a
+                            regra de escolha de
+                            <b class="itext">\(x_{DHi}\)</b> é mal-definida. Escolha qualquer um dos dois vetores que
+                            são mutuamente ortogonais às
+                            retas <b class="itext">linha<sub>i</sub></b> e <b class="itext">linha<sub>i+1</sub></b>.
+                        </li>
+                        <li>Se \(i=n\), não existe <b class="itext">junta<sub>n+1</sub></b>. Nesse caso, escolhemos a
+                            reta
+                            <b class="itext">linha<sub>n+1</sub></b> arbitrariamente. Geralmente usamos a reta anterior,
+                            <b class="itext">linha<sub>n</sub></b>.
+                        </li>
+                    </ul>
+
+
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1</b>
+            </h3>
+            <div style="width:1200px;height:800px;">
+                <div style="font-size:25px; text-align:left">
+                    <iframe scrolling="no"
+                            src="presentation/images/aula3/anim1.html"
+                            style="width:800px;height:650px; position:absolute; top:100px; right:150px"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 2</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="font-size:25px; text-align:left">
+
+
+                    <iframe scrolling="no"
+                            src="presentation/images/aula3/anim2.html"
+                            style="width:800px;height:650px; position:absolute; top:100px; right:150px"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 3</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="font-size:25px; text-align:left">
+                    <iframe scrolling="no"
+                            src="presentation/images/aula3/anim3.html"
+                            style="width:800px;height:650px; position:absolute; top:100px; right:150px"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Parâmetros de
+                Denavit-Hartenberg</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Após grudarmos \(n+1\) referenciais no robô (um deles na base fixa), há uma maneira
+                        sistemática de calcular a MTH <b class="itext">\(H_{DH0}^{DHn}(q)\)</b>, que é o último
+                        referencial DH (\(i=n\))
+                        escrito no primeiro referencial DH (\(i=0\)).</p>
+                    <p>Dada as duas interpretações para uma MTH, também podemos interpretar <b class="itext">\(H_{DH0}^{DHn}(q)\)</b>
+                        como a
+                        transformação rígida que temos que fazer do primeiro referencial ao último.</p>
+                    <p>De toda forma, para isso temos que extrair os <b class="itext">Parâmetros de
+                        Denavit-Hartenberg</b>
+                        do robô, que são \(4n\) números que nos permitem saber como cada um dos referenciais está
+                        em um
+                        determinado instante de tempo.</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Parâmetros de
+                Denavit-Hartenberg</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Há <b class="itext">4</b> parâmetros para transformar do referencial \(\mathcal{F}_{DH(i-1)}\)
+                        para o próximo, o referencial
+                        \(\mathcal{F}_{DHi}\). Isso para \(i=1,...,n\), totalizando \(4n\) parâmetros. </p>
+                    <p>São os 4 parâmetros:</p>
+                    <p>
+                    <div style="background-color: #282828">
+                        <ul style="text-align:justify; text-justify: inter-word">
+                            <li><b class="itext">\(\theta_i\)</b> : a rotação que deve ser feita no <b class="itext">eixo
+                                \(z\) atual</b> para
+                                alinhar o eixo \(x\) atual com o eixo \(x\) próximo.
+                            </li>
+                            <li><b class="itext">\(d_i\)</b> : o deslocamento que deve ser feito no <b class="itext">eixo
+                                \(z\) atual</b> para
+                                que o centro do referencial atual vá para <b class="itext">ponto<sub>i,i+1</sub></b>.
+                            </li>
+                            <li><b class="itext">\(\alpha_i\)</b> : a rotação que deve ser feita no <b class="itext">eixo
+                                \(x\) atual</b> para
+                                alinhar o eixo \(z\) atual com o eixo \(z\) próximo.
+                            </li>
+                            <li><b class="itext">\(a_i\)</b> : a translação que deve ser feita no <b class="itext">eixo
+                                \(x\) atual</b> para
+                                que os dois referenciais finalmente coincidam.
+                            </li>
+                            </li>
+                        </ul>
+                    </div>
+                    </p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Parâmetros de
+                Denavit-Hartenberg</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>A maneira como os eixos DH são grudados garantem a existência desses parâmetros, ou seja, que
+                        existem números
+                        \(\theta_i,d_i,\alpha_i,a_i\) em que essas transformações parametrizadas por ele transformam um
+                        referencial no próximo.</p>
+                    <div style="background-color: #282828">
+                        <p><b class="itext">Muito importante:</b> se a \(i\)-ésima junta é rotativa, \(\theta_i\) é
+                            variável e depende
+                            da configuração atual da junta \(i\), \(q_i\). Se ela é linear, é \(d_i\) que é variável, e
+                            depende da
+                            configuração atual da junta \(i\), \(q_i\).</p>
+                    </div>
+                    <p>Todos os três parâmetros restantes de um referencial para o outro são <b class="itext">constantes
+                        estruturais</b>
+                        do robô, decididas no momento de sua concepção.</p>
+                    <p>Note que as transformações sempre usam <b class="itext">o referencial atual</b>, não o
+                        <b class="itext">o referencial inicial</b>...</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 1 do
+                cálculo dos parâmetros</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="font-size:25px; text-align:left">
+                    <iframe scrolling="no"
+                            src="presentation/images/aula3/anim4.html"
+                            style="width:800px;height:650px; position:absolute; top:115px; right:150px"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 2 do
+                cálculo dos parâmetros</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="font-size:25px; text-align:left">
+                    <iframe scrolling="no"
+                            src="presentation/images/aula3/anim5.html"
+                            style="width:800px;height:650px; position:absolute; top:115px; right:150px"></iframe>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Parâmetros de
+                Denavit-Hartenberg</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Note que nos dois exemplos anteriores, o robô era o mesmo, mas em configurações diferentes.</p>
+                    <p>Os parâmetros estruturais (em <b>branco</b>) eram os mesmos, mas os variáveis (em <b
+                            style="color:gold">amarelo</b>) mudaram.</p>
+                    <p>No caso, como todas as juntas eram rotativas, todos os \(\theta_i\) são variáveis, em função da
+                        configuração \(q_i\).</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo 3 do
+                cálculo dos parâmetros</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="font-size:25px; text-align:left">
+                    <iframe scrolling="no"
+                            src="presentation/images/aula3/anim6.html"
+                            style="width:800px;height:650px; position:absolute; top:115px; right:150px"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Cálculo das transformações</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Em posse dos parâmetros, é muito fácil calcular a transformação do referencial \(\mathcal{F}_{DH(i-1)}\) para o
+                    \(\mathcal{F}_{DHi}\), para \(i=1,2,...,n\).</p>
+                    <p>A transformação é a seguir:
+                     <b class="itext">$$H_{DH(i-1)}^{DHi}(q_i) = R_z(\theta_i)D_z(d_i)R_x(\alpha_i)D_x(a_i).$$</b></p>
+                    <p><b class="itext">Note que a transformação deve ser lida da esquerda para à direita, pois usamos o referencial atual, e não
+                    o inicial, para interpretar as transformações!</b></p>
+                    <p>Então primeiro é a rotação em \(z\), depois o deslocamento em \(z\), depois a rotação em \(x\), e finalmente o deslocamento em \(x\).</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Cálculo das
+                transformações</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>A MTH \(H_{DH(i-1)}^{DHi}(q_i)\) pode ser interpretada ou como a transformação de
+                        \(\mathcal{F}_{DH(i-1)}\) para
+                        \(\mathcal{F}_{DHi}\) <b class="itext">interpretada em \(\mathcal{F}_{DH(i-1)}\)</b>
+                        (intepretação como transformação rígida) ou
+                        como o referencial \(\mathcal{F}_{DHi}\) <b class="itext">escrito em
+                            \(\mathcal{F}_{DH(i-1)}\)</b> (interpretação como referencial).</p>
+
+                    <p>Note que \(H_{DH(i-1)}^{DHi}(q_i)\) depende de \(q_i\), pois ou \(\theta_i\) (junta rotativa) ou \(d_i\) (junta linear)
+                    depende de \(q_i\).</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Cálculo das
+                transformações</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>A MTH \(H_{DH0}^{DHn}(q)\) entre o primeiro referencial (fixo) e o que está grudado no último elo (efetuador) é:</b>
+                        <b class="itext">$$H_{DH0}^{DHn}(q) = H_{DH0}^{DH1}(q_1)H_{DH1}^{DH2}(q_2)...H_{DH(n-1)}^{DHn}(q_n).$$</b></p>
+
+                    <p>Depende de toda a configuração \(q\).</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Alguns
+                detalhes</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Nem sempre o primeiro referencial criada pela DH, \(\mathcal{F}_{DH0}\), é o referencial que você
+                        queria que fosse
+                        "o" referencial \(\mathcal{F}_0\).</p>
+
+                    <p>Da mesma forma, nem sempre o último referencial da DH, \(\mathcal{F}_{DHn}\), é o referencial que
+                        você gostaria que fosse
+                        o do efetuador \(\mathcal{F}_e\).</p>
+
+                    <p>Felizmente, nos dois casos vão existir transformações <b class="itext">constantes (independente
+                        de \(q\))</b>,
+                        \(H_{0}^{DH0}\) e \(H_{DHn}^{e}\), respectivamente, que nos permitem fazer esse ajuste.</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Alguns
+                detalhes</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>A convenção de DH, embora não tenha resolvido o problema completamente nesses casos, resolveu a parte mais
+                    complexa do problema, que é achar a parte da transformação que é variável, dependendo de \(q\).</p>
+
+                    <p>Com essas duas matrizes de ajuste, temos:
+                    <b class="itext">$$H_{0}^e(q) = H_0^{DH0} H_{DH0}^{DHn}(q) H_{DHn}^{e}.$$</b></p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">A convenção de
+                Denavit-Hartenberg</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Onde encontrar</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Os parâmetros de DH podem ser obtidos medindo o robô diretamente, ou em seu manual.</p>
+                    <p>Infelizmente, há outras convenções além da DH. Assim, algumas vezes o manual fornece os parâmetros para
+                    outra convenção.</p>
+                    <p>De toda forma, é a definição mais usada.</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section>
+            <h3 style="font-size:40px">Cinemática Inversa</h3>
+            <p>
+                <img src="presentation/images/aula3/titulo.svg">
+                <br>
+            </p>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Inversa</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Definição</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>No problema de <b class="itext">cinemática inversa</b> temos uma MTH desejada para o efetuador, \(\hat{H}_{0}^{e}\)
+                    e queremos encontrar \(q\) tal que \(H_0^{e}(q) =\hat{H}_{0}^{e}\).</p>
+                    <p>Esse problema pode ter <b class="itext">uma, nenhuma ou múltiplas soluções</b>.</p>
+                    <p>Temos que resolver um complexo sistema de equações não-lineares.</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Inversa</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Para exemplificar essa complexidade, vamos resolver um problema que é, aparentemente, bem simples.</p>
+                    <p>Considere o robô planar com duas juntas rotativas ao lado. Queremos que a posição do efetuador seja uma
+                    posição desejada \(x=x_a\) e \(z=z_a\).</p>
+                    <p>Não nos preocupamos com a orientação. É um problema de cinemática inversa "parcial".</p>
+                    <p>Mesmo assim, veremos que não é simples.</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Inversa</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Usando a notação de \(c_1,s_1,c_{12}\) e \(s_{12}\) definida anteriormente, temos as igualdades:</p>
+                    <p><b class="itext">$$L_1c_1 + L_2c_{12} = x_a,$$</b></p>
+                    <p><b class="itext">$$L_1s_1 + L_2s_{12} = z_a$$</b></p>
+                    <p>obtidas pela cinemática direta (ver <a href="presentation/aula3.html#/7"><b
+                            class="hlink">Exemplo 1</b></a> de Cinemática Direta).</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Inversa</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Eleve ao quadrado as duas igualdades e some.</p>
+                    <p>Use o fato que \(c_1^2+s_1^2 = c_{12}^2+s_{12}^2 = 1\), e que \(c_1c_{12} + s_1s_{12} = \cos(q_2)\):</p>
+                    <p><b class="itext">$$L_1^2+L_2^2 + 2L_1L_2\cos(q_2) = x_a^2+z_a^2.$$</b></p>
+                    <p>E portanto:</p>
+                    <p><b class="itext">$$\cos(q_2) = \frac{x_a^2+z_a^2-(L_1^2+L_2^2)}{2L_1L_2}.$$</b></p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Inversa</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Para a equação</p>
+                    <p><b class="itext">$$\cos(q_2) = \frac{x_a^2+z_a^2-(L_1^2+L_2^2)}{2L_1L_2}$$</b></p>
+                    <p>ter solução, temos que o lado direito deve estar entre -1 e 1. Reescrevendo essa condição, temos:</p>
+                    <p><b class="itext">$$(L_1-L_2)^2 \leq x_a^2+z_a^2 \leq (L_1+L_2)^2$$</b></p>
+                    <p>Reflita um pouco e perceberá que essa condição faz todo sentido, geometricamente.</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Inversa</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Se a condição for satisfeita, temos duas soluções:</p>
+                    <p><b class="itext">$$q_2 = \pm \cos^{-1}\left(\frac{x_a^2+z_a^2-(L_1^2+L_2^2)}{2L_1L_2}\right).$$</b></p>
+                    <p>Vamos assumir de agora em diante que escolhemos uma dessas duas soluções. Substituindo no sistema original
+                    e usando \(c_{12} = c_1c_2-s_1s_2\) e \(s_{12} = c_1s_2+c_2s_1\) (em que \(c_2=\cos(q_2)\) e \(s_2=\sin(q_2)\)):</p>
+                    <p><b class="itext">$$(L_1+L_2c_2)c_1 - L_2s_2s_1 = x_a,$$</b></p>
+                    <p><b class="itext">$$L_2s_2 c_1 + (L_1+L_2c_2)s_1 = z_a$$</b></p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Inversa</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Temos então um sistema linear com duas equações e incógnitas para as variáveis \(s_1\) e \(c_1\):</p>
+                    <p><b class="itext">$$\left(\begin{array}{cc} L_1+L_2c_2 & -L_2s_2 \\ L_2s_2 & L_1+L_2c_2\end{array}\right)\left(\begin{array}{c} c_1 \\ s_1 \end{array}\right) = \left(\begin{array}{c} x_a \\ z_a \end{array}\right).$$</b></p>
+                    <p>Isolando:</p>
+                   <p><b class="itext">$$c_1 = U = \frac{(L_1+L_2c_2)x_a + L_2s_2z_a}{G}$$</b></p>
+                    <p><b class="itext">$$s_1 = V = \frac{-L_2s_2x_a + (L_1+L_2c_2)z_a}{G}$$</b></p>
+                    <p>em que \(G = L_1^2+L_2^2 + 2L_1L_2c_2\).</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Inversa</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Usando a expressão para \(c_2\) que temos, é fácil ver que \(G=x_a^2+z_a^2\). Portanto, se assumirmos que o ponto alvo não
+                    está na origem, temos que \(G \not=0\).</p>
+                    <p>Para que um sistema de equações da forma \(\cos(q_1)=U\) e \(\sin(q_1)=V\) tenha solução, é necessário e suficiente que
+                    \(U^2+V^2=1\). De fato, podemos mostrar que isso é verdade nesse caso.</p>
+                   <p>Nesse caso, a solução para \(q_1\) é única. Geralmente, em sistemas computacionais, a função <b class="itext">atan2(V,U)</b> dá esse valor.</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Inversa</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <p>Temos o código em Python para calcular a cinemática inversa:</p>
+                    <pre><code class="language-python" style="text-align:left; height:300px">
+import numpy as np
+
+def find_q1(L1,L2,xa,za,q2):
+  G =  xa**2+za**2
+  c2 = np.cos(q2)
+  s2 = np.sin(q2)
+  U = ( (L1+L2*c2)*xa + L2*s2*za )/G
+  V = ( -L2*s2*xa + (L1+L2*c2)*za )/G
+  return np.arctan2(V,U)
+
+def solve_ik(L1,L2,xa,za):
+  G =  xa**2+za**2
+  if G >= (L1+L2)**2 or G <= (L1-L2)**2:
+    raise Exception("Não tem solução!")
+  else:
+
+    q2_A = np.arccos( (G - (L1**2+L2**2))/(2*L1*L2) )
+    q2_B = -q2_A
+
+    return [find_q1(L1,L2,xa,za,q2_A), q2_A], [find_q1(L1,L2,xa,za,q2_B), q2_B]
+
+
+#Testa:
+L1 = 1
+L2 = 1.5
+xa = 0.8
+za = 0.5
+
+q_A, q_B = solve_ik(L1,L2,xa,za)
+
+print(q_A)
+print(q_B)
+                        </code></pre>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Inversa</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exemplo</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Considerando \(G \not=0\), quando temos solução, temos duas soluções (ver ao lado).</p>
+                    <p>A exceção é quando \(q_2=0\), em que só temos uma solução.</p>
+                    <p>O caso em que \(G=0\) pode ser tratado separadamente.</p>
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="display:table-cell;vertical-align: middle; align-items: center">
+                        <div style="position:absolute;top:50px;right:50px"
+                             class="vim_indicator current-visible fragment"
+                             data-fragment-index="0">
+                            <img src="presentation/images/aula3/exemplocinematicainv2a.svg"
+                                 style="width:400px;height:auto;">
+                        </div>
+                        <div style="position:absolute;top:50px;right:50px"
+                             class="vim_indicator current-visible fragment"
+                             data-fragment-index="1">
+                            <img src="presentation/images/aula3/exemplocinematicainv2b.svg"
+                                 style="width:400px;height:auto;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+ <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Cinemática Inversa</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Conclusão</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Resolver o problema de cinemática inversa para um robô tridimensional com vários graus de liberdade de maneira análitica, como fizemos aqui, é muitas vezes inviável</p>
+                    <p>Há pesquisas dedicadas somente ao problema de cinemática inversa analítica para robôs específicos.</p>
+                   <p>Entretanto, os <b class="itext">métodos numéricos</b> são mais práticos para robôs gerais.</p>
+                    <p>A técnica de <b class="itext">controle cinemático</b> que veremos em breve pode ser fácilmente adapdatada para esse propósito.</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Funções no UAIBot</h3>
+            <p>
+                <img src="presentation/images/aula3/titulo.svg">
+                <br>
+            </p>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Funções no UAIBot</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configuração</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>No <b class="itext">UAIBot</b>, podemos acessar a configuração atual do robô como <b class="itext">robot.q</b>, em que
+                    <b class="itext">robot</b> é o nome da variável do robô:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import numpy as np
+import uaibot as ub
+
+robot = ub.Robot.create_kuka_kr5()
+#Mostra a configuração atual
+print(robot.q)
+#Mostra a configuração "base"
+print(robot.q0)
+                        </code></pre>
+                    <p>Ambos são vetores numpy com shape (n,1) (n linhas e 1 colunas).</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Funções no UAIBot</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configuração</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Podemos especificar qual é a configuração no instante de tempo \(t\) com <b class="itext">.add_ani_frame</b>.</p>
+                    <p>Quando ela é chamada, mudamos a configuração atual do robô (<b class="itext">robot.q</b>).</p>
+                    <pre><code class="language-python" style="text-align:left">
+import numpy as np
+import uaibot as ub
+
+robot = ub.Robot.create_kuka_kr5()
+sim = ub.Simulation([robot])
+
+#Vamos fazer a primeira junta variar de 0 até 2*pi, enquanto as outras continuam em
+# zero. O tempo irá variar de 0,01 em 0,01 segundos, até 10 segundos.
+dt=0.01
+tmax=10
+for i in range(round(tmax/dt)):
+    t = i*dt
+    robot.add_ani_frame(time = t, q = [ (2*np.pi)*t/tmax, 0, 0, 0, 0, 0])
+
+#Vamos ver o resultado
+sim.run()
+                        </code></pre>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Funções no UAIBot</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Cinemática direta</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>A cinemática direta pode ser calculada com a função <b class="itext">.fkm</b> (de Forward KineMatics).</p>
+                    <p>Todas as MTHs são calculadas com relação ao referencial do cenário de simulação:</p>
+                    <p></p>
+                    <pre><code class="language-python" style="text-align:left; height:300px">
+import numpy as np
+import uaibot as ub
+
+#Apenas configura como as matrizes serão mostradas
+np.set_printoptions(precision=4, suppress=True)
+
+robot = ub.Robot.create_kuka_kr5()
+
+#Sem parâmetros, calcula para a configuração atual (robot.q) e o efetuador
+print(robot.fkm())
+
+#Podemos especificar a configuração
+print(robot.fkm(q=[0,1,2,3,4,5]))
+
+#Podemos escolher se queremos calcular a MTH para o efetuador (padrão) ou se
+#para os referenciais de DH. Nesse último caso, temos uma lista com n matrizes
+#(para o primeiro referencial, FDH0, não é calculado, pois ele é fixo)
+
+#Calcula para o efetuador
+print(robot.fkm(q=robot.q, axis='eef'))
+#Calcula para os referenciais de DH
+htm_dh = robot.fkm(q=[0,1,2,3,4,5], axis='dh')
+for i in range(len(htm_dh)):
+    print(htm_dh[i])
+                        </code></pre>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Funções no UAIBot</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Parâmetros de DH</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>No <b class="itext">UAIBot</b> podemos acessar os parâmetros DH do robô:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import numpy as np
+import uaibot as ub
+
+robot = ub.Robot.create_kuka_kr5()
+
+#As juntas vão de i=0 até i=n-1
+for i in range(len(robot.links)):
+    #Tipo: 0 (rotativa), 1 (linear)
+    print("Tipo"+str(i+1)+": "+str(robot.links[i].joint_type))
+    print("theta"+str(i+1)+": "+str(robot.links[i].theta)+" rad")
+    print("d"+str(i+1)+": "+str(robot.links[i].d)+" m")
+    print("alpha"+str(i+1)+": "+str(robot.links[i].alpha)+" rad")
+    print("a"+str(i+1)+": "+str(robot.links[i].a)+" m")
+    print("\n")
+
+
+                        </code></pre>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Funções no UAIBot</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Cinemática inversa</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>A cinemática inversa pode ser calculada com a função <b class="itext">.ikm</b> (de Inverse KineMatics):</p>
+                    <p></p>
+                    <pre><code class="language-python" style="text-align:left; height:300px">
+import numpy as np
+import uaibot as ub
+
+robot = ub.Robot.create_kuka_kr5()
+sim = ub.Simulation([robot])
+
+#Vamos criar uma mth alvo para o efetuador que é igual à inicial, mas deslocada
+#um pouco para baixo
+target =  ub.Utils.trn([0,0,-0.3]) * robot.fkm()
+
+#Vamos descobrir qual é a configuração que dá essa mth para o efetuador:
+q_ikm = robot.ikm(htm_target = target)
+
+#Vamos fazer uma animação suave do robô indo da configuração inicial até
+#a configuração alvo
+dt=0.01
+tmax = 10
+for i in range(round(tmax/dt)):
+    t = i*dt
+    q_c = (1-t/tmax) * robot.q0 + (t/tmax) * q_ikm
+    robot.add_ani_frame(time=t, q=q_c)
+
+sim.run()
+                        </code></pre>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<style>
+    .reveal .progress {
+        color: #34eb5e;
+    }
+
+    .reveal .controls {
+        color: #34eb5e;
+    }
+
+    body {
+        background-image: url(presentation/images/aula1/logo_ufmg.svg) !important;
+        background-color: black;
+        background-size: 8% !important;
+        background-repeat: no-repeat !important;
+        background-position: 96% 3% !important;
+    }
+
+    .itext {
+        color: #8af2a2;
+    }
+    .ttext {
+        color: #34eb5e;
+    }
+    .hlink {
+        color: #f5bf42;
+    }
+    /* width */
+    ::-webkit-scrollbar {
+        width: 20px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 10px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #34eb5e;
+        border-radius: 10px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #01b82b;
+    }
+
+    ::-webkit-scrollbar-corner {
+        background: rgba(0, 0, 0, 0);
+    }
+</style>
+
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+<script src="presentation/dist/reveal.js"></script>
+<script src="presentation/plugin/notes/notes.js"></script>
+<script src="presentation/plugin/markdown/markdown.js"></script>
+<script src="presentation/plugin/highlight/highlight.js"></script>
+<script src="presentation/plugin/menu/menu.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    var viewportWidth = window.innerWidth;
+    var viewportHeight = window.innerHeight;
+
+    Reveal.initialize({
+        hash: true,
+        width: 1200,
+        height: 800,
+        margin: 0,
+        minScale: 0.2,
+        maxScale: 2.0,
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu]
+    });
+    var frames = document.getElementsByTagName("iframe");
+
+
+    Reveal.on('slidechanged', event => {
+        for (let i = 0; i < frames.length; ++i) {
+            frames[i].contentWindow.location.reload(true);
+        }
+    });
+</script>
+</body>
+</html>
+

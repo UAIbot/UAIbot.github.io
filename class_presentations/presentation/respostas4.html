@@ -1,0 +1,794 @@
+<!doctype html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+
+    <script>
+        // Check if the site is being served from GitHub Pages
+        if (window.location.hostname === "viniciusmgn.github.io") {
+            document.write('<base href="/aulas_manipuladores/">');
+        } else {
+            document.write('<base href="/">');  // Local development base
+        }
+    </script>
+    
+    <title>Respostas</title>
+
+    <link rel="stylesheet" href="presentation/dist/reset.css">
+    <link rel="stylesheet" href="presentation/dist/reveal.css">
+    <link rel="stylesheet" href="presentation/dist/theme/black.css">
+
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="presentation/plugin/highlight/monokai.css">
+    <style>
+        .reveal .slides section {
+            padding: 20px; /* Adjust the value as needed */
+        }
+    </style>
+</head>
+
+<body>
+<div class="reveal">
+    <div class="slides">
+
+        <section data-menu-title="Introdução">
+            <h3>Manipuladores Robóticos</h3>
+            <h3 style="font-size:40px">Respostas</h3>
+            <p>
+                <img src="presentation/images/exercicios4/titulo_cin_dif.svg"
+                     style="width:350px;height:auto;">
+                <br><small>Vinicius Mariano Gonçalves</small>
+            </p>
+        </section>
+
+        <section data-menu-title="Exercício 1">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 1 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Sim. Usando o Teorema apresentado na Aula 4:</p>
+                    $$\dot{Q}(t) = S(\omega(t))Q(t).$$
+                    <p>Aplicando o determinante dos dois lados e usando o <b class="itext">Teorema de Binet</b>, que diz
+                        que para duas
+                        matrizes quadradas \(U\) e \(V\) \(\det(UV) = \det(U)\det(V)\):</p>
+                    $$\det(\dot{Q}) = \det(S(\omega))\det(Q).$$
+                    <p>Toda matriz anti-simétrica de ordem ímpar tem determinante 0. Portanto, como \(S(\omega)\) é uma
+                        matriz tridimensional, chegamos no nosso resultado.</p>
+
+
+                    <p><a href="presentation/exercicios4.html#/1"><b
+                            class="hlink">Voltar</b></a></p>
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios4/titulo_cin_dif.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 2">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 2 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Não, para que a partícula tenha velocidade nula:</p>
+                    $$v + \omega \times (p-s) = 0$$
+                    <p>em que \(p\) é a posição da partícula e \(s\) a posição do centro.</p>
+                    <p>Lembre-se que \(a \times b\) é sempre mutuamente ortogonal a \(a\) e \(b\).</p>
+                    <p>Então \(\omega \times (p-s)\) é ortogonal a \(\omega\), e como \(\omega\) é paralelo a \(v\),
+                        \(\omega \times (p-s)\) é ortogonal a \(v\)</p>
+                    <p>A soma de dois vetores ortogonais só é nulo se ambos são nulos. Como \(v\) é não nulo, isso é
+                        impossível, neste caso.</p>
+
+
+                    <p><a href="presentation/exercicios4.html#/2"><b
+                            class="hlink">Voltar</b></a></p>
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios4/titulo_cin_dif.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 3">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 3 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Sim. Usando o Teorema apresentado na Aula 4:</p>
+                    $$\dot{Q}(t) = S(\omega(t))Q(t).$$
+                    <p>Se dividirmos \(Q(t)\) em suas colunas \(x(t), y(t), z(t)\), veremos que essa igualdade implica
+                        que
+                        \(\dot{x} = S(\omega)x, \dot{y} = S(\omega)y\) e \(\dot{z} = S(\omega)z\).</p>
+                    <p>Usando a Propriedade 2 da Aula 4, \(\dot{z} = S(\omega)z\ = \omega \times z\).</p>
+                    <p>Como o produto vetorial de dois vetores é ortogonal a ambos, \(\dot{z}\) e \(\omega\) são
+                        ortogonais.</p>
+
+
+                    <p><a href="presentation/exercicios4.html#/3"><b
+                            class="hlink">Voltar</b></a></p>
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios4/titulo_cin_dif.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 4">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 4 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Sim. Devido à restrição que \(A^T=-A\) para uma matriz anti-simétrica, podemos ver por inspeção
+                        que só temos a liberdade de escolher 3 números nessa matriz.</p>
+                    <p>De qualquer modo que escolhermos esses três números, ela será a matriz \(S\) de algum vetor
+                        tridimensional.</p>
+
+
+                    <p><a href="presentation/exercicios4.html#/4"><b
+                            class="hlink">Voltar</b></a></p>
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios4/titulo_cin_dif.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 5">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 5 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Sim. Suponha que \(a\) é um vetor não nulo. Usando a Propriedade 2 da Aula 4, se escolhermos
+                        \(b=a\), temos
+                        \(S(a)b = S(a)a = a \times a = 0_{3 \times 1}\) (propriedade do produto vetorial).</p>
+                    <p>Se \(a\) é o vetor nulo, \(S(a)\) é a matriz nula e podemos escolher qualquer vetor \(b\) não
+                        nulo.</p>
+
+
+                    <p><a href="presentation/exercicios4.html#/5"><b
+                            class="hlink">Voltar</b></a></p>
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios4/titulo_cin_dif.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 6">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 6 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Para isso usamos a <b class="itext">desigualdade triangular</b>, que diz que para quaisquer
+                        vetores \(a\) e \(b\):</p>
+                    $$\|a+b\| \leq \|a\| + \|b\|$$
+                    <p>E também o fato que</p>
+                    $$\|a \times b \| = \|a\| \|b\| \sin(\theta) \leq \|a\| \|b\|$$
+                    <p>em que \(\theta\) é o ângulo entre os vetores \(a\) e \(b\), sempre entre 0 e 180 graus.</p>
+                    <p>Como a velocidade de uma partícula \(G\) qualquer é \(v_G = v+ \omega \times (p^G-s)\), aplicando
+                        essas duas propriedades:</p>
+                    $$\|v_G\| \leq \|v\| + \|\omega\|\|p^G-s\|.$$
+                    <p>Mas \(\|p^G-s\|\) é a distância da partícula até o centro \(P\), que é sempre menor que o raio
+                        \(R\) (devido à definição desse raio).
+                        Daí concluímos nosso resultado.</p>
+
+
+                    <p><a href="presentation/exercicios4.html#/6"><b
+                            class="hlink">Voltar</b></a></p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 7">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 7 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>(a) Seja \(c_A = \cos(\omega_At), s_A = \sin(\omega_At)\), \(c_{AD} = \cos((\omega_A+\omega_D)t)\) e
+                        \(s_{AD} = \sin((\omega_A+\omega_D)t)\). Usando a expressão de \(R_0^T(t)\) encontrada na solução do problema, podemos extrair:</p>
+                    $$s = \LARGE{\Bigg(}\normalsize{}\begin{array}{c}
+                        d_T c_A \\
+                        d_T s_A \\
+                            0
+                        \end{array}\LARGE{\Bigg)}\normalsize{} \ , \ Q = \LARGE{\Bigg(}\normalsize{}\begin{array}{ccc}
+                        c_{AD} & -s_{AD} & 0 \\
+                        s_{AD} & \ c_{AD} & 0 \\
+                            0  &       0 & 1
+                        \end{array}\LARGE{\Bigg)}.$$
+                    <p>Então, usando a fórmula \(v = \dot{s}\) e \(S(\omega) = \dot{Q}Q^T\):</p>
+                    $$v = \LARGE{\Bigg(}\normalsize{}\begin{array}{c}
+                        -\omega_A d_T s_A \\
+                        \ \omega_A d_T c_A \\
+                            0
+                        \end{array}\LARGE{\Bigg)}\normalsize{} \ , \ \omega = \LARGE{\Bigg(}\normalsize{}\begin{array}{c}
+                        0 \\
+                        0 \\
+                        \omega_D
+                        \end{array}\LARGE{\Bigg)}.$$
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 7 (cont.)">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 7 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>(b) Seja \(c_0 = \cos(\omega_0t), s_0 = \sin(\omega_0t)\), \(c_{1} = \cos(\omega_1t)\) e
+                        \(s_{1} = \sin(\omega_1t)\). Usando a expressão da MTH encontrada na solução do problema, podemos extrair:</p>
+                    $$s = \LARGE{\Bigg(}\normalsize{}\begin{array}{c}
+                        (d_0+d_1c_1)c_0 \\
+                        (d_0+d_1c_1)s_0 \\
+                            -d_1s_1
+                        \end{array}\LARGE{\Bigg)}\normalsize{} \ , \ Q = \LARGE{\Bigg(}\normalsize{}\begin{array}{ccc}
+                        c_0c_1 & -s_0 & c_0s_1 \\
+                        s_0c_1 & \ c_0 & s_0s_1 \\
+                            -s_1  &       0 & c_1
+                        \end{array}\LARGE{\Bigg)}.$$
+                    <p>Então, usando a fórmula \(v = \dot{s}\) e \(S(\omega) = \dot{Q}Q^T\):</p>
+                    $$v = \LARGE{\Bigg(}\normalsize{}\begin{array}{c}
+                        -d_1 \omega_1s_1c_0{-}(d_0{+}d_1c_1)\omega_0s_0 \\
+                        -d_1 \omega_1s_1s_0{+}(d_0{+}d_1c_1)\omega_0c_0 \\
+                            -d_1\omega_1c_1
+                        \end{array}\LARGE{\Bigg)}\normalsize{} \ , \ \omega = \LARGE{\Bigg(}\normalsize{}\begin{array}{c}
+                        -\omega_1 s_0 \\
+                        \ \omega_1c_0 \\
+                        \ \omega_0
+                        \end{array}\LARGE{\Bigg)}.$$
+                                        <p><a href="presentation/exercicios4.html#/7"><b
+                            class="hlink">Voltar</b></a></p>
+                </div>
+
+
+                </div>
+
+
+        </section>
+
+        <section data-menu-title="Exercício 8">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 8 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>Da relação \(\frac{d}{dt} s(q) = J_v(q)\dot{q}\), temos:</p>
+                    $$J_v(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{cc}
+                        -(1{+}q_2)s_1{-}c_1 & c_1 \\
+                        \ \ (1{+}q_2)c_1{-}s_1 & s_1 \\
+                            0 & 0
+                        \end{array}\LARGE{\Bigg)}\normalsize{}.$$
+                    <p>Da relação \(S(\omega) = \dot{Q}(t)Q(t)^T\) e \(\omega = J_\omega(q)\dot{q}\), temos:</p>
+                    $$J_\omega(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{cc}
+                            0 & 0 \\
+                            0 & 0 \\
+                            1 & 0
+                        \end{array}\LARGE{\Bigg)}\normalsize{}.$$
+                    <p><a href="presentation/exercicios4.html#/8"><b
+                            class="hlink">Voltar</b></a></p>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 9">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 9 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>Começamos extraindo os seguintes elementos:</p>
+                    $$z_{DH0}(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{cc}
+                        1 \\
+                        0 \\
+                        0
+                        \end{array}\LARGE{\Bigg)}\normalsize{} \ , \ s_{DH0}(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{cc}
+                        0 \\
+                        0 \\
+                        0
+                        \end{array}\LARGE{\Bigg)}\normalsize{} \ (\mbox{de} \ H_{0}^{DH0})$$
+                    $$z_{DH1}(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{cc}
+                        1 \\
+                        0 \\
+                        0
+                        \end{array}\LARGE{\Bigg)}\normalsize{} \ , \ s_{DH1}(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{cc}
+                        0 \\
+                        0{,}3c_1 \\
+                        0{,}3s_1
+                        \end{array}\LARGE{\Bigg)}\normalsize{} \ (\mbox{de} \ H_{0}^{DH1}(q))$$
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 9 (cont.)">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 9 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>E também:</p>
+                    $$z_{DH2}(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{cc}
+                        0 \\
+                        -s_{12} \\
+                        \ c_{12}
+                        \end{array}\LARGE{\Bigg)}\normalsize{} \ , \ s_{DH2}(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{cc}
+                        0 \\
+                        0{,}3c_1{+}0{,}25c_{12}\\
+                        0{,}3s_1{+}0{,}25s{12}
+                        \end{array}\LARGE{\Bigg)}\normalsize{} \ (\mbox{de} \ H_{0}^{DH2}(q))$$
+                    $$s_e(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{cc}
+                        -0{,}2s_3 \\
+                        (0{,}2c_3+0{,}25)c_{12} {+} 0{,}3c_1 \\
+                        (0{,}2c_3+0{,}25)s_{12} {+} 0{,}3s_1
+                        \end{array}\LARGE{\Bigg)}\normalsize{} \ (\mbox{de} \ H_{0}^{e}(q))$$
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 9 (cont.)">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 9 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>Como todas as juntas são rotativas:</p>
+                    $$J_{geo}(q) = \large{\Bigg(}\normalsize{}\begin{array}{ccc}
+                        z_{DH0}{\times}(s_e{-}s_0) & z_{DH1}{\times}(s_e{-}s_1) & z_{DH2}{\times}(s_e{-}s_2)\\
+                        z_{DH0} & z_{DH1} & z_{DH2}
+                        \end{array}\large{\Bigg)}\normalsize{}.$$
+                    <p>Fazendo as substituições:</p>
+                    $$J_{geo}(q) = \Huge{\Bigg(}\normalsize{}\begin{array}{ccc}
+                        0                                        & 0                               & -0{,}2c_3 \\
+                        -(0{,}2c_3+0{,}25)s_{12} {+} 0{,}3s_1    & -(0{,}2c_3+0{,}25)s_{12}        &  \ 0{,}2s_3c_{12} \\
+                        \ (0{,}2c_3+0{,}25)c_{12} {+} 0{,}3c_1   & \ (0{,}2c_3+0{,}25)c_{12}       & -0{,}2s_3s_{12} \\
+                        1                                        &         1                       & 0 \\
+                        0                                        &         0                       & -s_{12}\\
+                        0                                        &         0                       & \ c_{12}
+                        \end{array}\Huge{\Bigg)}\normalsize{}.$$
+                    <p><a href="presentation/exercicios4.html#/9"><b
+                            class="hlink">Voltar</b></a></p>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 10">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 10 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Sim. Sem juntas rotativas, o efetuador não muda sua orientação nunca e portanto \(\omega\) é
+                        sempre o vetor nulo
+                        para todo \(q\) e \(\dot{q}\). Isso implica \(J_{\omega}(q)\) ser a matriz nula.</p>
+
+
+                    <p><a href="presentation/exercicios4.html#/10"><b
+                            class="hlink">Voltar</b></a></p>
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios4/titulo_cin_dif.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        <section data-menu-title="Exercício 11">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 11 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Sim. É possível. Note que \(\omega = J_{\omega}(q)\dot{q}\). Derivando no tempo e usando a regra
+                        do produto:</p>
+                    $$\alpha = \left(\frac{d}{dt}J_{\omega}(q)\right)\dot{q} + J_{\omega}(q)\ddot{q}.$$
+                    <p>Pela regra da cadeia, como \(J_{\omega}(q)\) depende apenas de \(q\), a derivada temporal
+                        dependerá
+                        de \(q\) e \(\dot{q}\) (mas não de \(\ddot{q}\)). Seja como for, o primeiro termo dessa derivada
+                        será uma função
+                        não linear de \(q, \dot{q}\), e portanto:</p>
+                    $$\alpha = f(q,\dot{q}) + J_{\omega}(q)\ddot{q}.$$
+                    <p>Se \(\ddot{q}=0\) o segundo termo zera, mas o primeiro não necessariamente. Portanto, ainda é
+                        possível ter uma
+                        aceleração angular não nula.</p>
+
+
+                    <p><a href="presentation/exercicios4.html#/11"><b
+                            class="hlink">Voltar</b></a></p>
+
+                </div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios4/titulo_cin_dif.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        <section data-menu-title="Exercício 12">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 12 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Sim. Note que se \(J_{geo}(q)\dot{q}_1 = \xi_{d1}\) e \(J_{geo}(q)\dot{q}_2 = \xi_{d2}\), somando
+                        essas duas igualdades:</p>
+                    $$J_{geo}(q)(\dot{q}_1+\dot{q}_2) = \xi_{d1}+\xi_{d2}=\xi_{d3}.$$
+                    <p>A última equação sugere que basta escolher \(\dot{q}_3 = \dot{q}_1+\dot{q}_2\).</p>
+                    <p>Para ser mais geral, lembre-se que na Aula 4 foi dito que o espaço de velocidades alcançáveis é
+                        um
+                        <b class="itext">espaço vetorial</b>. Então, se \(\xi_{d1}\) e \(\xi_{d2}\) são alcançáveis,
+                        qualquer combinação linear delas
+                        também é.</b>
+
+
+                    <p><a href="presentation/exercicios4.html#/12"><b
+                            class="hlink">Voltar</b></a></p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios4/titulo_cin_dif.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 13">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 13 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>A configuração não é singular. Segue o código:</p>
+                   <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+import numpy as np
+
+robot = ub.Robot.create_staubli_tx60()
+
+#Calcula a Jacobiana geométrica na configuração
+jg, _ = robot.jac_geo(q=[0,1.57,0.1,0.1,0.1,0])
+
+#Calcula os valores singulares
+sq_sing_values, _ = np.linalg.eig(jg.T * jg)
+sing_values = np.sqrt(sq_sing_values)
+#Imprime os valores singulares, o menor é 0.02!
+print(sing_values)
+
+#Calcula qual deve ser a velocidade de configuração:
+xi_d = np.matrix([0,0,1,0,0,0]).reshape((6,1))
+#Posso usar a inversa pois a matriz é não singular e quadrada
+qdot = np.linalg.inv(jg) * xi_d
+#Imprime e a velocidade de junta
+print(qdot)
+                        </code></pre>
+                    <p><a href="presentation/exercicios4.html#/13"><b
+                            class="hlink">Voltar</b></a></p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios4/titulo_cin_dif.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 14">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 14 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Nessa situação temos \(v_d = (0 \ 0{,}6 \ 0)^T\) e \(\omega_d = (0 \ 0 \ 1)^T\).</p>
+                    <p>Isso é muito coerente. Quando a primeira junta roda no sentido horário, o efetuador vai ter uma velocidade no eixo \(y_0\) do mundo.
+                        Ainda, como a distância da junta até o efetuador é \(0{,}6 m\), a velocidade linear é \(1 \times 0,6 m/s\). Veja a imagem ao lado.
+                    </p>
+                    <p>A velocidade angular do efetuador vai ter apenas componente em \(z_0\), sendo igual a velocidade da junta, \(1 rad/s\).</p>
+                   <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+import numpy as np
+
+robot = ub.Robot.create_epson_t6(color="gray")
+
+jg, _ = robot.jac_geo()
+qdot = np.matrix([1,0,0]).reshape((3,1))
+
+print(jg * qdot)
+                        </code></pre>
+                    <p><a href="presentation/exercicios4.html#/14"><b
+                            class="hlink">Voltar</b></a></p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios4/robo_5.png"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section data-menu-title="Exercício 15">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Cinemática Diferencial</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercício 15 -
+                Resposta</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Vamos usar o <a href="presentation/aula3.html#/61"><b
+                            class="hlink">exemplo</b></a> da Aula 3 como base:</p>
+                   <pre><code class="language-python" style="text-align:left">
+
+import numpy as np
+import uaibot as ub
+
+robot = ub.Robot.create_kuka_kr5()
+sim = ub.Simulation([robot])
+
+#Vamos criar uma mth alvo para o efetuador que é igual à inicial, mas deslocada
+#um pouco para baixo
+target =  ub.Utils.trn([0,0,-0.3]) * robot.fkm()
+
+#Vamos descobrir qual é a configuração que dá essa mth para o efetuador:
+q_ikm = robot.ikm(htm_target = target)
+
+#Vamos fazer uma animação suave do robô indo da configuração inicial até
+#a configuração alvo
+dt=0.01
+tmax = 10
+for i in range(round(tmax/dt)):
+    t = i*dt
+    q_c = (1-t/tmax) * robot.q0 + (t/tmax) * q_ikm
+
+    #Precisamos da jacobiana geométrica e cinemática direta para fazer
+    #as contas
+    jg, fk = robot.jac_geo()
+
+    #Calcula omega e imprime
+    qdot = (q_ikm-robot.q0)/tmax
+    omega = jg[3:6,:]*qdot
+    print("omega("+str(t)+") = "+str(omega.reshape((3,))))
+
+    #Calcula o ângulo de Euler
+    [alpha, beta, gamma] = ub.Utils.euler_angles(fk)
+
+    #Guarda o valor anterior, se ele existir
+    if i > 0:
+      phi_ant = phi
+
+    phi = np.matrix([gamma,beta,alpha]).reshape((3,1))
+
+    #Calcula a derivada dos ângulos de Euler numericamente
+    #e imprime
+    if i > 0:
+      dphi_dt = (phi-phi_ant)/dt
+      print("dphi_dt("+str(t)+") = "+str(dphi_dt.reshape((3,)))+"\n")
+
+
+
+    robot.add_ani_frame(time=t, q=q_c)
+
+sim.run()
+
+                        </code></pre>
+                    <p><a href="presentation/exercicios4.html#/15"><b
+                            class="hlink">Voltar</b></a></p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="presentation/images/exercicios4/titulo_cin_dif.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</div>
+<style>
+    .reveal .progress {
+        color: #34eb5e;
+    }
+
+    .reveal .controls {
+        color: #34eb5e;
+    }
+
+    body {
+        background-image: url(presentation/images/aula1/logo_ufmg.svg) !important;
+        background-color: black;
+        background-size: 8% !important;
+        background-repeat: no-repeat !important;
+        background-position: 96% 3% !important;
+    }
+
+    .itext {
+        color: #8af2a2;
+    }
+    .ttext {
+        color: #34eb5e;
+    }
+
+    .hlink {
+        color: #f5bf42;
+    }
+
+    .hlink:hover {
+        text-decoration: underline;
+    }
+    /* width */
+    ::-webkit-scrollbar {
+        width: 20px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey;
+        border-radius: 10px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #34eb5e;
+        border-radius: 10px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #01b82b;
+    }
+
+    ::-webkit-scrollbar-corner {
+        background: rgba(0, 0, 0, 0);
+    }
+</style>
+
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+<script src="presentation/dist/reveal.js"></script>
+<script src="presentation/plugin/notes/notes.js"></script>
+<script src="presentation/plugin/markdown/markdown.js"></script>
+<script src="presentation/plugin/highlight/highlight.js"></script>
+<script src="presentation/plugin/menu/menu.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        hash: true,
+        width: 1200,
+        height: 700,
+        margin: 0,
+        minScale: 0.2,
+        maxScale: 2.0,
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu]
+    });
+    var frames = document.getElementsByTagName("iframe");
+
+
+    Reveal.on('slidechanged', event => {
+        for (let i = 0; i < frames.length; ++i) {
+            frames[i].contentWindow.location.reload(true);
+        }
+    });
+</script>
+</body>
+</html>
+
