@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Robotic Manipulator Course
-nav_order: 6
+nav_order: 8
 ---
 
 # Robotic Manipulator Course
