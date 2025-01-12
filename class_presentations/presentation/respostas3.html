@@ -41,276 +41,252 @@
             <p>
                 <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
                      style="width:350px;height:auto;">
-                <br><small> </small>
+                <br><small>Vinicius Mariano Gonçalves</small>
             </p>
         </section>
 
         <section data-menu-title="Exercise 1">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 1 – Answer</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 1 - Answer</b>
             </h3>
             <div style="width:1150px;height:800px;font-size:25px; text-align:justify; text-justify: inter-word">
-                <p>Let's begin with the position, \(s(q)\). To do so, we add the three vectors shown below, all written
-                   in frame \(\mathcal{F}_0\):</p>
+
+                <p>Let's start with the position, \(s(q)\). For this, we sum the following three vectors, all written in the reference frame \(\mathcal{F}_0\):</p>
 
                 <div style="vertical-align: middle; text-align: center; align-items: center">
                     <img src="/class_presentations/presentation/images/exercicios3/robo_4_tr.png"
                          style="width:600px;height:auto;text-align: center">
                 </div>
+
+
             </div>
+
         </section>
 
         <section data-menu-title="Exercise 1 (cont.)">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 1 – Answer</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 1 - Answer</b>
             </h3>
             <div style="width:1150px;height:800px;font-size:25px; text-align:justify; text-justify: inter-word">
-                <p>Thus, we have:</p>
-                $$
-                s(q) =
-                \begin{pmatrix}
-                (1+q_2)\cos(q_1) - \sin(q_1) \\
-                (1+q_2)\sin(q_1) + \cos(q_1) \\
+
+                <p>We have then:</p>
+                $$s(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{c}
+                (1+q_2)\cos(q_1)-\sin(q_1) \\
+                (1+q_2)\sin(q_1)+\cos(q_1) \\
                 0
-                \end{pmatrix}.
-                $$
-                <p>For the rotation part, note that starting from frame \(\mathcal{F}_0\), we perform a rotation about
-                   \(z_0\) by \(q_1\), then a constant transformation in the current frame
-                   (\(R_z(-90^\circ)\,R_x(-90^\circ)\)) to align with the end-effector frame. We then get the rotation
-                   matrix \(Q(q)\):</p>
-                $$
-                Q(q) =
-                \begin{pmatrix}
-                \sin(q_1) & 0 & \cos(q_1) \\
-                -\cos(q_1) & 0 & \sin(q_1) \\
-                0 & -1 & 0
-                \end{pmatrix}.
-                $$
-                <p>
-                    <a href="/class_presentations/presentation/exercicios3.html#/1">
-                        <b class="hlink">Back</b>
-                    </a>
-                </p>
+                \end{array}\LARGE{\Bigg)}\normalsize{}.$$
+                <p>For the rotation part, we observe that starting from the reference frame \(\mathcal{F}_0\), we make a rotation around the \(z_0\) axis by \(q_1\), then a constant transformation in the current reference frame (\(R_z(-90^o)R_x(-90^o)\)) to align with the end-effector reference frame. We then have the rotation matrix \(Q(q)\):</p>
+                $$Q(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{ccc}
+                        \sin(q_1) & 0 & \cos(q_1)  \\
+                        -\cos(q_1) & 0 & \sin(q_1)  \\
+                        0 &  -1 & 0  \\
+                        \end{array}\LARGE{\Bigg)}\normalsize{}.$$
+                    <p><a href="/class_presentations/presentation/exercicios3.html#/1"><b
+                            class="hlink">Back</b></a></p>
             </div>
+
         </section>
 
         <section data-menu-title="Exercise 2">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 2 – Answer</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 2 - Answer</b>
             </h3>
             <div style="width:1150px;height:800px;font-size:25px; text-align:justify; text-justify: inter-word">
-                <p>Frames and parameters. Note that we chose the last row in a convenient way, but neither the first
-                   DH frame, \(\mathcal{F}_{DH0}\), is frame \(\mathcal{F}_0\), nor the last DH frame,
-                   \(\mathcal{F}_{DH3}\), is the end-effector frame...</p>
+
+                <p>References and parameters. Note that we chose the last row in a convenient way, but neither the first DH reference frame, \(\mathcal{F}_{DH0}\), is the reference frame \(\mathcal{F}_0\), nor the last reference frame, \(\mathcal{F}_{DH3}\), is the end-effector reference frame...</p>
 
                 <div style="vertical-align: middle; text-align: center; align-items: center">
                     <img src="/class_presentations/presentation/images/exercicios3/robo_3_tr.png"
                          style="width:600px;height:auto;text-align: center">
                 </div>
+
+
             </div>
+
         </section>
 
         <section data-menu-title="Exercise 2 (cont.)">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 2 – Answer</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 2 - Answer</b>
             </h3>
             <div style="width:1200px;height:800px;font-size:25px; text-align:justify; text-justify: inter-word">
-                <p>The constant transformations between the initial and final frames are:</p>
-                $$H_{0}^{DH0} = R_z(90^\circ)\,R_x(90^\circ)\,D_y(10\text{cm}), \quad
-                  H_{DH3}^{e} = R_z(90^\circ)\,R_x(90^\circ).$$
 
-                <p>We will calculate the matrices \(H_{0}^{DHi}(q)\) for \(i=1,2,3\) and \(H_0^{e}(q)\):</p>
-                $$
-                H_{0}^{DH1}(q) = H_0^{DH0}\,R_z(q_1)\,D_z(0)\,R_x(0)\,D_x(30\text{cm}).
-                $$
-                $$
-                H_{0}^{DH2}(q) = H_{0}^{DH1}(q)\,R_z(q_2)\,D_z(0)\,R_x(-90^\circ)\,D_x(25\text{cm}).
-                $$
-                $$
-                H_{0}^{DH3}(q) = H_{0}^{DH2}(q)\,R_z(q_3)\,D_z(0)\,R_x(0)\,D_x(20\text{cm}).
-                $$
-                $$
-                H_{0}^{e}(q) = H_{0}^{DH3}(q)\,H_{DH3}^{e}.
-                $$
+                <p>The constant transformations between the initial and final reference frames are:</p>
+                $$H_{0}^{DH0} = R_z(90^o)R_x(90^o)D_y(10cm) \ , \ H_{DH3}^{e} = R_z(90^o)R_x(90^o).$$
+
+                <p>Let's calculate the matrices \(H_{0}^{DHi}(q)\) for \(i=1,2,3\) and \(H_0^{e}(q)\):</p>
+                $$H_{0}^{DH1}(q) = H_0^{DH0}R_z(q_1)D_z(0)R_x(0)D_x(30cm). $$
+                $$H_{0}^{DH2}(q) = H_{0}^{DH1}(q)R_z(q_2)D_z(0)R_x(-90^o)D_x(25cm). $$
+                $$H_{0}^{DH3}(q) = H_{0}^{DH2}(q)R_z(q_3)D_z(0)R_x(0)D_x(20cm). $$
+                $$H_{0}^{e}(q) = H_{0}^{DH3}(q)H_{DH3}^{e}. $$
             </div>
+
         </section>
 
         <section data-menu-title="Exercise 2 (cont.)">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 2 – Answer</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 2 - Answer</b>
             </h3>
             <div style="width:1200px;height:800px;font-size:25px; text-align:justify; text-justify: inter-word">
-                <p>Doing the math, we get:</p>
-                $$
-                H_{0}^{DH1}(q) =
-                \begin{pmatrix}
-                    0 & 0 & 1 & 0 \\
-                    c_1 & -s_1 & 0 & 0.3\,c_1 \\
-                    s_1 &  c_1 & 0 & 0.3\,s_1 + 0.1 \\
-                    0 & 0 & 0 & 1
-                \end{pmatrix}, \quad
-                H_{0}^{DH2}(q) =
-                \begin{pmatrix}
-                    0 & -1 & 0 & 0 \\
-                    c_{12} & 0 & -s_{12} & 0.3\,c_1 + 0.25\,c_{12}\\
-                    s_{12} & 0 & c_{12} & 0.3\,s_1 + 0.25\,s_{12} + 0.1\\
-                    0 & 0 & 0 & 1
-                \end{pmatrix}.
-                $$
 
-                $$
-                H_{0}^{DH3}(q) =
-                \begin{pmatrix}
-                    -s_3 & -c_3 & 0 & -0.2\,s_3 \\
-                    c_{12}c_3 & -c_{12}s_3 & -s_{12}
-                           & (0.2\,c_3 + 0.25)\,c_{12} + 0.3\,c_1 \\
-                    s_{12}c_3 & -s_{12}s_3 & c_{12}
-                           & (0.2\,c_3 + 0.25)\,s_{12} + 0.3\,s_1 + 0.1 \\
-                    0 & 0 & 0 & 1
-                \end{pmatrix}.
-                $$
+                <p>Doing the math, we have:</p>
+                $$H_{0}^{DH1}(q) = \LARGE{\Bigg(}\small{}\begin{array}{cccc}
+                        0 & 0 & 1 & 0 \\
+                        c_1 & -s_1 & 0 & 0{,}3c_1 \\
+                        s_1 &  c_1 & 0 & 0{,}3s_1{+}0,1 \\
+                        0 & 0 & 0 & 1
+                        \end{array}\LARGE{\Bigg)}\small{} \ , \
+                H_{0}^{DH2}(q) = \LARGE{\Bigg(}\small{}\begin{array}{cccc}
+                        0 & -1 & 0 & 0 \\
+                        c_{12} & 0 & -s_{12} & 0{,}3c_1{+}0{,}25c_{12}\\
+                        s_{12} & 0 & c_{12} & 0{,}3s_1{+}0{,}25s_{12}{+}0,1\\
+                        0 & 0 & 0 & 1
+                        \end{array}\LARGE{\Bigg)}\small{}.$$
+                $$H_{0}^{DH3}(q) = \LARGE{\Bigg(}\small{}\begin{array}{cccc}
+                        -s_3 & -c_3 & 0 & -0{,}2s_3 \\
+                        \ c_{12}c_3 & -c_{12}s_3 & -s_{12} &   (0{,}2c_3+0{,}25)c_{12} {+} 0{,}3c_1 \\
+                        \ s_{12}c_3 &  -s_{12}s_3 & \ c_{12} & (0{,}2c_3+0{,}25)s_{12} {+} 0{,}3s_1{+}0,1 \\
+                        0 & 0 & 0 & 1
+                        \end{array}\LARGE{\Bigg)}\small{}.$$
+
             </div>
+
         </section>
 
         <section data-menu-title="Exercise 2 (cont.)">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 2 – Answer</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 2 - Answer</b>
             </h3>
             <div style="width:1200px;height:800px;font-size:25px; text-align:justify; text-justify: inter-word">
-                <p>Therefore, finally:</p>
-                $$
-                H_{0}^{e}(q) =
-                \begin{pmatrix}
-                    -c_3 & 0 & -s_3 & -0.2\,s_3 \\
-                    -c_{12}s_3 & -s_{12} & c_{12}c_3
-                        & (0.2\,c_3 + 0.25)\,c_{12} + 0.3\,c_1 \\
-                    -s_{12}s_3 & c_{12} & s_{12}c_3
-                        & (0.2\,c_3 + 0.25)\,s_{12} + 0.3\,s_1 + 0.1 \\
-                    0 & 0 & 0 & 1
-                \end{pmatrix}.
-                $$
-                <p>
-                    <a href="/class_presentations/presentation/exercicios3.html#/2">
-                        <b class="hlink">Back</b>
-                    </a>
-                </p>
-            </div>
-        </section>
 
-        <section data-menu-title="Exercise 3">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 3 – Answer</b>
+                <p>And therefore, finally:</p>
+                $$H_{0}^{e}(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{cccc}
+                        -c_3 & 0 & -s_3 & -0{,}2s_3 \\
+                        -c_{12}s_3 & -s_{12} & \ c_{12}c_3 & (0{,}2c_3+0{,}25)c_{12} {+} 0{,}3c_1 \\
+                        -s_{12}s_3 & \ c_{12} & \ s_{12}c_3 & (0{,}2c_3+0{,}25)s_{12} {+} 0{,}3s_1{+}0,1 \\
+                        0 & 0 & 0 & 1
+                        \end{array}\LARGE{\Bigg)}\normalsize{}.$$
+                    <p><a href="/class_presentations/presentation/exercicios3.html#/2"><b
+                            class="hlink">Back</b></a></p>
+            </div>
+
+        </section>
+         <section data-menu-title="Exercise 3">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 3 - Answer</b>
+
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width:60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>No, see for example <a href="/class_presentations/presentation/aula3.html#/28"><b class="hlink">here</b></a>. The frame \(\mathcal{F}_{DH2}\) does not have its center inside the respective link.</p>
-                    <p>
-                        <a href="/class_presentations/presentation/exercicios3.html#/4">
-                            <b class="hlink">Back</b>
-                        </a>
-                    </p>
-                </div>
-                <div style="width:40%; float:right; text-align:left; vertical-align: middle; display:table">
-                    <div style="display:table-cell; vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
-                             style="width:400px;height:auto;">
-                    </div>
-                </div>
-            </div>
-        </section>
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>No, see, for example, <a href="/class_presentations/presentation/aula3.html#/28"><b
+                            class="hlink">here</b></a>. The reference frame \(\mathcal{F}_{DH2}\) does not have its center within the respective link.</p>
 
-        <section data-menu-title="Exercise 4">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 4 – Answer</b>
-            </h3>
-            <div style="width:1200px;height:800px">
-                <div style="width:60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Yes. See for example <a href="/class_presentations/presentation/aula3.html#/28"><b class="hlink">here</b></a>. Frames \(\mathcal{F}_{DH4}\) and \(\mathcal{F}_{DH5}\) share the same center.</p>
-                    <p>
-                        <a href="/class_presentations/presentation/exercicios3.html#/5">
-                            <b class="hlink">Back</b>
-                        </a>
-                    </p>
+
+                    <p><a href="/class_presentations/presentation/exercicios3.html#/4"><b
+                            class="hlink">Back</b></a></p>
+
                 </div>
-                <div style="width:40%; float:right; text-align:left; vertical-align: middle; display:table">
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
                         <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
                              style="width:400px;height:auto;">
                     </div>
                 </div>
             </div>
+
+        </section>
+
+         <section data-menu-title="Exercise 4">
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 4 - Answer</b>
+
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Yes. See, for example, <a href="/class_presentations/presentation/aula3.html#/28"><b
+                            class="hlink">here</b></a>. The reference frames \(\mathcal{F}_{DH4}\) and \(\mathcal{F}_{DH5}\) have the same center.</p>
+
+
+                    <p><a href="/class_presentations/presentation/exercicios3.html#/5"><b
+                            class="hlink">Back</b></a></p>
+
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
         </section>
 
         <section data-menu-title="Exercise 5">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 5 – Answer</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 5 - Answer</b>
+
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width:60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Because the strict rules of Denavit-Hartenberg construction “tie” how one frame is related to
-                       the next. Hence, they cannot be arbitrarily placed relative to each other, requiring fewer than
-                       the 6 parameters needed for generic transformations.</p>
-                    <p>
-                        <a href="/class_presentations/presentation/exercicios3.html#/6">
-                            <b class="hlink">Back</b>
-                        </a>
-                    </p>
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Because the rigid rules of Denavit-Hartenberg construction "tie" how one reference frame will be related to the next. Thus, they cannot be generically placed relative to each other, requiring fewer than the 6 minimum parameters needed for generic transformations.</p>
+
+
+                    <p><a href="/class_presentations/presentation/exercicios3.html#/6"><b
+                            class="hlink">Back</b></a></p>
+
                 </div>
-                <div style="width:40%; float:right; text-align:left; vertical-align: middle; display:table">
-                    <div style="display:table-cell; vertical-align: middle">
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
                         <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
                              style="width:400px;height:auto;">
                     </div>
                 </div>
             </div>
+
         </section>
 
         <section data-menu-title="Exercise 6">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 6 – Answer</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 6 - Answer</b>
+
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width:60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>No. See for example <a href="/class_presentations/presentation/aula3.html#/49"><b class="hlink">here</b></a>,
-                       where a condition for the existence of a solution to the inverse kinematics problem is shown.</p>
-                    <p>
-                        <a href="/class_presentations/presentation/exercicios3.html#/7">
-                            <b class="hlink">Back</b>
-                        </a>
-                    </p>
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>No. See, for example, <a href="/class_presentations/presentation/aula3.html#/49"><b
+                            class="hlink">here</b></a>, where a condition is presented for the existence of a solution to the inverse kinematics problem.</p>
+
+
+                    <p><a href="/class_presentations/presentation/exercicios3.html#/7"><b
+                            class="hlink">Back</b></a></p>
+
                 </div>
-                <div style="width:40%; float:right; text-align:left; vertical-align: middle; display:table">
-                    <div style="display:table-cell; vertical-align: middle">
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
                         <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
                              style="width:400px;height:auto;">
                     </div>
                 </div>
             </div>
+
         </section>
 
         <section data-menu-title="Exercise 7">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px">
-                <b class="ttext">Exercise 7 – Answer</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">Exercise 7 - Answer</b>
+
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width:50%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                <div style="width: 50%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
                     <p>Here is the code:</p>
                     <pre><code class="language-python" style="text-align:left">
 import uaibot as ub
 import numpy as np
 
-#Create the scenario
+# Create the scenario
 robot = ub.Robot.create_abb_crb(ub.Utils.trn([0,0,0.2]))
 
 texture_table = ub.Texture(
@@ -328,77 +304,81 @@ cube = ub.Box(name="cube", htm = ub.Utils.trn([0.8,0,0.4]), width=0.1, depth=0.1
 
 sim = ub.Simulation.create_sim_factory([robot, table1, table2, table3, obstacle, cube])
 
-#Solve the problem
+#Resolve o problema
 
-#Find the first target pose
+#Encontra a primeira pose alvo
 target = table1.htm @ ub.Utils.trn([0,0,0.3]) @ ub.Utils.rotx(np.pi)
 
-#Inverse kinematics for a configuration near the current one to pick the block from above
+#Encontra, por cinemática inversa, uma configuração próxima da atual
+#para pegar o bloco por cima
 q_target = robot.ikm(htm_target = target, q0 = robot.q)
 
-#Linear motion in joint space to pick up the block
+#Faz o movimento linear no espaço de juntas até pegar o bloco
 dt = 0.01
 tmax=5
 t=0
 for i in range(round(tmax/dt)):
   t += dt
-  q_c = (1 - t/tmax)*robot.q0 + (t/tmax)*q_target
-  robot.add_ani_frame(t, q=q_c)
+  q_c = (1-t/tmax)*robot.q0 + (t/tmax)*q_target
+  robot.add_ani_frame(t,q=q_c)
 
-#Attach the block to the end-effector
+#Pega o bloco no efetuador
 robot.attach_object(cube)
 
-#Choose a target pose to avoid the obstacle
+#Escolhe uma pose alvo para escapar do obstáculo
 target = ub.Utils.trn([0,0,1]) @ ub.Utils.rotx(np.pi/2)
 
-#Inverse kinematics for a configuration near the current one
+#Encontra, por cinemática inversa, uma configuração próxima da atual
+#para chegar lá
 q_target = robot.ikm(htm_target = target, q0 = robot.q)
 
-#Linear motion in joint space to reach current target
+
+#Faz o movimento linear no espaço de juntas até chegar no alvo atual
 dt = 0.01
 tmax=5
 q0_new = robot.q
 t_new = t
 for i in range(round(tmax/dt)):
   t += dt
-  q_c = (1 - (t - t_new)/tmax)*q0_new + ((t - t_new)/tmax)*q_target
-  robot.add_ani_frame(t, q=q_c)
+  q_c = (1-(t-t_new)/tmax)*q0_new + ((t-t_new)/tmax)*q_target
+  robot.add_ani_frame(t,q=q_c)
 
-#Now find an inverse kinematics solution near the current one to place the block
+#Encontra, por cinemática inversa, uma configuração próxima da atual
+#para entregar o bloco
 target = table2.htm @ ub.Utils.trn([0,0,0.3]) @ ub.Utils.rotx(np.pi)
 
+#Encontra, por cinemática inversa, uma configuração próxima da atual
+#para entregar o bloco, também por cima
 q_target = robot.ikm(htm_target = target, q0 = robot.q)
 
-#Linear motion in joint space to drop off the block
+#Faz o movimento linear no espaço de juntas até entregar o bloco
 dt = 0.01
 tmax=5
 q0_new = robot.q
 t_new = t
 for i in range(round(tmax/dt)):
   t += dt
-  q_c = (1 - (t - t_new)/tmax)*q0_new + ((t - t_new)/tmax)*q_target
-  robot.add_ani_frame(t, q=q_c)
+  q_c = (1-(t-t_new)/tmax)*q0_new + ((t-t_new)/tmax)*q_target
+  robot.add_ani_frame(t,q=q_c)
 
 sim.run()
-                    </code></pre>
-                    <p>
-                        <a href="/class_presentations/presentation/exercicios3.html#/9">
-                            <b class="hlink">Back</b>
-                        </a>
-                    </p>
+                        </code></pre>
+                    <p><a href="/class_presentations/presentation/exercicios3.html#/9"><b
+                            class="hlink">Back</b></a></p>
+
                 </div>
-                <div style="width:5%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                </div>
-                <div style="width:45%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="width: 5%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 45%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
-                        <iframe scrolling="no"
-                                src="/class_presentations/presentation/images/exercicios3/anim2.html"
-                                style="width:500px;height:550px">
-                        </iframe>
+                            <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/exercicios3/anim2.html"
+                            style="width:500px;height:550px"></iframe>
                     </div>
                 </div>
             </div>
+
         </section>
+
 
     </div>
 </div>
@@ -411,9 +391,12 @@ sim.run()
         color: #34eb5e;
     }
 
-    /* Removing the UFMG logo from the background */
     body {
+        background-image: url(/class_presentations/presentation/images/aula1/logo_ufmg.svg) !important;
         background-color: black;
+        background-size: 8% !important;
+        background-repeat: no-repeat !important;
+        background-position: 96% 3% !important;
     }
 
     .itext {
@@ -426,10 +409,10 @@ sim.run()
     .hlink {
         color: #f5bf42;
     }
+
     .hlink:hover {
         text-decoration: underline;
     }
-
     /* width */
     ::-webkit-scrollbar {
         width: 20px;
@@ -466,8 +449,8 @@ sim.run()
 <script src="/class_presentations/presentation/plugin/menu/menu.js"></script>
 <script>
     // More info about initialization & config:
-    //   https://revealjs.com/initialization/
-    //   https://revealjs.com/config/
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
     Reveal.initialize({
         hash: true,
         width: 1200,
@@ -477,8 +460,9 @@ sim.run()
         maxScale: 2.0,
         plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu]
     });
-
     var frames = document.getElementsByTagName("iframe");
+
+
     Reveal.on('slidechanged', event => {
         for (let i = 0; i < frames.length; ++i) {
             frames[i].contentWindow.location.reload(true);

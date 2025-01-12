@@ -15,8 +15,8 @@
             document.write('<base href="/">');  // Local development base
         }
     </script>
-    
-    <title>Lecture 4 - Robotic Manipulators</title>
+
+    <title>Class 5 - Robotic Manipulators</title>
 
     <link rel="stylesheet" href="/class_presentations/presentation/dist/reset.css">
     <link rel="stylesheet" href="/class_presentations/presentation/dist/reveal.css">
@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="/class_presentations/presentation/plugin/highlight/monokai.css">
     <style>
         .reveal .slides section {
-            padding: 20px; /* Adjust as needed */
+            padding: 20px; /* Adjust the value as needed */
         }
     </style>
 </head>
@@ -37,100 +37,2872 @@
 
         <section>
             <h3>Robotic Manipulators</h3>
-            <h3 style="font-size:40px">Lecture 4: Differential Kinematics</h3>
+            <h3 style="font-size:40px">Class 5: Kinematic Control</h3>
             <p>
-                <img src="/class_presentations/presentation/images/aula4/titulo.svg" style="width:400px;height:auto;">
-                <br><small> </small>
+                <img src="/class_presentations/presentation/images/aula5/titulo.png" style="width:500px;height:auto;">
+                <br><small>Vinicius Mariano Gonçalves</small>
             </p>
         </section>
 
         <section>
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Kinematic Control</h3>
             <div style="width:1200px;height:800px">
-                <br>
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify">
-                    <p>We already know how to describe the <b class="itext">pose</b> of the end-effector with respect to a
-                        reference frame \(\mathcal{F}_0\).</p>
-                    <p>The <b class="itext">direct kinematics</b> maps the joint "position" (the configuration) to the
-                        rigid body's "position" (the pose).</p>
-                    <p>Now we want to map not the "positions" but the "velocities." This is the goal of
-                        <b class="itext">differential kinematics</b>.</p>
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <p>We are interested in controlling <b class="itext">robotic manipulators</b>.</p>
+                    <p>To talk about control, we need to define what the <b class="itext">system</b> to be controlled is, that is, we need to specify:</p>
+                    <ul>
+                        <li>... the <b class="itext">manipulated variables</b> (inputs),</li>
+                        <li>... the <b class="itext">process variables</b> (outputs),</li>
+                        <li>... the <b class="itext">mathematical model</b> that relates them.</li>
+                    </ul>
+                    <p>There are several different ways to control robots, with different levels of complexity and respective systems. Let's see a bit about this before proceeding.</p>
                 </div>
-                <div style="width: 10%; float:right;"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+
                     <div style="display:table-cell;vertical-align: middle">
-                        <br>
-                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
                              style="width:350px;height:auto;">
                     </div>
                 </div>
             </div>
+
         </section>
 
         <section>
-            <h3 style="font-size:40px">The S Operator</h3>
+            <h3 style="font-size:40px">Overview</h3>
             <p>
-                <img src="/class_presentations/presentation/images/aula4/titulo.svg">
+                <img src="/class_presentations/presentation/images/aula5/titulo.png" style="width:500px;height:auto;">
                 <br>
             </p>
         </section>
 
         <section>
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">The S Operator</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Definition</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Overview</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Types of Control</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify">
-                    <p>Before proceeding, we must introduce an important concept:</p>
-                    <div style="background-color: #282828">
-                        <p><b class="ttext">Definition:</b> Let \(a = (a_x \ a_y \ a_z)^T\) be a 3D vector. We define
-                            the function
-                            \(S: \mathbb{R}^{3 \times 1} \mapsto \mathbb{R}^{3 \times 3}\) as:
-                            $$S(a) = \begin{pmatrix}
-                            0 & -a_z & a_y \\
-                            a_z & 0 & -a_x \\
-                            -a_y & a_x & 0
-                            \end{pmatrix}.$$<br></p>
-                    </div>
-                    <p>The name “S” comes from <span style="font-style: italic">skew-symmetric</span>.</p>
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <p>From the perspective of the manipulated variable (i.e., the one we can command to achieve the control objective),
+                    robots can have interfaces for the following commands, from the lowest level to the highest level:</p>
+
+                    <ul>
+                        <li>The <b class="itext">torque on the joint motors, \(\tau\)</b>,</li>
+                        <li>The <b class="itext">desired configuration speed \(\dot{q}_d\)</b>,</li>
+                        <li>The <b class="itext">desired configuration \(q_d\)</b>,</li>
+                        <li>The <b class="itext">desired end-effector pose \(\hat{H}_d\)</b>.</li>
+                    </ul>
+
                 </div>
-                <div style="width: 10%; float:right;"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
-                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
                              style="width:350px;height:auto;">
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Continue with all sections translated into English (omitted for brevity) -->
+        </section>
 
         <section>
-            <h3 style="font-size:40px">Conclusion</h3>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Overview</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Torque Control</b>
+            </h3>
             <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify">
-                    <p>Having the geometric Jacobian, we can map the joint velocities to the (linear and angular)
-                        velocities of the end-effector.</p>
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>In this case, we directly send the motor torque for each joint at each moment in time, \(\tau_i(t)\).</p>
+                    <p>To control this way, we usually have the configuration and configuration speed as process variables,
+                    \(q(t), \dot{q}(t)\).</p>
+                    <p>The input/output mathematical model is given by a (complicated) system of second-order, nonlinear differential equations,
+                        <b class="itext">\(\ddot{q} = f(q,\dot{q},\tau)\)</b>, dependent on the inertial parameters (masses and moments of inertia) of the robots. We will learn to calculate this model in <b class="itext">Class 6</b>.</p>
+                    <p>It is (quite) rare for industrial robots to have a torque control interface due to the high complexity of controlling
+                    and the possibility of causing damage to the robot.</p>
+                    <p>On the other hand, it allows the greatest freedom of control. It is especially important if we want to control the force
+                    the robot exerts on the environment (<b class="itext">force control</b>).</p>
+                    <p>It is essentially used by researchers or robot manufacturers.</p>
 
-                    <p>This is very useful because it is often easier to plan control in the velocity space, while the
-                        robot receives commands in joint velocity. This mapping solves the problem.</p>
-                    <p>In the next lecture, we will see that the geometric Jacobian will be used as a main ingredient to
-                        compute <b class="itext">other Jacobians</b> related to a space where velocity planning is even
-                        simpler than in velocity space.</p>
-                    <p>In that space, we will design our <b class="itext">controller</b>.</p>
                 </div>
-                <div style="width: 10%; float:left;"></div>
-                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Overview</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Torque Control</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Block diagram:</p>
+
+                    <div style="vertical-align: middle; text-align: center; align-items: center">
+                        <img src="/class_presentations/presentation/images/aula5/bloco1.svg"
+                             style="width:700px;height:auto;">
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Overview</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configuration Speed Control </b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>In this case, we assume there is a lower-level controller that allows us to send the desired configuration speed
+                    for each joint, \(\dot{q}_{i,d}(t)\).</p>
+                    <p>Assuming the controller is good and the desired speed signal is "reasonable", we can assume the actual speed
+                    is equal to the desired speed, and therefore the mathematical model is <b class="itext">\(\dot{q} = \dot{q}_d\)</b>.</p>
+                    <p>In this type of control, we have the configuration \(q\) as the process variable (it is not necessary to measure the configuration speed,
+                    unless we want to verify that the lower-level controller is following the desired value).</p>
+                    <p>It is relatively common in industrial robots, even if it is through the modification of other interfaces. In particular, we can
+                    "adapt" the next control (by configuration) to become this one.</p>
+                    <p>It allows good flexibility to control the robot.</p>
+                    <p>This is the topic of this class.</p>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Overview</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configuration Speed Control</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Block diagram:</p>
+
+                    <div style="vertical-align: middle; text-align: center; align-items: center">
+                        <img src="/class_presentations/presentation/images/aula5/bloco2.svg"
+                             style="width:700px;height:auto;">
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Overview</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configuration Control</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>In this case, we assume there is a lower-level controller that allows us to send the desired configuration
+                    for each joint, \(q_{i,d}(t)\).</p>
+                    <p>Assuming the controller is good and the desired configuration signal is "reasonable", we can assume the configuration
+                    is equal to the desired configuration, and therefore the mathematical model is <b class="itext">\(q = q_d\)</b>.</p>
+                    <p>In this interface, we usually perform <b class="itext">open-loop control</b> (from the perspective of this system), as
+                    we externally calculate the desired configuration \(\dot{q}_d(t)\) to perform the task, send it to the robot, and do not need to measure anything.
+                    Therefore, there is no process variable. </p>
+                    <p>The <a href="/class_presentations/presentation/aula3.html#/61"><b
+                            class="hlink">control from Class 3</b></a> is an example of using this interface: we pre-calculate a trajectory \(\dot{q}_d(t)\)
+                    and "send" it to the robot (using the <b class="itext">.add_ani_frame</b> to simulate the configuration control interface).</p>
+                    <p>It is quite common in industrial robots.</p>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Overview</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configuration Control</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Block diagram:</p>
+
+                    <div style="vertical-align: middle; text-align: center; align-items: center">
+                        <img src="/class_presentations/presentation/images/aula5/bloco3.svg"
+                             style="width:700px;height:auto;">
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Overview</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Pose Control</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>At the highest level, we send the desired pose for the end-effector, \(\hat{H}_d(t)\), written as an HTM
+                        or otherwise (usually 3 position numbers + 3 Euler angles), relative to a fixed reference frame \(\mathcal{F}_0\).</p>
+                    <p>A simplified way to think about this controller is to think that it performs inverse kinematics for the desired pose, obtaining the respective
+                        desired configuration, \(q_d(t) = \texttt{IK}(\hat{H}_d(t))\), and then uses the previous interface.
+                    </p>
+                    <p>In reality, each manufacturer implements this interface differently.</p>
+                    <p>All robots have, in some way, an interface of this type.</p>
+                    <p>Very easy and practical to use. It is by far the most used interface by engineers/technicians in the industry. </p>
+                    <p>On the other hand, it gives you less control over the robot. There are several ways to perform control, but the interface forces you to use
+                    the one implemented by the manufacturer. This interface may not be applicable to the problem (e.g., the robot collides with itself).</p>
+                </div>
+
+
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Overview</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Pose Control</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Block diagram:</p>
+
+                    <div style="vertical-align: middle; text-align: center; align-items: center">
+                        <img src="/class_presentations/presentation/images/aula5/bloco4.svg"
+                             style="width:700px;height:auto;">
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Overview</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Kinematic Control</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <p>In this class, we will focus on the <b class="itext">configuration speed control</b> interface.</p>
+                    <p>Control in this interface is much simpler than torque control, and, on the other hand, provides
+                    very good flexibility for control.</p>
+                    <p>We call control in this interface <b class="itext">kinematic control</b> because
+                    the controller will not depend on the inertial parameters (masses, moments of inertia) of the robot. It
+                    will depend only on the geometric characteristics of the task.</p>
+
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
-                        <br>
-                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
                              style="width:350px;height:auto;">
                     </div>
                 </div>
             </div>
+
         </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Overview</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Kinematic Control</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <p>Henceforth, we will call \(u = \dot{q}_d\), and therefore the system we want to control is:</p>
+                    <b class="itext">$$\dot{q} = u.$$</b>
+                    <p>It is a simple integrator decoupled (independent) from the configuration.</p>
+                    <p>It seems simple to control! But we will see that frequently we will use
+                    <b class="itext">nonlinear controllers</b>.</p>
+                    <p>Since our process variable in this case is only the configuration \(q\), our controller
+                    will depend on this variable and (sometimes) explicitly on the current time:</p>
+                    <b class="itext">$$u = h(q,t).$$</b>
+
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Overview</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">An Important Comment</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <p>Configuration interfaces are more common than speed interfaces.</b>
+                    <p>But it is possible to use the kinematic control strategy with this interface as well.
+                Let \(u(t) = \dot{q}_d(t) = h(q(t),t)\) be the kinematic controller we want to implement. Then:</p>
+                    $$q_d(t) = q_0 + \int_0^t h(q(s),s)ds$$
+                    <p>where \(q_0\) is the initial configuration of the robot.</p>
+                    <p>Just calculate this \(q_d\) and send it to the configuration interface!</b>
+                    <p>This idea is even used in the implementation of kinematic controls in UAIBot, as we will see.</p>
+
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px">The Concept of Task</h3>
+            <p>
+                <img src="/class_presentations/presentation/images/aula5/titulo.png" style="width:500px;height:auto;">
+                <br>
+            </p>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Concept of Task</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Having defined the system we will work with and the assumptions, let's talk
+                    about the reasons for doing control: <b class="itext">the task</b>.</p>
+                    <p>The task is nothing more than a specification of what we want to do with the robot.</p>
+                    <p>In this course, we will only consider <b class="itext">motion tasks</b>, that is, tasks that do not involve
+                    exerting controlled force on the environment.</p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Concept of Task</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>It is a concept in robotics in general, not just for manipulators. In the case of fixed-base manipulators (our case),
+                    we essentially have variations of two motion tasks:</p>
+                    <ul>
+                        <li>Make the end-effector reach a specific constant or time-varying pose.</li>
+                        <li>Make the end-effector reach a partial pose (e.g., orientation does not matter, or rotation around the \(z\) axis of the end-effector is free) that is constant or time-varying.</li>
+                    </ul>
+                    <p>In more complex robots, such as <b class="itext">humanoids</b>, there is more diversity of tasks.</p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Concept of Task</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>
+                    We have two categories of tasks: <b class="itext">time-invariant</b> tasks (reaching a fixed pose) and
+                    <b class="itext">time-varying</b> tasks (tracking a time-varying pose).</p>
+                    <p>For a constant task, note that we can specify a task as a
+                    <b class="itext">subset of the configuration space</b> to which we want the robot to go. </p>
+                    <p>For example, if our task is to reach a desired constant position for the end-effector \(s_d\), we have that
+                    </p>
+                    $$\mathcal{T} = \{ q \in \mathbb{R}^{n \times 1} \ | \ s_e(q)=s_d\}$$
+                    <p>where \(s_e(q)\) is the position of the end-effector as a function of \(q\).</p>
+                    <p>It is not necessarily easy to calculate all the members of this set, and this (fortunately) is not
+                    necessary. However, it is useful to consider a time-invariant task as a set of configurations
+                    \(\mathcal{T}\).</p>
+
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Concept of Task</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 65%; float:left; font-size:25px; text-align:left">
+                    <p>
+                    For time-varying tasks, the idea is similar. Essentially, for each
+                    fixed \(t\), we have a set \(\mathcal{T}(t)\).</p>
+                    <p>For example, if our task is to reach a time-varying desired position for the end-effector \(s_d(t)\), we have that
+                    </p>
+                    $$\mathcal{T}(t) = \{ q \in \mathbb{R}^{n \times 1} \ | \ s_e(q)=s_d(t)\}$$
+                    <p>that is, for each fixed \(t\), we have a set.</p>
+                    <p>Our goal is then for the configuration \(q\) to be in the set \(\mathcal{T}(t)\) at time \(t\).</p>
+                </div>
+
+                <div style="width: 35%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px">Task Functions</h3>
+            <p>
+                <img src="/class_presentations/presentation/images/aula5/titulo.png" style="width:500px;height:auto;">
+                <br>
+            </p>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Definition</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Consider a <b class="itext">time-invariant</b> task (e.g., reaching a constant pose).</p>
+                    <p>As seen, from the perspective of the configuration, this means we want to converge to any configuration \(q\) in a
+                    region \(\mathcal{T}\) of the configuration space.</p>
+
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Definition:</b> For a robot/system with configuration space \(q \in
+                            \mathbb{R}^{n \times 1}\), the <b class="itext">task function</b> for a constant task
+                            \(\mathcal{T}\)
+                            is a function \(r: \mathbb{R}^{n \times 1} \mapsto \mathbb{R}^{g \times 1}\) that mathematically encodes the task
+                            into a differentiable function. More precisely,
+                            it must have two properties:</p>
+                        <ul>
+                            <li>\(r(q) = 0_{g \times 1} \) <b class="itext">if and only if</b> \(q \in \mathcal{T}\),</li>
+                            <li>\(r(q)\) is a differentiable function (at least once) in \(q\).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Analysis</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Therefore, due to the properties of the task function, finding a \(q \in \mathcal{T}\) is <b class="itext">equivalent</b> to
+                    solving the equation \(r(q)=0_{g \times 1}\).
+                    </p>
+                    <p>Note that the first property prohibits the following:</p>
+                        <ul>
+                            <li>That there is a configuration that satisfies the task where \(r(q)\) does not become zero. This ensures that <b class="itext">all</b> configurations
+                            are included in \(r(q)=0_{g \times 1}\).</li>
+                            <li>That there is a configuration that does not satisfy the task where \(r(q)\) becomes zero. This ensures
+                            that solving \(r(q)=0_{g \times 1}\) will not produce "bad" solutions (that do not solve
+                            our task).</li>
+                        </ul>
+                    <p>The differentiability property will prove useful soon.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Suppose the task is to make the position of the end-effector, \(s_e(q)\), converge to a constant position,
+                        \(s_{d}\) not zero.
+                    </p>
+                    <p>Suppose there is more than one configuration where this is possible. Let \(q_d\) be one of these configurations.
+                    We propose three "candidates" for the task function.</p>
+                        <ul>
+                            <li>\(r_1(q) = q - q_{d}\),</li>
+                            <li>\(r_2(q) = s_d \times s_{e}(q)\),</li>
+                            <li>\(r_3(q) = s_e(q)-s_d\).</li>
+                    <p>Are all three task functions according to our definition?</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>We can see that all three are differentiable functions in \(q\), as \(s_e(q)\) comes from the direct kinematics
+                        for robotic manipulators (formed by infinitely differentiable functions such as sines and cosines).
+                    </p>
+                    <p>To test the first property, we can divide it into two implications (which must be mutually true):</p>
+                    <ul>
+                        <li>(i) \(r(q)=0_{g \times 1} \) implies \(q \in \mathcal{T}\),</li>
+                        <li>(ii) \(q \in \mathcal{T}\) implies \(r(q)=0_{g \times 1}\).</li>
+                    </ul>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>(i) It is easy to see that the first candidate, \(r_1(q)\), is zero only if \(q=q_d\). Since \(q_d\) is a configuration where
+                    \(s_e(q_d)=s_{d}\), then we have that \(r_1(q) = 0\) implies that \(q \in \mathcal{T}\).</p>
+                    <p>(ii) But the converse, \(q \in \mathcal{T}\) implies that \(r_1(q) = 0\), is not true. Take another
+                    configuration \(q_d' \not= q_d\) within \(\mathcal{T}\) (we made the assumption that the set has more than
+                    one element). In this case, \(s(q_d') = q_d'-q_d \not=0\). </p>
+                    <p>Therefore, it is <b class="itext">not</b>
+                    a task function because it excludes some configurations from \(\mathcal{T}\) ((ii) fails).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>(i) Note that the second candidate, \(r_2(q)\), is zero if, for example, \(s_e(q)=2s_d\) (property of the cross product).
+                    Since \(s_d\) is not the zero vector, \(s_d \not= 2s_d\), and therefore it is not true that \(r_2(q) = 0\) implies that \(q \in \mathcal{T}\).
+                    </p>
+                    <p>(ii) It is easy to see that if \(s_e(q) = s_d\), then \(r_2(q)\) is zero. So \(q \in \mathcal{T}\) implies \(r_2(q)=0\).</p>
+                    <p>Therefore, it is <b class="itext">not</b>
+                    a task function because it produces false members of \(\mathcal{T}\) ((i) fails).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>The last one is the easiest to analyze. It is easy to see that \(r(q)=0\) if and only if \(s_{e}(q)=s_d\), that is,
+                        \(q \in \mathcal{T}\).
+                    </p>
+                    <p>Therefore, it is the only one that is a task function!</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Multiple Task Functions</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>There are infinite task functions for the same task. For example, for the task
+                        of reaching a desired position, all of the following are tasks:
+                    </p>
+                    <ul>
+                        <li>\(r(q) = \alpha (s_e(q)-s_d)\) for \(\alpha \not = 0\),</li>
+                        <li>\(r(q) = \alpha \|s_e(q)-s_d\|^2\) for \(\alpha \not = 0\),</li>
+                        <li>\(r(q) = M(s_e(q)-s_d)\) for a matrix \(M \in \mathbb{R}^{3 \times 3}\) invertible,</li>
+                        <li>Separating \(s_e\) and \(s_d\) into their components \(x,y,z\): \(r(q) = 3-e^{-(x_e(q)-x_d)^2}-e^{-(y_e(q)-y_d)^2}-e^{-(z_e(q)-z_d)^2}\).</li>
+                    </ul>
+                    <p>Note that the vector \(r\) is not necessarily three-dimensional. For example, in the second and fourth examples, \(g\) (the dimension of the vector) is 1.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Task Function for Pose</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>What would be examples of task functions for complete pose control?
+                    </p>
+                    <p>Let \(\phi_e(q) \in \mathbb{R}^{3 \times 1}\) be a vector with the Euler angles of the end-effector orientation in configuration \(q\). Let \(\phi_d \in \mathbb{R}^{3 \times 1}\) be a vector of
+                        Euler angles for the desired end-effector orientation. A task function frequently used in the literature, with \(g=6\), is:
+                    </p>
+                    $$r(q) = \left(\begin{array}{c} s_e(q)-s_d \\ \phi_e(q)-\phi_d \end{array}\right).$$
+                    <p>It is not a task function according to our definition because it is not differentiable for all \(q\) (due to the non-differentiability of Euler angles in some situations).</p>
+                    <p>Even so, it is frequently used.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Task Function for Pose</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Let's propose another task function, differentiable and (much) simpler to calculate. It is based on the following fact: if
+                        \(u, v \in \mathbb{R}^{3 \times 1}\) are unit vectors (\(\|u\|=\|v\|=1\)):
+                    </p>
+                    $$\frac{1}{2}\|u-v\|^2 = \frac{1}{2}(\|u\|^2+\|v^2\|-2u^Tv) = 1-u^Tv.$$
+                    <p>From this equality, it is easy to conclude that if \(u,v\) are unit vectors, \(1-u^Tv=0\) if and
+                        only if \(u=v\).
+                    </p>
+                    <p>Let \(x_e(q), y_e(q), z_e(q)\) and \(s_e(q)\) be the columns 1, 2, 3, and 4 of the HTM from the
+                    fixed reference frame to the end-effector, excluding the last row of the HTM. These column vectors represent the position of the center
+                    of the end-effector and the three axes of orientation, respectively.</p>
+                    <p>Do the same for the HTM representing the desired pose, obtaining \(x_d, y_d, z_d\) and \(s_d\).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Task Function for Pose</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>We then have the following task function, also with \(g=6\), but differentiable:
+                    </p>
+                    <b class="itext">$$r(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{c} s_e(q)-s_d \\ 1-x_d^Tx_e(q) \\ 1-y_d^T y_e(q) \\ 1-z_d^T z_e(q) \end{array}\LARGE{\Bigg)}\normalsize{}.$$</b>
+                    <p>Note that we used the fact that the vectors \(x,y\) and \(z\) are unitary.</p>
+                    <p>We can use the same idea for task functions for partial poses (e.g., if we do not want to control the orientation of the \(x\) and \(y\) axes, just remove the respective components).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Task Jacobian</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>It will be useful to calculate the so-called <b class="itext">task Jacobian</b>:</p>
+                    <b class="itext">$$J_r(q) = \frac{\partial r}{\partial q}(q).$$</b>
+
+                    <p>More precisely, let \(r_i(q)\), \(i=1,...,g\), be the i-th component of the task function and \(q_j\), \(j=1,...,n\), be the
+                    j-th configuration. Then \(J_r(q) \in \mathbb{R}^{g \times n}\), and the element in row i and column j is
+                    \(\frac{\partial r_i}{\partial q_j}(q)\).</p>
+                    <p>The calculation of the task Jacobian is done on a case-by-case basis (there is no "general formula"), however, we almost always
+                    need the <b class="itext">geometric Jacobian</b> of the end-effector to calculate it.</b>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Task Jacobian</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>A useful trick to calculate the task Jacobian is to use the chain rule:</p>
+                    $$\frac{d}{dt}r(q) = \frac{\partial r}{\partial q}(q)\dot{q} = J_r(q)\dot{q}.$$
+                    <p>Frequently, it is simpler to calculate \(\dot{r}\) than \(J_r(q)\) directly. In this calculation, the linear and angular velocities of the end-effector often appear, from which the geometric Jacobian arises.</p>
+                    <p>After finishing the calculation of \(\dot{r}\) and comparing both sides of the equation, we can infer \(J_r(q)\).</p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Task Jacobian - Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Consider our task function:</p>
+                    $$r(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{c} s_e(q)-s_d \\ 1-x_d^Tx_e(q) \\ 1-y_d^T y_e(q) \\ 1-z_d^T z_e(q) \end{array}\LARGE{\Bigg)}\normalsize{}.$$
+                    <p>Let's calculate the time derivative of each of the 4 sub-tasks and then "stack" the results.</p>
+
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Task Jacobian - Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>We start with \(s_e(q)-s_d\).</p>
+                    <p>Note that \(\frac{d}{dt}(s_e(q)-s_d) = \frac{d}{dt} s_e(q)\) (since \(s_d\) is constant). </p>
+                    <p>But, by definition, \(\frac{d}{dt} s_e(q)\) is the linear velocity of the end-effector! Therefore, using the
+                    first three rows of the geometric Jacobian:</p>
+                    <b class="itext">$$\frac{d}{dt}(s_e(q)-s_d) = v = J_v(q)\dot{q}.$$</b>
+
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Task Jacobian - Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Let's now work with \(1-x_d^Tx_e(q)\).</p>
+                    <p>Note that \(\frac{d}{dt}(1-x_d^Tx_e(q)) = -x_d^T \frac{d}{dt}x_e(q)\) (since \(x_d\) is constant). </p>
+                    <p>Using the <a href="/class_presentations/presentation/aula4.html#/5"><b
+                            class="hlink">Theorem from Class 4</b></a> (see also <a href="/class_presentations/presentation/exercicios4.html#/3"><b
+                            class="hlink">Exercise 3 from Class 4</b></a>) </p>
+                    $$\frac{d}{dt}x_e(q) = \omega \times x_e(q)$$
+                    <p>where \(\omega\) is the angular velocity of the end-effector.</p>
+                    <p>Now we apply the <a href="/class_presentations/presentation/aula4.html#/4"><b
+                            class="hlink">Properties 2 and 3 from Class 4</b></a> to conclude that:</p>
+                    $$\frac{d}{dt}x_e(q) = -S(x_e(q))\omega.$$
+
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Task Jacobian - Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Using the geometric Jacobian, \(\omega = J_{\omega}(q)\dot{q}\). Substituting:</p>
+                    $$\frac{d}{dt}x_e(q) = -S(x_e(q))J_w(q)\dot{q}.$$
+                    <p>Using this fact in the formula \(\frac{d}{dt}(1-x_d^Tx_e(q)) = -x_d^T \frac{d}{dt}x_e(q)\):</p>
+                    <b class="itext">$$\frac{d}{dt}(1-x_d^Tx_e(q)) = x_d^TS(x_e(q))J_w(q)\dot{q}.$$</b>
+                    <p>Obviously, using a similar reasoning, we can find similar formulas for
+                    \(\frac{d}{dt}(1-y_d^Ty_e(q))\) and \(\frac{d}{dt}(1-z_d^Tz_e(q))\). </p>
+
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Task Jacobian - Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Therefore:</p>
+                    $$\frac{d}{dt} r(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{c} J_v(q)\dot{q} \\ x_d^T S(x_e(q))J_w(q)\dot{q} \\ y_d^T S(y_e(q))J_w(q)\dot{q} \\ z_d^T S(z_e(q))J_w(q)\dot{q} \end{array}\LARGE{\Bigg)}\normalsize{}.$$
+                    <p>We can factor out the product by \(\dot{q}\), present in all members, on the right: </p>
+                    $$\frac{d}{dt} r(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{c} J_v(q) \\ x_d^T S(x_e(q))J_w(q) \\ y_d^T S(y_e(q))J_w(q) \\ z_d^T S(z_e(q))J_w(q) \end{array}\LARGE{\Bigg)}\normalsize{}\dot{q}.$$
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Task Jacobian - Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>As by the chain rule \(\frac{d}{dt} r(q) = J_r(q) \dot{q}\), we have that, comparing both sides
+                        and using the fact that the equation must be true for all \(\dot{q}\):</p>
+                    <b class="itext">$$J_r(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{c} J_v(q) \\ x_d^T S(x_e(q))J_w(q) \\ y_d^T S(y_e(q))J_w(q) \\ z_d^T S(z_e(q))J_w(q) \end{array}\LARGE{\Bigg)}\normalsize{}.$$</b>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Task Jacobian</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Using this trick and the properties of the geometric Jacobian and the matrix \(S\), we can calculate the task Jacobian for any task.</p>
+                    <p>For curiosity, the task Jacobian of the "task function":</p>
+                    $$r(q) = \left(\begin{array}{c} s_e(q)-s_d \\ \phi_e(q)-\phi_d \end{array}\right).$$
+                    <p>receives a special name in robotics: <b class="itext">analytical Jacobian</b>.</p>
+                    <p>Note that (in general, except for very particular cases) \(\frac{d}{dt} \phi_e \not= \omega\) (see also <a href="/class_presentations/presentation/exercicios4.html#/15"><b
+                            class="hlink">Exercise 15 from Class 4</b></a>)!</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Time-Varying Task Function</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>We can also consider time-varying tasks, \(\mathcal{T}(t)\).</p>
+                    <p>The task function now also explicitly depends on \(t\), \(r(q,t)\).</p>
+                    <p>The definition of the task function is very similar to the constant task case:</p>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Definition:</b> For a robot/system with configuration space \(q \in
+                            \mathbb{R}^{n \times 1}\), the <b class="itext">task function</b>
+                            for a time-varying task \(\mathcal{T}(t)\) is a function \(r: \mathbb{R}^{n \times 1} \times \mathbb{R} \mapsto \mathbb{R}^{g \times 1}\) that mathematically encodes the task
+                            into a differentiable function. More precisely,
+                            it must have two properties:</p>
+                        <ul>
+                            <li>For all fixed \(t\): \(r(q,t) = 0_{g \times 1} \) <b class="itext">if and only if</b> \(q \in \mathcal{T}(t)\),</li>
+                            <li>\(r(q,t)\) is a differentiable function (at least once) in \(q\) and \(t\).</li>
+                        </ul>
+                        </div>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Time-Varying Task Function</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>For example, for the task of tracking a time-varying pose, we can use:</p>
+                    $$r(q,t) = \LARGE{\Bigg(}\normalsize{}\begin{array}{c} s_e(q)-s_d(t) \\ 1-x_d(t)^Tx_e(q) \\ 1-y_d(t)^T y_e(q) \\ 1-z_d(t)^T z_e(q) \end{array}\LARGE{\Bigg)}\normalsize{}.$$
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Task Feedforward Term</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Note that now, by the chain rule:</p>
+                    $$\frac{d}{dt} r(q,t) = \frac{\partial r}{\partial q}(q,t)\dot{q}+\frac{\partial r}{\partial t}(q,t).$$
+                    <p>This equation allows us to calculate the <b class="itext">task Jacobian</b> \(J_r(q,t)=\frac{\partial r}{\partial q}(q,t)\), as in the constant case.</p>
+                    <p>Note that now the task Jacobian depends on \(t\).</p>
+                    <p>The term that "remains" (not multiplied by \(\dot{q}\), \(\frac{\partial r}{\partial t}(q,t)\) will also be important, and we call it the <b class="itext">Task Feedforward</b>.</p>
+                    <p>It only exists (non-zero) for time-varying tasks.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Task Feedforward Term</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>We can calculate \(\frac{d}{dt} r(q,t)\) for our time-varying pose task.</p>
+                    <p>Most of the calculations done previously for the constant case will remain, but there will be an additional term
+                    (the Task Feedforward):</p>
+                    <b class="itext">$$\frac{d}{dt} r(q,t) = \LARGE{\Bigg(}\normalsize{}\begin{array}{c} J_v(q) \\ x_d(t)^T S(x_e(q))J_w(q) \\ y_d(t)^T S(y_e(q))J_w(q) \\ z_d(t)^T S(z_e(q))J_w(q) \end{array}\LARGE{\Bigg)}\normalsize{}\dot{q} +
+                    \LARGE{\Bigg(}\normalsize{}\begin{array}{c} -\dot{s}_d(t) \\ -\dot{x}_d(t)^T x_e(q) \\-\dot{y}_d(t)^T y_e(q) \\ -\dot{z}_d(t)^T z_e(q) \end{array}\LARGE{\Bigg)}\normalsize{}.$$</b>
+                    <p>We can easily identify the Jacobian and the Feedforward from this equation.</p>
+                    <p>For the Task Feedforward to exist, the signals \(x_d(t), y_d(t), z_d(t)\) and \(s_d(t)\) must be (at least)
+                    once differentiable in time.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Task Function</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Task Feedforward Term</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+
+                    <p>The name <b class="itext">Task Feedforward</b> comes from the fact that for a very special case where
+                    \(r(q,t) = q - q_d(t)\), the term becomes \(\frac{\partial r}{\partial t}(q,t) = -\dot{q}_d(t)\), which is
+                    the (opposite) of the feedforward term in classical control when the system dynamics is that of a simple integrator
+                    (which is the case in kinematic control).</p>
+                    <p>The name, therefore, is primarily due to an analogy.</p>
+                    <div style="vertical-align: middle; text-align: center; align-items: center">
+                        <img src="/class_presentations/presentation/images/aula5/feedforward.svg"
+                             style="width:700px;height:auto;">
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">The Kinematic Control Technique</h3>
+            <p>
+                <img src="/class_presentations/presentation/images/aula5/titulo.png" style="width:500px;height:auto;">
+                <br>
+            </p>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Introduction</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+
+                    <p>Let's assume that, in some way, we choose the configuration speed \(u\) such that the following
+                    equation is true:</p>
+                    $$\frac{d}{dt} r(q,t) = -Kr(q,t)$$
+                    <p>for some positive scalar \(K\).</p>
+                    <p>Let \(r_i\) be the i-th task function. The previous vector equation implies the scalar equations
+                    for \(i=1,2,...,g\):</p>
+                    $$\frac{d}{dt} r_i(q,t) = -Kr_i(q,t).$$
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Introduction</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>We know that the differential equation \(\frac{d}{dt}w(t) = -Kw(t)\) with \(K>0\) constant and
+                    \(w(t) \in \mathbb{R}\) has the solution \(w(t) = e^{-Kt}w(0)\).</p>
+                    <p>So, taking \(w(t) = r_i(q(t),t)\), we have \(r_i(q(t),t) = e^{-Kt}r_i(q(0),0)\). Therefore,
+                    vectorially:</p>
+                    <b class="itext">$$r(q(t),t) = e^{-Kt}r(q(0),0).$$</b>
+                    <p>Thus, \(r\) <b class="itext">decays exponentially to zero!</b></p>
+                    <p>We can now appreciate the first property of the task function: it is due to it that we can guarantee that \(r\) going to zero implies that the task will be achieved by the manipulator!</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Control Law</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>The question now is how to choose our control action \(\dot{q}=u\) to ensure
+                    this relationship.</p>
+                    <p>Using the chain rule, we have the following equation:</p>
+                    $$\frac{d}{dt}r(q,t) = J_r(q,t)\dot{q} + \frac{\partial r}{\partial t}(q,t) = -Kr(q,t).$$</b>
+                    <p>Therefore, if we find \(\dot{q}\) that satisfies the equation:</p>
+                    $$J_r(q,t)\dot{q} = -Kr(q,t)-\frac{\partial r}{\partial t}(q,t).$$</b>
+                    <p>we solve our problem!</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Control Law</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>The previous equation is a <b class="itext">linear system</b> of the form \(Au=b\), where
+                    \(A = J_r(q,t)\), \(b=-Kr(q,t)-\frac{\partial r}{\partial t}(q,t)\) and \(u=\dot{q}\).</p>
+                    <p>We have already studied the solution to this type of system in <a href="/class_presentations/presentation/aula4.html#/65"><b
+                            class="hlink">Class 4</b></a>, including considering the case where there are infinite or no solutions.</p>
+                    <p>We will use the <b class="itext">damped pseudoinverse</b> of the matrix \(A = J_r(q,t)\) to find \(\dot{q}\).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Control Law</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>So, we have the expression for our control action \(u\):</p>
+                    <b class="itext">$$u= \dot{q} = -J_r(q,t)^{\dagger(\epsilon)}\Big( Kr(q,t) + \frac{\partial r}{\partial t}(q,t)\Big)$$</b>
+                    <p>for a constant \(\epsilon > 0\).</p>
+                    <p>There are several things to be said about this controller.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Analysis: Nonlinearity</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>First, note that the controller is of the form \(u= h(q,t)\) for a function \(h(q,t)\) that is, in general,
+                    <b class="itext">quite nonlinear</b> in both \(q\) and \(t\).</p>
+                    <p>The nonlinearity in the variable \(q\) places the controller in the category of
+                        <b class="itext">nonlinear control</b> (the nonlinearity in the independent variable \(t\) does not matter in this
+                        categorization).</p>
+                    <p><b class="itext">A very specific example where it will be linear:</b> if we want to control only the position of a Cartesian robot
+                        using the task function \(r(q,t) = s_e(q)-s_d(t)\).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Analysis: Controller Fallibility</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Note also that there is no guarantee that the original equation that led to the controller expression,
+                    \(\frac{d}{dt}r = -Kr\), will be perfectly satisfied.</p>
+                    <p>This happens because the linear equation (in \(\dot{q}\))
+                    may not have a solution (and therefore the damped pseudoinverse finds an approximate solution), or even because
+                        of the damping factor \(\epsilon\). </p>
+                    <p>Therefore, the controller may, in some situations, <b class="itext">fail</b> to achieve the desired task.</p>
+                    <p>The good news is that, in general, it works very well, converging to the task even if it is not
+                    with the exponential decay relationship of the task function that was originally planned.</p>
+                    <p>If it fails? The simplest recommendation is to switch to a random movement of the manipulator for a while
+                    and then run the controller again. </p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Analysis: Unconsidered Constraints</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>In real applications, some <b class="itext">constraints</b> on movement are important.</p>
+                    <p>For example, the robot cannot collide with itself or the environment.</p>
+                    <p>At no point was this considered when calculating the controller.</p>
+                    <p>For relatively simple tasks in well-structured environments (such as an industry), this strategy will often
+                    work without violating any constraints. But it is always important to have a supervisory algorithm
+                    that will, at the very least, stop the robot before any important constraint (e.g., collision) is about to
+                    be violated.</p>
+                    <p>There are ways to improve this controller to consider constraints, but it is beyond the scope of this course.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Analysis: Impact of \(K\)</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>If the relationship \(\frac{d}{dt}r=-Kr\) is satisfied, it is clear that the constant \(K\) governs how fast there is convergence
+                    to the task.</p>
+                    <p>Mathematically speaking, there is only convergence as \(t \rightarrow \infty\). But an "engineering rule" is that
+                    we can consider convergence at \(t = 5/K\) units.</p>
+                    <p>Even if the relationship is not perfectly satisfied, it remains true that the larger the \(K\), the faster the
+                    controller, with the difference that the relationship between convergence time and \(K\) is not as simple.</p>
+                    <p>Evidently, there is a price to be paid: larger \(K\) makes the robot faster, but requires more speed
+                    from the motors and therefore more torque. The robot may simply not be able to execute the control action sent.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Analysis: Impact of the Damping Factor</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>The larger the damping factor, \(\epsilon\), the smoother the control action and therefore less
+                    problem the robot will have in executing it.</p>
+                    <p>However, the more likely it is that the robot will fail to execute the task, as discussed earlier.</p>
+                    <p>In other words: the smaller the \(\epsilon\), the more likely it is to solve the task, but the more
+                    aggressive the control action (e.g., high configuration accelerations). Therefore, the robot may
+                    have difficulty executing it.</p>
+                    <p>As with many things in engineering, there is a balance. We usually use \(\epsilon = 10^{-3}\).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Analysis: Inverse Kinematics</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Suppose our task is to reach a constant pose.</b>
+                    <p>Note that if the controller works, the robot will move to a configuration \(q_{ik}\) whose respective pose at the end-effector will be
+                precisely the desired pose.</p>
+                    <p>In other words, <b class="itext">we solved the inverse kinematics problem</b>! </p>
+                    <p>In other words, the technique presented can be used to (try to) solve the inverse kinematics problem:
+                    use the control algorithm presented here, but without executing it on the real robot. Simulate its movement virtually in
+                    the algorithm using the model \(\dot{q}=u\). If there is convergence, the final configuration solves the inverse kinematics problem.</p>
+                    <p>This is essentially what the <b class="itext">.ikm</b> function of UAIBot does.</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Generalization</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>We obtained our technique from the relationship \(\dot{r} = -Kr\), which forces
+                        \(r \rightarrow 0_{g \times 1}\).</b>
+                    <p>There are other alternatives. We can choose other functions \(F: \mathbb{R}^{g \times 1} \mapsto \mathbb{R}^{g \times 1}\)
+                    such that \(\dot{r} = F(r)\) also guarantees \(r \rightarrow 0_{g \times 1}\).</p>
+                    <p>In this case, the controller will be:</p>
+                    <b class="itext">$$u= \dot{q} = -J_r(q,t)^{\dagger(\epsilon)}\Big( F(r(q,t)) - \frac{\partial r}{\partial t}(q,t)\Big).$$</b>
+                    <p>This can induce interesting convergence behaviors for the controller.</p>
+                    <p>What functions \(F\) can we choose?</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Generalization</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <div style="background-color: #282828">
+                        <b class="ttext">Definition:</b> A function \(f: \mathbb{R} \mapsto \mathbb{R}\) is a <b
+                            class="itext">scalar control function (SCF)</b>
+                        if it is a continuous function such that \(f(w) > 0\) for \(w<0\), \(f(0)=0\) and \(f(w) < 0\) for \(w >
+                        0\).
+                    </div>
+                    <p>There are many examples of this type of function:</p>
+                    <ul>
+                        <li>\(f(w) = -Kw\) for a \(K>0\),</li>
+                        <li>\(f(w) = -K\arctan(Aw)\) for an \(A, K>0\),</li>
+                        <li>\(f(w) = -A|w|^{n-1} w\) for an \(n, A>0\).</li>
+                    </ul>
+                    <p>Instead of using \(F(r) = -Kr\), we can use a function \(F\) such that its i-th component is an
+                        SCF of the i-th component of \(r\): \(F_i(r) = f_i(r_i)\).
+                    </p>
+                    <p>The decay of each component of \(r_i\) to zero will no longer be exponential, but will depend
+                    on the chosen SCF (see this Exercise from Class 5).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Generalization</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p><b class="itext">Why use a function different from \(F(r)=-Kr\)?</b>
+                    Note that exponential decay has the following characteristic: it is fast at the beginning
+                    (when the value of the variable is relatively large) and slow at the end.</p>
+
+                    <p>Therefore, the respective controller may have the characteristic of converging quickly to near the task
+                        and then taking a long time to eliminate this small distance.
+                    </p>
+                    <p>Increasing \(K\) is not a good solution because it also increases the speed in the initial part, which may already be high.
+                    The solution involves making a "dynamic" constant \(K\). This essentially implies choosing
+                    functions \(F\) different from \(F(r)=-Kr\) for constant \(K\).</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Generalization</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>The ideal would be to specify a decay rate for the task function that is
+                    constant (say, \(A>0\)) for all \(w\):</p>
+                                        $$f(w) =
+                    \left\{
+                    \begin{array}{ll}
+                    -A & \mbox{if} \ w > 0 \\
+                    0 & \mbox{if} \ w = 0 \\
+                    A & \mbox{if} \ w > 0 \\
+                    \end{array}
+                    \right.$$
+                    <p>But since this function is not continuous, the controller tends to become very "aggressive" near \(w = r_i=0\). The robot will
+                        "vibrate" around \(r_i=0\). To avoid this, we will make a continuous version of this function:
+                    </p>
+                                        $$f(w) =
+                    \left\{
+                    \begin{array}{ll}
+                    -A & \mbox{if} \ w > 0 \\
+                    -A\frac{w}{w_{tol}} & \mbox{if} \ |w| \leq w_{tol} \\
+                    A & \mbox{if} \ w > 0 \\
+                    \end{array}
+                    \right.$$
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Generalization</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>In this case, \(w_{tol}\) is a tolerance for the task function. It is a small value that we consider
+                    that the i-th component of the task is practically complete when \(|r_i| \leq w_{tol}\).</p>
+                    <p>This choice of \(f(w)\) non-linear allows us to have a more homogeneous convergence for each
+                    component of the task function.</p>
+                    <p>To illustrate this, we consider two functions \(f_1\) and \(f_2\) and the evolution of the
+                    respective equations \(\dot{r}_1 = f_1(r_1)\) and \(\dot{r}_2 = f_2(r_2)\). </p>
+                    <p>We used \(f_1(r_1) = -r_1\)
+                    and \(f_2(r_2)\) being the function from the previous slide with \(A=0{,}5\) and \(w_{tol}=0{,}1\). Both start
+                    with the value of 1.</p>
+                    <p>Note that with \(f_2\) we have a faster convergence, although we have lower decay rates for the task function
+                    at the beginning than with \(f_1\)!</p>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Kinematic Control Technique</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Generalization</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+
+                     <div style="width: 50%; float:left; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/graph1.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                     <div style="width: 50%; float:right; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/graph2.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px">The Simulation of Control in UAIBot</h3>
+            <p>
+                <img src="/class_presentations/presentation/images/aula5/titulo.png" style="width:500px;height:auto;">
+                <br>
+            </p>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Simulation of Control in UAIBot</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <p>We will now implement several kinematic controllers using UAIBot.</p>
+                    <p>We will now define a simulation structure that will be used in all examples. The goal is to clearly separate the part of the code
+                    that simulates the real robot and the part of the code that is the controller.</p>
+                    <p>Thus, it becomes clear how the code would be ported to the real robot (where there would be no "simulation" of the robot).</p>
+
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Simulation of Control in UAIBot</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>We will assume two interfaces that would exist in the real robot:</p>
+                    <ul>
+                        <li><b class="itext">get_configuration</b> that returns the measured configuration (joint positions) of the robot.
+                        We assume perfect measurement.</li>
+                        <li><b class="itext">set_configuration_speed</b> that sets the configuration speed. We assume that
+                        the lower-level controller is perfect and the actual configuration speed of the real robot will be exactly the
+                        desired speed.</li>
+                    </ul>
+                    <p>Both functions will be called once per <b class="itext">control cycle</b>. We assume
+                    that each control cycle has the same duration, \(dt\), and that between one cycle and another, the configuration speed of
+                        the robot is constant.</p>
+                    <p>We will choose \(dt\) in our simulations according to our convenience, but in the real robot, this is limited by the communication speed of the interfaces.</p>
+                    <p>Also, obviously, the time for the controller calculation in the real robot must be less than \(dt\). In our
+                    simulations, this will not be a problem.</p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+         <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The Simulation of Control in UAIBot</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:left">
+                    <p>Outline of the structure:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+import numpy as np
+
+#The time between one control cycle and another. In the real world
+#it is not constant, but we will assume here that it is. It is
+#measured in seconds
+#0.01 s = control at 100Hz
+dt = 0.01
+#The time, a global variable
+t = 0
+#Maximum simulation time
+tmax = 10
+
+def get_configuration(robot):
+  #This function represents the act of measuring the robot's configuration
+  #at the current time. We assume that we measure the configuration perfectly.
+  #Due to the quality of the sensors, this is reasonably realistic.
+  return robot.q
+
+def set_configuration_speed(robot, qdot_des):
+  #This function simulates the speed interface of a real robot.
+  #The interface assumes that between one control cycle and another, the actual
+  #configuration speed of the robot will be the last sent.
+  #Assuming a perfect controller, the actual configuration speed
+  #is the desired speed.
+  #Therefore, the configuration at the end of the cycle will be:
+  q_next = robot.q + qdot_des*dt
+  #We update the simulation to notify that the robot's configuration has changed.
+  robot.add_ani_frame(time = t+dt, q = q_next)
+
+
+#Initializations (e.g., controller parameters) will come here
+
+
+#We will place our controller "main" here, which will run in a loop
+#for a time tmax
+for i in range(round(tmax/dt)):
+
+  #################################
+  # Start of control logic        #
+  #################################
+
+  #We will place the control logic here
+
+  #################################
+  # End of control logic          #
+  #################################
+
+  #Time will always pass at the end of the cycle
+  t+=dt
+                        </code></pre>
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Simulations</h3>
+            <p>
+                <img src="/class_presentations/presentation/images/aula5/titulo.png" style="width:500px;height:auto;">
+                <br>
+            </p>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>We will implement complete constant pose control for the <b class="itext">Kuka KR5</b> robot.</p>
+                    <p>The desired pose is:</p>
+                    $$\hat{H}_e = D_x(-0{,}3m)D_y(0{,}2m)D_z(-0{,}3m)H_e$$
+                    <p>where \(H_e\) is the initial pose of the end-effector.</p>
+                    <p>We will use the task function presented <a href="/class_presentations/presentation/aula5.html#/31"><b
+                            class="hlink">here</b></a>.</p>
+                    <p>We will first use \(F(r) = -Kr\) with \(K=2 s^{-1}\). We use \(\epsilon = 10^{-3}\) in the damped pseudoinverse.</p>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/anim4.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>The code and the result:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+import numpy as np
+
+
+dt = 0.01
+t = 0
+tmax = 6
+
+def get_configuration(robot):
+  return robot.q
+
+def set_configuration_speed(robot, qdot_des):
+  q_next = robot.q + qdot_des*dt
+  robot.add_ani_frame(time = t+dt, q = q_next)
+
+
+#Initializations (e.g., controller parameters) will come here
+robot = ub.Robot.create_kuka_kr5()
+
+#Specify the desired pose for the end-effector
+htm_d = ub.Utils.trn([-0.3,0.2,-0.3]) * robot.fkm()
+#Extract the elements x_d, y_d, z_d, and s_d
+x_d = htm_d[0:3,0]
+y_d = htm_d[0:3,1]
+z_d = htm_d[0:3,2]
+s_d = htm_d[0:3,3]
+
+#Create a frame in the scenario to see if it reached the
+#pose
+frame_d = ub.Frame(htm = htm_d)
+
+#Create the simulation
+sim = ub.Simulation([robot,frame_d])
+
+#Capture the number of joints of the robot
+n = np.shape(robot.q)[0]
+
+#Create the function F:
+def fun_F(r):
+  K = 2
+  return -K*r
+
+#Create a matrix for the task function history, control action
+#and time
+hist_r = np.matrix(np.zeros((6,0)))
+hist_u = np.matrix(np.zeros((n,0)))
+hist_t = []
+
+#We will place our controller "main" here, which will run in a loop
+#for a time tmax
+for i in range(round(tmax/dt)):
+  #################################
+  # Start of control logic        #
+  #################################
+
+  #Measure the configuration from the sensors
+  q = get_configuration(robot)
+
+  #Calculate the direct kinematics and Jacobian for the end-effector in this
+  #configuration
+  Jg, fk = robot.jac_geo(q)
+  #Extract x_e, y_e, z_e, and s_e
+  x_e = fk[0:3,0]
+  y_e = fk[0:3,1]
+  z_e = fk[0:3,2]
+  s_e = fk[0:3,3]
+
+  #Assemble the task vector
+  r = np.matrix(np.zeros((6,1)))
+  r[0:3] = s_e - s_d
+  r[3] = 1- x_d.T * x_e
+  r[4] = 1- y_d.T * y_e
+  r[5] = 1- z_d.T * z_e
+
+  #Assemble the task Jacobian
+  Jr = np.matrix(np.zeros((6,n)))
+
+  Jr[0:3,:] = Jg[0:3,:]
+  Jr[3,:] = x_d.T * ub.Utils.S(x_e) * Jg[3:6,:]
+  Jr[4,:] = y_d.T * ub.Utils.S(y_e) * Jg[3:6,:]
+  Jr[5,:] = z_d.T * ub.Utils.S(z_e) * Jg[3:6,:]
+
+  #Calculate the control action
+  u = ub.Utils.dp_inv(Jr,0.001)*fun_F(r)
+
+  #Store information in the history
+  hist_r = np.block([hist_r, r])
+  hist_u = np.block([hist_u, u])
+  hist_t.append(t)
+
+  #Send the control action to the robot
+  set_configuration_speed(robot, u)
+
+  #################################
+  # End of control logic          #
+  #################################
+
+  #Time will always pass at the end of the cycle
+  t+=dt
+
+#Run the simulation
+sim.run()
+#plot the graphs
+ub.Utils.plot(hist_t, hist_r, "", "Time (s)", "Task Function", "r")
+ub.Utils.plot(hist_t, hist_u, "", "Time (s)", "Action (rad/s or m/s)", "u")
+                        </code></pre>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/anim2.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Graphs for the task function and control action:</p>
+                     <div style="width: 50%; float:left; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/graph3.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                     <div style="width: 50%; float:right; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/graph4.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>Note that some components of the task function, such as \(r_6\), did not follow the specified
+                    exponential decay.</p>
+                    <p>Note also (see on the side) that the orientation control becomes somewhat "lazy" at the end. This
+                    is due to the phenomenon we explained <a href="/class_presentations/presentation/aula5.html#/60"><b
+                            class="hlink">here</b></a>, resulting from the choice of the function \(F(r)=-Kr\).</p>
+                    <p>Let's try the function \(F(r)\) obtained by applying the function \(f(w)\) seen <a href="/class_presentations/presentation/aula5.html#/61"><b
+                            class="hlink">here</b></a> to each component.</p>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/anim2.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>Now, we use \(f(w)\) equal for all components to form \(F(r)\).</p>
+                    <p>The parameters are \(w_{tol} = 0{,}01\) and \(A=0{,}25 s^{-1}\).</p>
+                    <p>Let's see what will happen...</p>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/anim4.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>The code and the result:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+import numpy as np
+
+
+dt = 0.01
+t = 0
+tmax = 6
+
+def get_configuration(robot):
+  return robot.q
+
+def set_configuration_speed(robot, qdot_des):
+  q_next = robot.q + qdot_des*dt
+  robot.add_ani_frame(time = t+dt, q = q_next)
+
+
+#Initializations (e.g., controller parameters) will come here
+robot = ub.Robot.create_kuka_kr5()
+
+#Specify the desired pose for the end-effector
+htm_d = ub.Utils.trn([-0.3,0.2,-0.3]) * robot.fkm()
+#Extract the elements x_d, y_d, z_d, and s_d
+x_d = htm_d[0:3,0]
+y_d = htm_d[0:3,1]
+z_d = htm_d[0:3,2]
+s_d = htm_d[0:3,3]
+
+#Create a frame in the scenario to see if it reached the
+#pose
+frame_d = ub.Frame(htm = htm_d)
+
+#Create the simulation
+sim = ub.Simulation([robot,frame_d])
+
+#Capture the number of joints of the robot
+n = np.shape(robot.q)[0]
+
+#Create the function F:
+def fun_F(r):
+    A = [0.25, 0.25, 0.25, 0.25, 0.25, 0.25]
+    w_tol = [0.01, 0.01, 0.01, 0.01, 0.01, 0.01]
+    F = np.matrix(np.zeros((6, 1)))
+    for i in range(6):
+        if abs(r[i, 0]) < w_tol[i]:
+            F[i, 0] = -A[i] * (r[i, 0] / w_tol[i])
+        elif r[i, 0] >= w_tol[i]:
+            F[i, 0] = -A[i]
+        else:
+            F[i, 0] = A[i]
+    return F
+
+#Create a matrix for the task function history, control action
+#and time
+hist_r = np.matrix(np.zeros((6,0)))
+hist_u = np.matrix(np.zeros((n,0)))
+hist_t = []
+
+#We will place our controller "main" here, which will run in a loop
+#for a time tmax
+for i in range(round(tmax/dt)):
+  #################################
+  # Start of control logic        #
+  #################################
+
+  #Measure the configuration from the sensors
+  q = get_configuration(robot)
+
+  #Calculate the direct kinematics and Jacobian for the end-effector in this
+  #configuration
+  Jg, fk = robot.jac_geo(q)
+  #Extract x_e, y_e, z_e, and s_e
+  x_e = fk[0:3,0]
+  y_e = fk[0:3,1]
+  z_e = fk[0:3,2]
+  s_e = fk[0:3,3]
+
+  #Assemble the task vector
+  r = np.matrix(np.zeros((6,1)))
+  r[0:3] = s_e - s_d
+  r[3] = 1- x_d.T * x_e
+  r[4] = 1- y_d.T * y_e
+  r[5] = 1- z_d.T * z_e
+
+  #Assemble the task Jacobian
+  Jr = np.matrix(np.zeros((6,n)))
+
+  Jr[0:3,:] = Jg[0:3,:]
+  Jr[3,:] = x_d.T * ub.Utils.S(x_e) * Jg[3:6,:]
+  Jr[4,:] = y_d.T * ub.Utils.S(y_e) * Jg[3:6,:]
+  Jr[5,:] = z_d.T * ub.Utils.S(z_e) * Jg[3:6,:]
+
+  #Calculate the control action
+  u = ub.Utils.dp_inv(Jr,0.001)*fun_F(r)
+
+  #Store information in the history
+  hist_r = np.block([hist_r, r])
+  hist_u = np.block([hist_u, u])
+  hist_t.append(t)
+
+  #Send the control action to the robot
+  set_configuration_speed(robot, u)
+
+  #################################
+  # End of control logic          #
+  #################################
+
+  #Time will always pass at the end of the cycle
+  t+=dt
+
+#Run the simulation
+sim.run()
+#plot the graphs
+ub.Utils.plot(hist_t, hist_r, "", "Time (s)", "Task Function", "r")
+ub.Utils.plot(hist_t, hist_u, "", "Time (s)", "Action (rad/s or m/s)", "u")
+                        </code></pre>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/anim3.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Graphs for the task function and control action:</p>
+                     <div style="width: 50%; float:left; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/graph5.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                     <div style="width: 50%; float:right; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/graph6.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>Note that the result is visibly better, especially for orientation control.</p>
+                    <p>Compare the control action graph for both cases: the controller required comparable speeds
+                        to the other case but achieved a better result.</p>
+
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/anim3.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 2</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>We will now make the <b class="itext">Kuka KR5</b> track a circular trajectory, whose path is
+                        shown on the side.</p>
+                    <p>The desired position for the end-effector is:</p>
+                    $$s_d(t) = \LARGE{\bigg(}\normalsize{}\begin{array}{c} R\cos(\omega_d t) \\ y_c \\ z_c + R \sin(\omega_d t) \end{array}\LARGE{\Bigg)}\normalsize{}.$$
+                    <p>where \(R=0{,}2m\), \(y_c=0{,}6m\), \(z_c=0{,}6m\) and \(\omega_d = \frac{\pi}{2} rad/s\).</p>
+                    <p>We want the \(z\) axis of the end-effector to be aligned with the \(y\) axis of the world (therefore, constant).</p>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/anim5.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 2</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>We will use the task function presented <a href="/class_presentations/presentation/aula5.html#/42"><b
+                            class="hlink">here</b></a>, but removing the orientation components for \(x\) and \(y\), as
+                        there is no restriction.</p>
+                    <p>We will first use \(F(r) = -Kr\) with \(K=2 s^{-1}\). We use \(\epsilon = 10^{-3}\) in the damped pseudoinverse.</p>
+                    <p>Note that we need the feedforward term, as shown <a href="/class_presentations/presentation/aula5.html#/44"><b
+                            class="hlink">here</b></a>, but removing the orientation components for \(x\) and \(y\), as
+                        there is no restriction.</p>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/anim5.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 2</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:left">
+                    <p>The code and the result:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+import numpy as np
+
+dt = 0.01
+t = 0
+tmax = 12
+
+
+def get_configuration(robot):
+  return robot.q
+
+
+def set_configuration_speed(robot, qdot_des):
+  q_next = robot.q + qdot_des * dt
+  robot.add_ani_frame(time=t + dt, q=q_next)
+
+
+# Initializations (e.g., controller parameters) will come here
+robot = ub.Robot.create_kuka_kr5()
+
+# Specify the desired position for the end-effector
+#as a function of t
+#Also provide the derivative, which will be used in the feedforward
+R = 0.2
+y_c = 0.6
+z_c = 0.6
+omega_d = np.pi/2
+s_d = lambda tt: np.matrix([R * np.cos(omega_d * tt), y_c, z_c + R * np.sin(omega_d * tt)]).reshape((3, 1))
+s_d_dot = lambda tt: np.matrix([-R * omega_d * np.sin(omega_d * tt), 0, R * omega_d * np.cos(omega_d * tt)]).reshape((3, 1))
+
+
+# Specify the desired orientation for the z-axis of the end-effector
+z_d = np.matrix([0,1,0]).reshape((3,1))
+
+# Create a point cloud to visualize the position part of the reference
+pc = np.matrix(np.zeros((3,0)))
+for i in range(200):
+  pc = np.block([pc, s_d(2*np.pi*i/199)])
+
+target_pos_pc = ub.PointCloud(points=pc, size=0.03, color="purple")
+
+#Create a sphere to show that the robot is tracking the trajectory
+ball_tr = ub.Ball(htm = np.identity(4), radius=0.02, color="cyan")
+
+# Create the simulation
+sim = ub.Simulation([robot, target_pos_pc, ball_tr])
+
+# Capture the number of joints of the robot
+n = np.shape(robot.q)[0]
+
+# Create the function F:
+def fun_F(r):
+  K = 2
+  return -K * r
+
+# Create a matrix for the task function history, control action
+# and time
+hist_r = np.matrix(np.zeros((4, 0)))
+hist_u = np.matrix(np.zeros((n, 0)))
+hist_t = []
+
+# We will place our controller "main" here, which will run in a loop
+# for a time tmax
+for i in range(round(tmax / dt)):
+  #################################
+  # Start of control logic        #
+  #################################
+
+  # Measure the configuration from the sensors
+  q = get_configuration(robot)
+
+  # Calculate the direct kinematics and Jacobian for the end-effector in this
+  # configuration
+  Jg, fk = robot.jac_geo(q)
+  # Extract z_e and s_e
+  z_e = fk[0:3, 2]
+  s_e = fk[0:3, 3]
+
+  # Assemble the task vector
+  r = np.matrix(np.zeros((4, 1)))
+  r[0:3] = s_e - s_d(t)
+  r[3] = 1 - z_d.T * z_e
+
+  # Assemble the task Jacobian
+  Jr = np.matrix(np.zeros((4, n)))
+
+  # Assemble the feedforward term
+  ff = np.block([[-s_d_dot(t)],[0]])
+
+  Jr[0:3, :] = Jg[0:3, :]
+  Jr[3, :] = z_d.T * ub.Utils.S(z_e) * Jg[3:6, :]
+
+
+  # Calculate the control action
+  u = ub.Utils.dp_inv(Jr, 0.001) * (fun_F(r)-ff)
+
+  # Store information in the history
+  hist_r = np.block([hist_r, r])
+  hist_u = np.block([hist_u, u])
+  hist_t.append(t)
+
+  # Send the control action to the robot
+  set_configuration_speed(robot, u)
+
+  #################################
+  # End of control logic          #
+  #################################
+
+  # Time will always pass at the end of the cycle
+  t += dt
+
+  #Update the position of the ball (just for visualization)
+  ball_tr.add_ani_frame(time = t, htm = ub.Utils.trn(s_d(t)))
+
+# Run the simulation
+sim.run()
+#plot the graphs
+ub.Utils.plot(hist_t, hist_r, "", "Time (s)", "Task Function", "r")
+ub.Utils.plot(hist_t, hist_u, "", "Time (s)", "Action (rad/s or m/s)", "u")
+                        </code></pre>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/anim6.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 2</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 100%; float:left; font-size:25px; text-align:left">
+                    <p>Graphs for the task function and control action:</p>
+                     <div style="width: 50%; float:left; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/graph7.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                     <div style="width: 50%; float:right; display:table-cell;vertical-align: middle">
+                        <iframe scrolling="no"
+                                src="/class_presentations/presentation/images/aula5/graph8.html"
+                                style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 2</b></h3>
+            <div style="width:50%; float:left; font-size:25px; text-align:left">
+                <p>Again (see on the side) the orientation control becomes "lazy" throughout the trajectory tracking.
+                    </p>
+                <p>Let's, again, try the function \(F(r)\) obtained by applying the function \(f(w)\) seen <a href="/class_presentations/presentation/aula5.html#/61"><b
+                        class="hlink">here</b></a> to each component. We will use the same parameters as before.</p>
+            </div>
+
+            <div style="width:50%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="display:table-cell;vertical-align: middle">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula5/anim6.html"
+                            style="width:500px;height:550px"></iframe>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 2</b></h3>
+            <div style="width:50%; float:left; font-size:25px; text-align:left">
+                <p>The code and the result:</p>
+                <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+import numpy as np
+
+dt = 0.01
+t = 0
+tmax = 12
+
+
+def get_configuration(robot):
+  return robot.q
+
+
+def set_configuration_speed(robot, qdot_des):
+  q_next = robot.q + qdot_des * dt
+  robot.add_ani_frame(time=t + dt, q=q_next)
+
+
+# Initializations (e.g., controller parameters) will come here
+robot = ub.Robot.create_kuka_kr5()
+
+# Specify the desired position for the end-effector
+#as a function of t
+#Also provide the derivative, which will be used in the feedforward
+R = 0.2
+y_c = 0.6
+z_c = 0.6
+omega_d = np.pi/2
+s_d = lambda tt: np.matrix([R * np.cos(omega_d * tt), y_c, z_c + R * np.sin(omega_d * tt)]).reshape((3, 1))
+s_d_dot = lambda tt: np.matrix([-R * omega_d * np.sin(omega_d * tt), 0, R * omega_d * np.cos(omega_d * tt)]).reshape((3, 1))
+
+
+# Specify the desired orientation for the z-axis of the end-effector
+z_d = np.matrix([0,1,0]).reshape((3,1))
+
+# Create a point cloud to visualize the position part of the reference
+pc = np.matrix(np.zeros((3,0)))
+for i in range(200):
+  pc = np.block([pc, s_d(2*np.pi*i/199)])
+
+target_pos_pc = ub.PointCloud(points=pc, size=0.03, color="purple")
+
+#Create a sphere to show that the robot is tracking the trajectory
+ball_tr = ub.Ball(htm = np.identity(4), radius=0.02, color="cyan")
+
+# Create the simulation
+sim = ub.Simulation([robot, target_pos_pc, ball_tr])
+
+# Capture the number of joints of the robot
+n = np.shape(robot.q)[0]
+
+# Create the function F:
+def fun_F(r):
+    A = 0.25
+    w_tol = [0.01, 0.01, 0.01, 0.01, 0.01, 0.01]
+    F = np.matrix(np.zeros((4, 1)))
+    for i in range(4):
+        if abs(r[i, 0]) < w_tol[i]:
+            F[i, 0] = -A * (r[i, 0] / w_tol[i])
+        elif r[i, 0] >= w_tol[i]:
+            F[i, 0] = -A
+        else:
+            F[i, 0] = A
+    return F
+
+# Create a matrix for the task function history, control action
+# and time
+hist_r = np.matrix(np.zeros((4, 0)))
+hist_u = np.matrix(np.zeros((n, 0)))
+hist_t = []
+
+# We will place our controller "main" here, which will run in a loop
+# for a time tmax
+for i in range(round(tmax / dt)):
+  #################################
+  # Start of control logic        #
+  #################################
+
+  # Measure the configuration from the sensors
+  q = get_configuration(robot)
+
+  # Calculate the direct kinematics and Jacobian for the end-effector in this
+  # configuration
+  Jg, fk = robot.jac_geo(q)
+  # Extract z_e and s_e
+  z_e = fk[0:3, 2]
+  s_e = fk[0:3, 3]
+
+  # Assemble the task vector
+  r = np.matrix(np.zeros((4, 1)))
+  r[0:3] = s_e - s_d(t)
+  r[3] = 1 - z_d.T * z_e
+
+  # Assemble the task Jacobian
+  Jr = np.matrix(np.zeros((4, n)))
+
+  # Assemble the feedforward term
+  ff = np.block([[-s_d_dot(t)],[0]])
+
+  Jr[0:3, :] = Jg[0:3, :]
+  Jr[3, :] = z_d.T * ub.Utils.S(z_e) * Jg[3:6, :]
+
+
+  # Calculate the control action
+  u = ub.Utils.dp_inv(Jr, 0.001) * (fun_F(r)-ff)
+
+  # Store information in the history
+  hist_r = np.block([hist_r, r])
+  hist_u = np.block([hist_u, u])
+  hist_t.append(t)
+
+  # Send the control action to the robot
+  set_configuration_speed(robot, u)
+
+  #################################
+  # End of control logic          #
+  #################################
+
+  # Time will always pass at the end of the cycle
+  t += dt
+
+  #Update the position of the ball (just for visualization)
+  ball_tr.add_ani_frame(time = t, htm = ub.Utils.trn(s_d(t)))
+
+# Run the simulation
+sim.run()
+#plot the graphs
+ub.Utils.plot(hist_t, hist_r, "", "Time (s)", "Task Function", "r")
+ub.Utils.plot(hist_t, hist_u, "", "Time (s)", "Action (rad/s or m/s)", "u")
+                        </code></pre>
+            </div>
+
+            <div style="width:50%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="display:table-cell;vertical-align: middle">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula5/anim7.html"
+                            style="width:500px;height:550px"></iframe>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 2</b></h3>
+            <div style="width:100%; float:left; font-size:25px; text-align:left">
+                <p>Graphs for the task function and control action:</p>
+                 <div style="width:50%; float:left; display:table-cell;vertical-align: middle">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula5/graph9.html"
+                            style="width:500px;height:550px"></iframe>
+                </div>
+                 <div style="width:50%; float:right; display:table-cell;vertical-align: middle">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula5/graph10.html"
+                            style="width:500px;height:550px"></iframe>
+                </div>
+            </div>
+
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 3</b></h3>
+            <div style="width:50%; float:left; font-size:25px; text-align:left">
+                <p>We will now see an example of control with two manipulators.
+                    For this, we will use the <b class="itext">Darwin Mini</b> robot.</p>
+                <p>We will consider that the torso and legs are fixed. So each of the two arms is a
+                fixed manipulator with <b class="itext">3 degrees of freedom</b> each.</p>
+                <p>Both arms are holding a ball. We need to make synchronized movements
+                with both arms to move the ball.</p>
+                <p>We want to move both arms so that the center of the ball follows the trajectory:</p>
+                $$s_{db}(t) = (x_c \ \ R\cos(\omega_Bt) \ \ z_c {+} R\sin(\omega_Bt))^T$$
+                <p>for \(x_c = 0{,}35m\), \(z_c=0{,}6m\), \(R=0{,}05m\) and \(\omega_B = \frac{2\pi}{3} rad/s\). </p>
+            </div>
+
+            <div style="width:50%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="display:table-cell;vertical-align: middle">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula5/anim8.html"
+                            style="width:500px;height:550px"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 3</b></h3>
+            <div style="width:70%; float:left; font-size:25px; text-align:left">
+                <p>Let \(q_{E}, q_{D}\) be the configurations of the left and right arms, respectively.
+                Let \(q = (q_E^T \ q_D^T)^T\) be the total configuration of the system.</p>
+                <p>Let \(s_E(q_E)\) and \(s_D(q_D)\) be the positions of the reference frames attached to the left and right hands, respectively,
+                relative to the reference frame \(\mathcal{F}_0\).</p>
+                <p>The first subtask (A) is that the distance vector between the points \(s_E\) and \(s_D\) must
+                remain constant, maintaining the initial value \(s_{ED0}\).   </p>
+                <p>With this, we ensure that the arms will not separate (the ball will fall) and will not get closer
+                (it may press the ball and it will burst).</p>
+                <p>The task function for this subtask is</p>
+                <b class="itext">$$r_A(q) = s_E(q_E)-s_D(q_D)-s_{ED0}.$$</b>
+
+            </div>
+
+            <div style="width:30%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="display:table-cell;vertical-align: middle">
+                    <br><br>
+                    <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                         style="width:350px;height:auto;">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 3</b></h3>
+            <div style="width:70%; float:left; font-size:25px; text-align:left">
+                <p>Now let's write the task function to ensure the second subtask (B): that the center of the ball follows the desired trajectory \(s_{bd}(t)\).</p>
+                <p>Since subtask (A) ensures that the distance vector will remain constant, what we want is that:</p>
+                $$\frac{1}{2}(s_E(q_E) + s_D(q_D)) = s_{db}(t).$$
+                <p>So we can use the task function for this subtask:</p>
+                <b class="itext">$$r_B(q,t) = \frac{1}{2}(s_E(q_E)+s_D(q_D))-s_{db}(t).$$</b>
+
+
+            </div>
+
+            <div style="width:30%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="display:table-cell;vertical-align: middle">
+                    <br><br>
+                    <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                         style="width:350px;height:auto;">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 3</b></h3>
+            <div style="width:70%; float:left; font-size:25px; text-align:left">
+                <p>The task function (time-varying) is:</p>
+                <b class="itext">$$r(q,t) = \large{\Bigg(}\normalsize{}\begin{array}{c} r_A(q) \\ r_B(q,t) \end{array}\large{\Bigg)}\normalsize{}.$$</b>
+                <p>We now need to calculate the task Jacobian and the feedforward term.</p>
+                <p>We will use the trick of <b class="itext">differentiating in time</b> the task function.</p>
+
+            </div>
+
+            <div style="width:30%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="display:table-cell;vertical-align: middle">
+                    <br><br>
+                    <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                         style="width:350px;height:auto;">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 3</b></h3>
+            <div style="width:70%; float:left; font-size:25px; text-align:left">
+                <p>Let \(J_{vE}(q_E)\) and \(J_{vD}(q_D)\) be the Jacobians of linear velocity for the left and
+                right arms, respectively.</p>
+                <p>Then:</p>
+                $$\frac{d}{dt}r_A = \frac{d}{dt}(s_E-s_D-s_{ED0}) = J_{vE}\dot{q}_E - J_{vD}\dot{q}_D$$
+                <p>since \(s_{ED0}\) is constant.</p>
+
+            </div>
+
+            <div style="width:30%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="display:table-cell;vertical-align: middle">
+                    <br><br>
+                    <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                         style="width:350px;height:auto;">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 3</b></h3>
+            <div style="width:70%; float:left; font-size:25px; text-align:left">
+                <p>Regarding the second subtask:</p>
+                <p>Then:</p>
+                $$\frac{d}{dt}r_B = \frac{d}{dt}\left(\frac{1}{2}(s_E+s_D)-s_{bd}\right) = \frac{1}{2}J_{vE}\dot{q}_E + \frac{1}{2}J_{vD}\dot{q}_D - \dot{s}_{bd}$$
+                <p>since \(s_{bd}(t)\) is not constant.</p>
+
+            </div>
+
+            <div style="width:30%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="display:table-cell;vertical-align: middle">
+                    <br><br>
+                    <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                         style="width:350px;height:auto;">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 3</b></h3>
+            <div style="width:70%; float:left; font-size:25px; text-align:left">
+                <p>Therefore, we can write, in matrix form:</p>
+                $$\frac{d}{dt}r =  \large{\Bigg(}\normalsize{}\begin{array}{cc} J_{vE} & -J_{vD} \\ \frac{1}{2}J_{vE} & \frac{1}{2}J_{vD} \end{array}\large{\Bigg)}\normalsize{}
+                \large{\Bigg(}\normalsize{}\begin{array}{cc} \dot{q}_E \\ \dot{q}_D \end{array}\large{\Bigg)}\normalsize{} + \large{\Bigg(}\normalsize{}\begin{array}{cc} 0_{3 \times 1} \\ -\dot{s}_{bd} \end{array}\large{\Bigg)}\normalsize{}.$$
+                <p>Therefore, we can extract by the chain rule (see <a href="/class_presentations/presentation/aula5.html#/43"><b
+                        class="hlink">this slide</b></a>):</p>
+                <b class="itext">$$J_r = \large{\Bigg(}\normalsize{}\begin{array}{cc} J_{vE} & -J_{vD} \\ \frac{1}{2}J_{vE} & \frac{1}{2}J_{vD} \end{array}\large{\Bigg)}\normalsize{} \ , \ \frac{\partial r}{\partial t} = \large{\Bigg(}\normalsize{}\begin{array}{cc} 0_{3 \times 1} \\ -\dot{s}_{bd} \end{array}\large{\Bigg)}\normalsize{}.$$</b>
+
+            </div>
+
+            <div style="width:30%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="display:table-cell;vertical-align: middle">
+                    <br><br>
+                    <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                         style="width:350px;height:auto;">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 3</b></h3>
+            <div style="width:70%; float:left; font-size:25px; text-align:left">
+                <p>We will use \(F(r)=-Kr\) with \(K = 5s^{-1}\).</p>
+                <p>We will use \(\epsilon = 10^{-3}\).</p>
+
+
+            </div>
+
+            <div style="width:30%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="display:table-cell;vertical-align: middle">
+                    <br><br>
+                    <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                         style="width:350px;height:auto;">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 3</b></h3>
+            <div style="width:50%; float:left; font-size:25px; text-align:left">
+                <p>The code and the result:</p>
+                <pre><code class="language-python" style="text-align:left">
+import uaibot as ub
+import numpy as np
+
+dt = 0.01
+t = 0
+tmax = 12
+
+
+def get_configuration(robot):
+  return robot.q
+
+
+def set_configuration_speed(robot, qdot_des):
+  q_next = robot.q + qdot_des * dt
+  robot.add_ani_frame(time=t + dt, q=q_next)
+
+#Initializations
+robot = ub.Robot.create_darwin_mini()
+ball = ub.Ball(htm=ub.Utils.trn([0.4,0,0.6]), radius=0.15, color="yellow")
+
+#Get the variables related to the two arms
+right_arm = robot.list_of_objects[0]
+left_arm = robot.list_of_objects[1]
+
+#Set the initial configurations of the scenario
+right_arm.add_ani_frame(0, q=[ 0.50289982, -0.12686379, -0.0784082])
+left_arm.add_ani_frame(0, q=[ 2.63894549, -0.12686379, -0.0784082])
+
+#Trajectory parameters
+radius_mov = 0.05
+omega_mov = 2*np.pi/3
+s_bd = lambda tt: np.matrix(
+    [0.35, radius_mov * np.cos(omega_mov * tt), 0.6 + radius_mov * np.sin(omega_mov * tt)]).reshape((3, 1))
+dot_s_bd = lambda tt: np.matrix(
+    [0, -omega_mov * radius_mov * np.sin(omega_mov * tt), omega_mov * radius_mov * np.cos(omega_mov * tt)]).reshape(
+    (3, 1))
+
+s_ED0 = left_arm.fkm()[0:3, 3] - right_arm.fkm()[0:3, 3]
+
+#Create the simulation
+sim = ub.Simulation.create_sim_factory([robot, ball])
+
+# Create the function F:
+def fun_F(r):
+  K = 5
+  return -K*r
+
+# Create a matrix for the task function history, control action
+# and time
+hist_r = np.matrix(np.zeros((4, 0)))
+hist_u = np.matrix(np.zeros((n, 0)))
+hist_t = []
+
+# We will place our controller "main" here, which will run in a loop
+# for a time tmax
+for i in range(round(tmax / dt)):
+  #################################
+  # Start of control logic        #
+  #################################
+
+# Measure the configurations from the sensors
+  q_E = get_configuration(left_arm)
+  q_D = get_configuration(right_arm)
+
+  #Calculate the geometric Jacobians
+  Jg_E, fk_E = left_arm.jac_geo(q_E)
+  Jg_D, fk_D = right_arm.jac_geo(q_D)
+
+  s_E = fk_E[0:3, 3]
+  s_D = fk_D[0:3, 3]
+
+  #Assemble the task functions and Jacobians
+  r = np.matrix(np.zeros((6, 1)))
+  r[0:3, 0] = s_E - s_D - s_ED0
+  r[3:6, 0] = (s_E + s_D) / 2 - s_bd(t)
+
+  Jr = np.matrix(np.zeros((6, 6)))
+  Jr[0:3, 0:3] = Jg_E[0:3, :]
+  Jr[0:3, 3:6] = -Jg_D[0:3, :]
+  Jr[3:6, 0:3] = Jg_E[0:3, :] / 2
+  Jr[3:6, 3:6] = Jg_D[0:3, :] / 2
+
+  ff = np.matrix(np.zeros((6, 1)))
+  ff[3:6, 0] = -dot_s_bd(t)
+
+  #Calculate the configuration speed
+  u = ub.Utils.dp_inv(Jr,0.001) * (fun_F(r) - ff)
+
+  u_E = u[0:3, 0]
+  u_D = u[3:6, 0]
+
+  # Store information in the history
+  hist_r = np.block([hist_r, r])
+  hist_u = np.block([hist_u, u])
+  hist_t.append(t)
+
+  # Send the control action to the robot
+  set_configuration_speed(left_arm, u_E)
+  set_configuration_speed(right_arm, u_D)
+
+  #################################
+  # End of control logic          #
+  #################################
+
+  # Time will always pass at the end of the cycle
+  t += dt
+
+  #Update the position of the ball
+  ball.add_ani_frame(t, htm=ub.Utils.trn((s_E + s_D) / 2))
+
+# Run the simulation
+sim.run()
+#plot the graphs
+ub.Utils.plot(hist_t, hist_r, "", "Time (s)", "Task Function", "r")
+ub.Utils.plot(hist_t, hist_u, "", "Time (s)", "Action (rad/s or m/s)", "u")
+                        </code></pre>
+            </div>
+
+            <div style="width:50%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="display:table-cell;vertical-align: middle">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula5/anim9.html"
+                            style="width:500px;height:550px"></iframe>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Simulations</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 3</b></h3>
+            <div style="width:100%; float:left; font-size:25px; text-align:left">
+                <p>Graphs for the task function and control action:</p>
+                 <div style="width:50%; float:left; display:table-cell;vertical-align: middle">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula5/graph11.html"
+                            style="width:500px;height:550px"></iframe>
+                </div>
+                 <div style="width:50%; float:right; display:table-cell;vertical-align: middle">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula5/graph12.html"
+                            style="width:500px;height:550px"></iframe>
+                </div>
+            </div>
+
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Kinematic Control</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Conclusion</b></h3>
+            <div style="width:70%; float:left; font-size:25px; text-align:left">
+                <p><b class="itext">Kinematic control</b> is a practical way to control the robot
+                assuming there is a lower-level interface that ensures a desired configuration speed.</p>
+                <p>It is applicable in situations where there are no high speeds or the need to precisely control
+                the force exerted on the environment.</p>
+                <p>There are many other interesting aspects of kinematic control that are not covered in this
+                course, such as:</p>
+                <ul>
+                    <li>Control with constraints (e.g., obstacles);</li>
+                    <li>Task prioritization;</li>
+                    <li>Path control instead of trajectory control (vector field).</li>
+                </ul>
+
+
+            </div>
+
+            <div style="width:30%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="display:table-cell;vertical-align: middle">
+                    <br><br>
+                    <img src="/class_presentations/presentation/images/aula5/titulo.png"
+                         style="width:350px;height:auto;">
+                </div>
+            </div>
+        </section>
+
     </div>
 </div>
 <style>
@@ -142,9 +2914,12 @@
         color: #34eb5e;
     }
 
-    /* UFMG logo removed */
     body {
+        background-image: url(/class_presentations/presentation/images/aula1/logo_ufmg.svg) !important;
         background-color: black;
+        background-size: 8% !important;
+        background-repeat: no-repeat !important;
+        background-position: 96% 3% !important;
     }
 
     .itext {
@@ -152,6 +2927,13 @@
     }
     .ttext {
         color: #34eb5e;
+    }
+    .hlink {
+        color: #f5bf42;
+    }
+
+    .hlink:hover {
+        text-decoration: underline;
     }
 
     /* width */
@@ -202,6 +2984,7 @@
         plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu]
     });
     var frames = document.getElementsByTagName("iframe");
+
 
     Reveal.on('slidechanged', event => {
         for (let i = 0; i < frames.length; ++i) {

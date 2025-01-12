@@ -16,7 +16,7 @@
         }
     </script>
     
-    <title>Lecture 4 - Robotic Manipulators</title>
+    <title>Class 4 - Robotic Manipulators</title>
 
     <link rel="stylesheet" href="/class_presentations/presentation/dist/reset.css">
     <link rel="stylesheet" href="/class_presentations/presentation/dist/reveal.css">
@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="/class_presentations/presentation/plugin/highlight/monokai.css">
     <style>
         .reveal .slides section {
-            padding: 20px; /* Adjust as needed */
+            padding: 20px; /* Adjust the value as needed */
         }
     </style>
 </head>
@@ -37,10 +37,10 @@
 
         <section>
             <h3>Robotic Manipulators</h3>
-            <h3 style="font-size:40px">Lecture 4: Differential Kinematics</h3>
+            <h3 style="font-size:40px">Class 4: Differential Kinematics</h3>
             <p>
                 <img src="/class_presentations/presentation/images/aula4/titulo.svg" style="width:400px;height:auto;">
-                <br><small> </small>
+                <br><small>Vinicius Mariano Gonçalves</small>
             </p>
         </section>
 
@@ -48,16 +48,16 @@
             <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
             <div style="width:1200px;height:800px">
                 <br>
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify">
-                    <p>We know how to describe the <b class="itext">pose</b> of the end-effector relative to a reference
-                        frame \(\mathcal{F}_0\).</p>
-                    <p>The <b class="itext">direct kinematics</b> maps the joint “position” (configuration) to the
-                        rigid body “position” (pose).</p>
-                    <p>Now we want to map not the “positions” but the “velocities.” That is the goal of
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>We know how to describe the <b class="itext">pose</b> of the end-effector relative to a reference frame
+                        \(\mathcal{F}_0\).</p>
+                    <p><b class="itext">Forward kinematics</b> maps the "position" of the joints (configuration) to the
+                        "position" of the rigid body (pose).</p>
+                    <p>We are now interested in mapping not the "positions" but the "velocities". This is the goal of
                         <b class="itext">differential kinematics</b>.</p>
 
                 </div>
-                <div style="width: 10%; float:right;"></div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
                 <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
                         <br>
@@ -77,26 +77,25 @@
             </p>
         </section>
 
-        <!-- S Operator sections -->
-
         <section>
             <h3 style="font-size:40px;vertical-align:top;text-align:left">The S Operator</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Definition</b>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Definition</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify">
-                    <p>Before proceeding, we must introduce an important concept:</p>
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Before proceeding, we need to introduce an important concept:</p>
                     <div style="background-color: #282828">
-                        <p><b class="ttext">Definition:</b> Let \(a = (a_x \ a_y \ a_z)^T\) be a 3D vector. We define the
-                            function
+                        <p><b class="ttext">Definition:</b> Let \(a = (a_x \ a_y \ a_z)^T\) be a three-dimensional vector.
+                            We define the function
                             \(S: \mathbb{R}^{3 \times 1} \mapsto \mathbb{R}^{3 \times 3}\) as:
-                            $$S(a) = \Large{\Bigg(}\begin{array}{ccc} 0 & -a_z & a_y \\ a_z & 0 & -a_x \\
-                            -a_y & a_x & 0 \end{array}\Large{\Bigg)}.$$<br></p>
+                            $$S(a) = \Large{\Bigg(}\normalsize{}\begin{array}{ccc} 0 & -a_z & a_y \\ a_z & 0 & -a_x \\
+                            -a_y & a_x & 0 \end{array}\Large{\Bigg)}\normalsize{}. $$<br></p>
                     </div>
-                    <p>The name “S” comes from <span style="font-style: italic">skew-symmetric</span>.</p>
+                    <p>The name "S" comes from <span style="font-style: italic">skew-symmetric</span>, which is the English term
+                        for "anti-symmetric".</p>
+
                 </div>
-                <div style="width: 10%; float:right;"></div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
                 <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
                         <img src="/class_presentations/presentation/images/aula4/titulo.svg"
@@ -104,25 +103,510 @@
                     </div>
                 </div>
             </div>
+
         </section>
 
-        <!-- And so on, with all sections translated similarly... -->
 
         <section>
-            <h3 style="font-size:40px">Conclusion</h3>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The S Operator</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Properties</b>
+            </h3>
             <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify">
-                    <p>Having the geometric Jacobian, we can map joint velocities into velocities (linear and angular)
-                        of the end-effector.</p>
-
-                    <p>This is very useful because it is often easier to plan control in velocity space, while the robot
-                        receives joint velocity commands. This mapping solves the problem.</p>
-                    <p>In the next lecture, we will see that the geometric Jacobian will be used as a main ingredient to
-                        compute <b class="itext">other Jacobians</b> relative to a space where velocity planning is even
-                        simpler than in velocity space.</p>
-                    <p>In that space, we will plan our <b class="itext">controller</b>.</p>
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>This matrix has interesting properties:</p>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Property 1:</b> It is <b class="itext">anti-symmetric</b>, that is,
+                            \(S(a)^T = -S(a)\).<br></p>
+                    </div>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Property 2:</b> It <b class="itext">implements the cross product using
+                            a matrix product</b>. Let \(b\) be a three-dimensional column vector.
+                            Then \(S(a)b = a \times b\).<br></p>
+                    </div>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Property 3:</b> \(S(a)b = a \times b = -(b \times a) = -S(b)a\). <br></p>
+                    </div>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Property 4:</b> If \(Q\) is a rotation matrix, then \(S(Qa) =
+                            QS(a)Q^T\). <br></p>
+                    </div>
                 </div>
-                <div style="width: 10%; float:left;"></div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The S Operator</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">The S Operator and
+                Rotations Over Time</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>There is a profound relationship between the \(S\) operator/function and time-varying rotation matrices:</p>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Theorem:</b> Let \(Q(t)\) be a time-varying rotation matrix. Then there exists a three-dimensional vector
+                            \(\omega(t)\) such that \(\frac{d}{dt}Q(t) = \dot{Q}(t) = S\big(\omega(t)\big)Q(t)\).<br></p>
+                    </div>
+                    <p>By the theorem, \( S\big(\omega(t)\big) = \dot{Q}(t)Q(t)^T \). </p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The S Operator</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">First Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Consider the following rotation (rotation around the \(z\) axis by an angle \(2t\)). Calculate
+                        \(\omega(t)\):</p>
+                    <p>
+                        $$Q(t) = \Large{\Bigg(}\normalsize{}\begin{array}{ccc}
+                        \cos(2t) & -\sin(2t) & 0 \\
+                        \sin(2t) & \cos(2t) & 0 \\
+                        0 & 0 & 1 \end{array}\Large{\Bigg)}\normalsize{}. $$
+                    </p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The S Operator</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">First Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>So:</p>
+                    <p>
+                        $$\dot{Q}(t) = \Large{\Bigg(}\normalsize{}\begin{array}{ccc}
+                        -2\sin(2t) & -2\cos(2t) & 0 \\
+                        2\cos(2t) & -2\sin(2t) & 0 \\
+                        0 & 0 & 0 \end{array}\Large{\Bigg)}\normalsize{}. $$
+                    </p>
+                    <p>Using the property that \(\cos(\theta)^2+\sin(\theta)^2=1\):</p>
+                    <p>
+                        $$\dot{Q}(t)Q(t)^T = \Large{\Bigg(}\normalsize{}\begin{array}{ccc}
+                        0 & -2 & 0 \\
+                        2 & 0 & 0 \\
+                        0 & 0 & 0 \end{array}\Large{\Bigg)}\normalsize{}. $$
+                    </p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The S Operator</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">First Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>From the definition of \(S\), we can extract that:</p>
+                    <p>
+                        $$\omega(t) = \Large{\Bigg(}\normalsize{}\begin{array}{c}
+                        0 \\
+                        0 \\
+                        2 \end{array}\Large{\Bigg)}\normalsize{}. $$
+                    </p>
+                    <p>In this example, the vector \(\omega(t)\) is constant, but this is not always the case, as we will see.</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The S Operator</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Second Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Consider the following rotation (a complex rotation). Calculate \(\omega(t)\):</p>
+                    <p>
+                        $$Q(t) = \Large{\Bigg(}\normalsize{}\begin{array}{ccc}
+                        \cos(2t) & -\sin(4t)/2 & \sin(2t)^2 \\
+                        \sin(2t) & \cos(2t)^2 & -\sin(4t)/2 \\
+                        0 & \sin(2t) & \cos(2t) \end{array}\Large{\Bigg)}\normalsize{}. $$
+                    </p>
+                    <p>With a bit of trigonometry, we can show that:</p>
+                    <p>
+                        $$\dot{Q}(t)Q(t)^T = \Large{\Bigg(}\normalsize{}\begin{array}{ccc}
+                        0 & -2 & 2\sin(2t) \\
+                        2 & 0 & -2\cos(2t) \\
+                        -2\sin(2t) & 2\cos(2t) & 0 \end{array}\Large{\Bigg)}\normalsize{}. $$
+                    </p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The S Operator</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Second Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Therefore, using the definition of the \(S\) operator, we can see that:</p>
+                    <p>
+                        $$\omega(t) = \Large{\Bigg(}\normalsize{}\begin{array}{c}
+                        2\cos(2t) \\
+                        2\sin(2t) \\
+                        2 \end{array}\Large{\Bigg)}\normalsize{}. $$
+                    </p>
+                    <p>Now the vector \(\omega(t)\) is not constant.</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">The S Operator</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Interpretation</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>The vector \(\omega(t)\) has an important interpretation in mechanics, as we will see in due course.</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">In UAIBot</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>In <b class="itext">UAIBot</b> we use the function <b class="itext">Utils.S</b> to calculate the \(S\) matrix of a vector.</p>
+                    <pre><code class="language-python" style="text-align:left">
+import numpy as np
+import uaibot as ub
+
+print(ub.Utils.S([1,2,3]))
+                        </code></pre>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Linear and Angular Velocity</h3>
+            <p>
+                <img src="/class_presentations/presentation/images/aula4/titulo.svg">
+                <br>
+            </p>
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Linear and Angular Velocity</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Rigid Body Velocity</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Now we will learn how to describe the <b class="itext">velocity</b> of rigid bodies, without yet being linked to the
+                        context of robotic manipulators.</p>
+                    <p>A <b class="itext">particle</b> in 3D space with position vector \(p(t)\) written in a reference frame \(\mathcal{F}_0\)
+                        has its velocity described by the vector \(v(t) = \dot{p}(t)\), another 3D vector.</p>
+                    <p>A velocity description for rigid bodies must contain the information necessary to describe the velocity
+                        of all the particles that make up a rigid body.</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Linear and Angular Velocity</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Rigid Body Velocity</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Consider a rigid body with a reference frame \(\mathcal{F}_{obj}\) attached to it.</p>
+                    <p><b class="itext">Important fact:</b> every particle \(P\) that makes up this rigid body has its coordinates described
+                        <b class="itext">in the reference frame \(\mathcal{F}_{obj}\)</b> by a three-dimensional vector <b
+                                class="itext">constant \(p^{P}_{obj}\)</b>.</p>
+                    <p>This vector is, in a way, an "identity card" of the particle, as it is unique for each
+                        particle and, regardless of the movement of the rigid body, this
+                        vector will be constant over time for each particle.</p>
+
+                </div>
+                <div style="display:table-cell;vertical-align: middle; align-items: center">
+                    <div style="position:absolute;top:50px;right:50px"
+                         class="vim_indicator current-visible fragment"
+                         data-fragment-index="0">
+                        <img src="/class_presentations/presentation/images/aula4/ilustidentidade1.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                    <div style="position:absolute;top:50px;right:50px"
+                         class="vim_indicator current-visible fragment"
+                         data-fragment-index="1">
+                        <img src="/class_presentations/presentation/images/aula4/ilustidentidade2.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                    <div style="position:absolute;top:50px;right:50px"
+                         class="vim_indicator current-visible fragment"
+                         data-fragment-index="2">
+                        <img src="/class_presentations/presentation/images/aula4/ilustidentidade3.svg"
+                             style="width:400px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Linear and Angular Velocity</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Rigid Body Velocity</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Let \(H_{0}^{obj}(t)\) be the HTM that represents the pose of the object relative to a reference frame
+                        \(\mathcal{F}_0\) at time \(t\).</p>
+                    <p>We can extract from it the rotation matrices \(Q(t)\) and translation vector \(s(t)\).</p>
+                    <p>Then, the position of the particle \(P\) <b class="itext">in the reference frame \(\mathcal{F}_{0}\),
+                        \(p^{P}_0(t)\),</b> is time-varying, and is given by: </p>
+                    <p><b class="itext">$$p^{P}_0(t) = Q(t)p^{P}_{obj} + s(t)$$</b></p>
+                    <p>We just apply the rigid transformation corresponding to the HTM \(H_{0}^{obj}(t)\) to its local description.</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Linear and Angular Velocity</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Rigid Body Velocity</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Let's differentiate both sides of this equation with respect to time:</p>
+                    <p>$$\dot{p}^{P}_0(t) = \dot{Q}(t)p^{P}_{obj} + \dot{s}(t).$$</p>
+                    <p>Using the theorem that relates the derivative of the rotation matrix to the \(S\) matrix:</p>
+                    <p>$$\dot{p}^{P}_0(t) = S\big(\omega(t)\big)Q(t)p^{P}_{obj} + \dot{s}(t).$$</p>
+                    <p>But \(Q(t)p^{P}_{obj} = p^{P}_0(t)-s(t)\), so: </p>
+                    <p>$$\dot{p}^{P}_0(t) = S\big(\omega(t)\big)\big(p^{P}_0(t)-s(t)\big) + \dot{s}(t).$$</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Linear and Angular Velocity</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Rigid Body Velocity</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Using <b class="itext">Property 2</b> of the \(S\) matrix, we arrive at a very important result:</p>
+                    <p><b class="itext">$$\dot{p}^{P}_0(t) = \omega(t) \times \big(p^{P}_0(t)-s(t)\big) +
+                        \dot{s}(t).$$</b></p>
+                    <p>You have probably seen a simplified version of this formula in high school...</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Linear and Angular Velocity</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">A High School Problem</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>A disk of radius \(R\) rotates clockwise with <b class="itext">constant angular velocity</b> \(\Omega\)
+                        while moving to the
+                        right with <b class="itext">constant linear velocity</b> \(V\). Calculate the magnitude of the instantaneous velocity vector of particle \(P\)
+                        at the time shown on the side.</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/probemed.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Linear and Angular Velocity</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">A High School Problem</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>The velocity vector of the particle is the result of the sum of two components (vectors): one due to
+                        the velocity of the translating disk,
+                        a vector to the right, and another due to the rotation of the disk, which, at the instant shown on the side, at
+                        the particle in question, has the same direction
+                        and sense as the velocity vector due to translation.</p>
+                    <p>The magnitude of the velocity vector due to translation is <b class="itext">V</b>.</p>
+                    <p>The magnitude of the velocity vector due to rotation is <b class="itext">\(\Omega R\)</b>.</p>
+                    <p>Since the two vectors are in the same direction and sense, the magnitude of the resulting velocity vector is:
+                        <b class="itext">$$\Omega R + V$$</b></p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/probemed.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Linear and Angular Velocity</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">A High School Problem</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 65%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Compare the two formulas:</p>
+                    <p><b class="itext">$$\Omega R + V$$</b></p>
+                    <p><b class="itext">$$ \omega \times \big(p^{P}_0-s\big) +
+                        \dot{s}$$</b></p>
+                    <p>The second is a <b class="itext">generalization of the first!</b></p>
+                    <p>
+                    <ul>
+                        <li>The vector \(\omega\) plays the role of the scalar \(\Omega\), and is called the <b class="itext">angular
+                            velocity vector</b>;</li>
+                        <li>The vector \(\dot{s}\) plays the role of the scalar \(V\), and is called the <b class="itext">linear
+                            velocity vector</b>, we will use the notation \(v\);</li>
+                        <li>The vector \(p^{P}_0-s\) plays the role of the scalar \(R\), and is the <b class="itext">distance vector</b> between the position of the particle and the center of the object's reference frame.</li>
+                    </ul>
+                    </p>
+                    <p><b class="itext">All these quantities are measured with respect to the reference frame \(\mathcal{F}_0\)!</b></p>
+
+                </div>
+                <div style="width: 35%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/probemed.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Linear and Angular Velocity</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">A High School Problem</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Thus, the formula for the <b class="itext">velocity vector of particle \(P\), measured in \(\mathcal{F}_0\)</b>:</p>
+                    <p><b class="itext">$$v^P_0 =  \omega \times \big(p^{P}_0-s\big) +
+                        v$$</b></p>
+                    <p>can be used in generic situations, with even the three elements varying over time.</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/probemed.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Linear and Angular Velocity</h3>
+
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>The formula:</p>
+                    <p><b class="itext">$$v^P_0 =  \omega \times \big(p^{P}_0-s\big) +
+                        v$$</b></p>
+                    <p>makes it clear that to characterize the velocity of any particle, we need the
+                    <b class="itext">linear velocity \(v(t)\)</b> and <b class="itext">angular velocity \(w(t)\)</b> of the rigid body
+                        at the instant of time \(t\).</p>
+                    <p><b class="itext">Important:</b> note that these two vectors are properties of the rigid body as a whole, and not of
+                    separate particles. Thus, it does not make sense to say "linear velocity of the particle" or "angular velocity of the particle".
+                    The particle has its velocity vector, calculated from \(v\), \(\omega\) and the distance vector using the formula above.</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
                 <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
                         <br>
@@ -131,6 +615,1360 @@
                     </div>
                 </div>
             </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Linear and Angular Velocity</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">How to Calculate the Vectors</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>How to calculate the vectors \(v(t)\) and \(\omega(t)\) of a rigid body?</p>
+                    <p>Simple, in possession of its motion description as an HTM, \(H_{0}^{obj}(t)\), we extract
+                    the respective rotation \(Q(t)\) and translation \(s(t)\).</p>
+                    <p>The linear velocity is \(v(t) = \dot{s}(t)\).</p>
+                    <p>The angular velocity is found by the equation \(S(\omega(t)) = \dot{Q}(t)Q(t)^T\).</p>
+                    <p>I repeat that the two vectors will be measured in the reference frame \(\mathcal{F}_0\).</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Linear and Angular Velocity</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:right">
+                            <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula4/anim1.html"
+                            style="width:500px;height:550px"></iframe>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                            <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula4/anim2.html"
+                            style="width:500px;height:550px"></iframe>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Linear and Angular Velocity</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Dependence on the Object's Reference Frame</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>The angular velocity vector <b class="itext">does not depend</b> on how the object's reference frame, \(\mathcal{F}_{obj}\), is attached to it.</p>
+                    <p>The linear velocity <b class="itext">depends</b> on how this is done.</p>
+                    <p>In the two animations below, we have a rigid body with the same motion, but with the object's reference frames attached differently.
+                       You can observe that the angular velocity is the same, but the linear velocity changes...</p>
+                    <p>In any case, the formula for the velocity of a particle in the body <b class="itext">will give the same result</b>, regardless of how the reference frame is attached.</p>
+                    <p>Example: the point at the center of the parallelepiped in the example below has zero velocity in both cases...</p>
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+      <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Linear and Angular Velocity</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Dependence on the Object's Reference Frame</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:right">
+                            <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula4/anim3.html"
+                            style="width:500px;height:550px"></iframe>
+                </div>
+
+                <div style="width: 50%; float:right; text-align:left; vertical-align: middle; display:table">
+                            <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula4/anim4.html"
+                            style="width:500px;height:550px"></iframe>
+                </div>
+            </div>
+
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Linear and Angular Velocity</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Interpreting Angular Velocity</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Interpreting the linear velocity vector \(v\) is not very difficult.</p>
+                    <p>However, the angular velocity vector \(\omega\) is a bit more complex.</p>
+                    <p>We can think of it as follows:</p>
+                    <p>
+                        <ul>
+                            <li>Its direction and sense form an "instantaneous axis of rotation" around the center of the object's reference frame.</li>
+                            <li>Its magnitude gives the instantaneous rotation speed (in rad/s, for example) at that moment.</li>
+                        </ul>
+                    </p>
+                    <p>So, if a rigid body rotates around a single axis all the time with a constant speed \(\Omega\) (see the previous example, on the right),
+                    its angular velocity vector is a constant vector with the direction and sense of the axis of rotation and intensity \(\Omega\).</p>
+
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Differential Kinematics</h3>
+            <p>
+                <img src="/class_presentations/presentation/images/aula4/titulo.svg">
+                <br>
+            </p>
+        </section>
+
+      <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Calculating Velocities</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Finally, we can solve our <b class="itext">differential kinematics</b> problem.</p>
+                    <p>The goal is to calculate the \(v\) and \(\omega\) (written in the reference frame \(\mathcal{F}_0\)) of the end-effector at a given
+                    instant of time.</p>
+                    <p>As mentioned in forward kinematics, since all the movement of the manipulator is the result of a respective movement in its joints, that is,
+                    in its configuration \(q\), it must be possible to relate the <b class="itext">configuration velocity \(\dot{q}=\frac{d}{dt}q\)</b>
+                    with \(v\) and \(\omega\).</p>
+
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+      <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Calculating Velocities</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>In fact, although it may seem a bit counterintuitive, we also need to know what the <b class="itext">current configuration \(q\)</b> is
+                    for this calculation. In other words, in general, providing only the instantaneous configuration velocity at a moment is not enough
+                    to calculate \(v\) and \(\omega\).</p>
+                    <p>We are looking for functions \(g_v\) and \(g_{\omega}\) such that</p>
+                    <p><b class="itext">$$v = g_v(q,\dot{q}),$$</b></p>
+                    <p><b class="itext">$$\omega = g_\omega(q,\dot{q}).$$</b></p>
+                    <p>Let's get a feeling/intuition of how this is possible with an example.</p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+      <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>In the forward kinematics class, we calculated the forward kinematics for the robot on the side.</p>
+                    <p>We concluded that the vector \(s\), the position of the center of the end-effector's reference frame relative to the reference frame,
+                    \(\mathcal{F}_0\), is:</p>
+                    <p>$$s(q) = \Large{\Bigg(}\normalsize{}\begin{array}{c}
+                            0.5\cos(q_1)+0.5\cos(q_1+q_2) \\ 0 \\ 0.5\sin(q_1)+0.5\sin(q_1+q_2)
+                            \end{array}\Large{\Bigg)}\normalsize{}.$$</b></p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/exemplocinematicadir.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+      <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>As we have seen, to calculate the linear velocity \(v\), we just differentiate \(s\) with respect to time.</p>
+                    <p>We have to use the <b class="itext">chain rule</b>, because we will differentiate with respect to \(t\), \(s=s(q)\) depends on \(q\) and the configuration
+                    \(q\) depends on \(t\), \(q=q(t)\):</p>
+                    <p>$$v = \frac{d}{dt} s(q) = \Large{\Bigg(}\normalsize{}\begin{array}{c}
+                            -0.5\sin(q_1)\dot{q}_1-0.5\sin(q_1+q_2)(\dot{q}_1+\dot{q}_2) \\ 0 \\ 0.5\cos(q_1)\dot{q}_1+0.5\cos(q_1+q_2)(\dot{q}_1+\dot{q}_2)
+                            \end{array}\Large{\Bigg)}\normalsize{}.$$</b></p>
+                </div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/exemplocinematicadir.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+      <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>Using the notation \(c_1,s_1,c_{12},s_{12}\) already used previously, we can write the last equation in a matrix form:</p>
+                    <p>$$v =\Large{\Bigg(}\normalsize{}\begin{array}{cc} -0.5s_1-0.5s_{12} & -0.5s_{12} \\ 0 & 0 \\ 0.5c_1+0.5c_{12} & 0.5c_{12} \end{array}\Large{\Bigg)}\normalsize{}
+                        \Large{\Big(}\normalsize{}\begin{array}{c} \dot{q}_1 \\ \dot{q}_2 \end{array}\Large{\Big)}\normalsize{}.$$</b></p>
+                    <p>Let's call this \(3 \times 2\) matrix <b class="itext">\(J_v(q)\)</b>. Note that it depends <b class="itext">only on \(q\) (not on \(\dot{q}\))</b>
+                    and that it is a <b class="itext">nonlinear</b> function of \(q\).</p>
+                    <p>With this notation:</p>
+                    <p><b class="itext">$$v = J_v(q)\dot{q}.$$</b></p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/exemplocinematicadir.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+      <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>Now let's move on to the angular velocity. We remember that the rotation matrix corresponding to the HTM of the forward kinematics is:</p>
+                    <p>$$ Q(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{ccc}
+                        \cos(q_1+q_2) & 0 & -\sin(q_1+q_2) \\
+                        0 & 1 & 0 \\
+                        \sin(q_1+q_2) & 0 & \cos(q_1+q_2)
+                        \end{array}\LARGE{\Bigg)}\normalsize{}$$</b></p>
+                    <p>So:</p>
+                    <p>$$ \frac{d}{dt} Q(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{ccc}
+                        -\sin(q_1{+}q_2)(\dot{q}_1{+}\dot{q}_2) & 0 & -\cos(q_1{+}q_2)(\dot{q}_1{+}\dot{q}_2). \\
+                        0 & 0 & 0 \\
+                        \cos(q_1{+}q_2)(\dot{q}_1{+}\dot{q}_2) & 0 & \sin(q_1{+}q_2)(\dot{q}_1{+}\dot{q}_2)
+                        \end{array}\LARGE{\Bigg)}\normalsize{}.$$</b></p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/exemplocinematicadir.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+      <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>We use the relation \(S(\omega)  = (\frac{d}{dt} Q(q))Q(q)^T\). With a bit of trigonometry, we have that:</p>
+                    <p>$$ S(\omega) = \LARGE{\Bigg(}\normalsize{}\begin{array}{ccc}
+                        0 & 0 & -(\dot{q}_1+\dot{q}_2) \\
+                        0 & 0 & 0 \\
+                        (\dot{q}_1+\dot{q}_2) & 0 & 0
+                        \end{array}\LARGE{\Bigg)}\normalsize{}.$$</b></p>
+                    <p>And therefore:</p>
+                    <p>$$\omega = \Large{\Bigg(}\normalsize{}\begin{array}{c} 0 \\ -(\dot{q}_1+\dot{q}_2) \\ 0 \end{array}\Large{\Bigg)}\normalsize{}.$$</b></p>
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/exemplocinematicadir.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+      <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>We can rewrite the last equation as:</p>
+                    <p>$$\omega =\Large{\Bigg(}\normalsize{}\begin{array}{cc} 0 & 0 \\ -1 & -1 \\ 0 & 0 \end{array}\Large{\Bigg)}\normalsize{}
+                        \Large{\Big(}\normalsize{}\begin{array}{c} \dot{q}_1 \\ \dot{q}_2 \end{array}\Large{\Big)}\normalsize{}.$$</b></p>
+                    <p>Let's call this \(3 \times 2\) matrix <b class="itext">\(J_\omega(q)\)</b>. Note that it does not depend on \(\dot{q}\) or \(q\), but there is no mathematical error
+                        in saying that it is a (constant) function of \(q\)...</p>
+                    <p>With this notation:</p>
+                    <p><b class="itext">$$\omega = J_\omega(q)\dot{q}.$$</b></p>
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/exemplocinematicadir.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>Suppose that at a given instant of time we have \(q_1=\frac{\pi}{4}\), \(q_2=0\) and \(\dot{q}_1=\dot{q}_2=1 rad/s\).</b></p>
+                    <p>Using the two formulas:</p>
+                    <p>$$ v = \Large{\Bigg(}\normalsize{}\begin{array}{c} -\sqrt{2} \\ 0 \\ \sqrt{2} \end{array}\Large{\Bigg)}\normalsize{} m/s \ , \
+                        \omega = \Large{\Bigg(}\normalsize{}\begin{array}{c} 0 \\ -2 \\ 0 \end{array}\Large{\Bigg)}\normalsize{} rad/s.$$</p>
+                    <p>Both vectors are written in the reference frame \(\mathcal{F}_0\).</p>
+                    <p>See the linear velocity vector on the side, in yellow, and observe that it is consistent with what we would expect in terms of instantaneous linear velocity for the end-effector in this situation.</p>
+                    <p>And the end-effector will rotate 2rad/s around the \(y\) axis in the counterclockwise direction (negative direction of \(y\), in this case).</p>
+
+                </div>
+
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/exemplocalccd.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+      <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 2</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>Let's calculate the same relationship for the second example from the previous class...</p>
+                    <p>The procedure is the same. We start by differentiating \(s\) with respect to time to obtain:</b></p>
+                     <p>$$v = \frac{d}{dt} s(q) = \Large{\Bigg(}\normalsize{}\begin{array}{c}
+                            -0.5s_1\dot{q}_1{-}(0.25{+}q_3)s_{12}(\dot{q}_1{+}\dot{q}_2)+c_{12}\dot{q}_3 \\
+                             0 \\
+                             0.5c_1\dot{q}_1{-}(0.25{+}q_3)c_{12}(\dot{q}_1{+}\dot{q}_2)+s_{12}\dot{q}_3
+                            \end{array}\Large{\Bigg)}\normalsize{}.$$</b></p>
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/exemplocinematicadirb.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+      <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 2</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>As in the previous example, we can rewrite it in a matrix form:</p>
+                    <p>$$v =\Large{\Bigg(}\normalsize{}\begin{array}{ccc} -0.5s_1{-}(0.25{+}q_3)s_{12} & -(0.25{+}q_3)s_{12} & c_{12} \\ 0 & 0 & 0 \\ 0.5c_1{+}(0.25{+}q_3)c_{12} & (0.25{+}q_3)c_{12} & s_{12} \end{array}\Large{\Bigg)}\normalsize{}
+                        \Large{\Bigg(}\normalsize{}\begin{array}{c} \dot{q}_1 \\ \dot{q}_2 \\ \dot{q}_3 \end{array}\Large{\Bigg)}\normalsize{}.$$</b></p>
+                    <p>Let's call this \(3 \times 3\) matrix <b class="itext">\(J_v(q)\)</b>. Note that it depends <b class="itext">only on \(q\) (not on \(\dot{q}\))</b>
+                    and that it is a <b class="itext">nonlinear</b> function of \(q\).</p>
+                    <p>With this notation:</p>
+                    <p><b class="itext">$$v = J_v(q)\dot{q}.$$</b></p>
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/exemplocinematicadirb.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 2</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>The angular velocity is the same as in the previous example, being independent of the third configuration:</p>
+                    <p>$$\omega =\Large{\Bigg(}\normalsize{}\begin{array}{ccc} 0 & 0 & 0 \\ -1 & -1 & 0\\ 0 & 0 & 0\end{array}\Large{\Bigg)}\normalsize{}
+                        \Large{\Bigg(}\normalsize{}\begin{array}{c} \dot{q}_1 \\ \dot{q}_2 \\ \dot{q}_3 \end{array}\Large{\Bigg)}\normalsize{}.$$</b></p>
+                    <p>Let's call this \(3 \times 3\) matrix <b class="itext">\(J_\omega(q)\)</b>. Note that it does not depend on \(\dot{q}\) or \(q\), but there is no mathematical error
+                        in saying that it is a (constant) function of \(q\)...</p>
+                    <p>With this notation:</p>
+                    <p><b class="itext">$$\omega = J_\omega(q)\dot{q}.$$</b></p>
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/exemplocinematicadir.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+      <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Conclusion of the Examples</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>So, for both examples, there are \(3 \times n\) matrices \(J_v(q)\) and \(J_{\omega}(q)\) (where \(n\) is the number of joints in the respective example) such that:</p>
+                    <p><b class="itext">$$v = J_v(q)\dot{q},$$</b></p>
+                    <p><b class="itext">$$\omega = J_\omega(q)\dot{q}.$$</b></p>
+                    <p>Is something similar true for a general manipulator?</p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/exemplocinematicadir.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+      <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Geometric Jacobian</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p><b class="itext">Yes!</b> in the general case for a manipulator with \(n\) joints, we can show that there are \(3 \times n\) matrices \(J_v(q)\), \(J_{\omega}(q)\), generally
+                    <b class="itext">nonlinear functions of \(q\)</b>, such that:</p>
+                    <p><b class="itext">$$v = J_v(q)\dot{q},$$</b></p>
+                    <p><b class="itext">$$\omega = J_\omega(q)\dot{q}.$$</b></p>
+                    <p>When we "stack" the two matrices into a single \(6 \times n\) matrix, we have the (very important) <b class="itext">Geometric Jacobian</b>:</p>
+                    <p><b class="itext">$$J_{geo}(q) = \left(\begin{array}{c} J_v(q) \\ J_{\omega}(q) \end{array}\right).$$</b></p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Geometric Jacobian</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>From the equations:</p>
+                    <p><b class="itext">$$v = g_v(q,\dot{q}) = J_v(q)\dot{q},$$</b></p>
+                    <p><b class="itext">$$\omega = g_\omega(q,\dot{q}) = J_\omega(q)\dot{q}.$$</b></p>
+                    <p>we can conclude that the two velocities are (generally) nonlinear functions of the current configuration, \(q\), but
+                    <b class="itext">always linear in \(\dot{q}\).</b></p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Geometric Jacobian for General Manipulators</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>There is a "recipe" for constructing the geometric Jacobian of the end-effector's reference frame using the <b class="itext">Denavit-Hartenberg convention</b>.</p>
+                    <p>For this, we use the matrices <b class="itext">\(H_0^e(q)\)</b> (HTM from the reference frame \(\mathcal{F}_0\) to \(\mathcal{F}_e\)) and
+                    <b class="itext">\(H_0^{DHi}(q) = H_0^{DH0} H_{DH0}^{DHi}(q)\)</b> (HTM from the reference frame \(\mathcal{F}_0\) to \(\mathcal{F}_{DHi}\)). </p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+<section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Geometric Jacobian for General Manipulators</b></h3>
+            <div style="width:1100px;height:800px">
+                <div style="font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Let <b class="itext">\(s_{DHi}(q)\)</b> and <b class="itext">\(z_{DHi}(q)\)</b> be the translation and \(z\) axis of the HTM <b class="itext">\(H_0^{DHi}(q)\)</b>,
+                        respectively (last and penultimate column of the matrices, respectively, without the last element). </p>
+                     <p>Let <b class="itext">\(s_{e}(q)\)</b> be the translation of the HTM <b class="itext">\(H_0^{e}(q)\)</b>.</p>
+                    <p>We will assemble the two matrices column-by-column, for \(j=1,2,...,n\):</p>
+                    <div style="background-color: #282828">
+                        <ul>
+                            <li>j-th column of \(J_v(q) = \left\{
+	\begin{array}{ll}
+		z_{DH(j-1)}(q) \times (s_e(q)-s_{DH(j-1)}(q))  & \mbox{if the j-th joint is revolute }\\
+		z_{DH(j-1)}(q) & \mbox{if the j-th joint is prismatic }
+	\end{array}
+\right.\)</b>
+                            </li>
+                            <br>
+                            <li>j-th column of \(J_\omega(q) = \left\{
+	\begin{array}{ll}
+		z_{DH(j-1)}(q)  & \mbox{if the j-th joint is revolute }\\
+		0_{3 \times 1} & \mbox{if the j-th joint is prismatic }
+	\end{array}
+\right.\)</b>
+                            </li>
+
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">In UAIBot</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>In <b class="itext">UAIBot</b> we use the function <b class="itext">.jac_geo</b> to calculate the geometric Jacobian.</p>
+                    <pre><code class="language-python" style="text-align:left">
+import numpy as np
+import uaibot as ub
+
+robot = ub.Robot.create_kuka_kr5()
+#Calculate the geometric Jacobian for a given configuration
+#The HTM of the forward kinematics (fk) comes as a by-product
+Jg, fk = robot.jac_geo(q=[0,1,-1,2,3,4])
+#If we do not specify the configuration, it assumes the current one (robot.q)
+Jg, fk = robot.jac_geo()
+#Assuming the robot has an instantaneous velocity of 1 rad/s for each joint in the current configuration, let's calculate the linear and angular velocity vectors
+qdot = np.matrix([1,1,1,1,1,1]).reshape((6,1)) #It has to be a column vector
+v = Jg[0:3,:] * qdot
+w = Jg[3:6,:] * qdot
+                        </code></pre>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Analyses with the Geometric Jacobian</h3>
+            <p>
+                <img src="/class_presentations/presentation/images/aula4/titulo.svg">
+                <br>
+            </p>
+        </section>
+
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Analyses with the Geometric Jacobian</h3>
+
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <br>
+                    <p>The geometric Jacobian matrix in a configuration \(q\) allows us to perform a series of interesting analyses about
+                    the <b class="itext">manipulability</b> of the manipulator in that configuration.</p>
+                    <p>Essentially, it can tell us how difficult (or if it is impossible) to perform a given movement in that configuration
+                    \(q\).</p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br>
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Analyses with the Geometric Jacobian</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Reachability of Velocities</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>The first question is: <b class="itext">given that we are in a configuration \(q\), is it possible to perform
+                    (simultaneously) any desired linear velocity \(v_{d}\) and angular velocity \(\omega_d\) by manipulating the joint velocity \(\dot{q}\)?</b></p>
+                    <p>From a mathematical point of view, we want to know if the <b class="itext">linear system</b> of equations:</p>
+                    $$J_{geo}(q)\dot{q} = \left(\begin{array}{c} J_v(q) \\ J_{\omega}(q) \end{array}\right)\dot{q} = \left(\begin{array}{c} v_d \\ \omega_d \end{array}\right) = \xi_d$$
+                    <p>has a solution \(\dot{q}\) for any vector \(\xi_d \in \mathbb{R}^6\).</p>
+                    <p>A vector with the linear and angular velocity "stacked", like \(\xi_d\), is simply called <b class="itext">velocity</b>.</p>
+                </div>
+               <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Analyses with the Geometric Jacobian</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Rank of a Matrix</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>Let's recall a bit of Linear Algebra:</p>
+                    <p>Let \(A\) be a matrix with \(m\) rows and \(n\) columns. We want to know if for every \(b \in \mathbb{R}^m\) the equation
+                    \(Au=b\) has a solution \(u \in \mathbb{R}^n\).</p>
+                    <p>To answer this question, we need to remember the concept of <b class="itext">rank</b> of a matrix:</p>
+                                        <div style="background-color: #282828">
+                        <p><b class="ttext">Definition:</b> The <b class="itext">rank</b> of a matrix \(A \in \mathbb{R}^{m \times n}\), rank(\(A\)), is the number
+                        of <b class="itext">linearly independent columns</b> of \(A\).</p>
+                    </div>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Analyses with the Geometric Jacobian</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Rank of a Matrix</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 70%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>Some results:</p>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Theorem 1:</b> The <b class="itext">rank</b> of a matrix is also equal to the number of
+                            <b class="itext">linearly independent rows</b>.</p>
+                    </div>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Theorem 2:</b> The rank of a matrix with \(n\) columns and \(m\) rows is never greater than
+                        the minimum between \(n\) and \(m\). When the rank is this value (\(\min(n,m)\)) we say that the matrix has
+                        <b class="itext">full rank</b>.</p>
+                    </div>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Theorem 3:</b> The rank of a matrix is the number of <b class="itext">non-zero singular values</b>
+                        of the matrix \(A\), with the singular values of a matrix \(A\) being the square root of the eigenvalues of the matrix \(A^TA\).</p>
+                    </div>
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 20%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+<section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Analyses with the Geometric Jacobian</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Vector Space</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Another important definition:</p>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Definition:</b> A <b class="itext">vector space</b> in \(\mathbb{R}^{d \times 1}\) is a set of vectors \(\mathcal{V}\) that are
+                        d-dimensional such that if \(v_1, v_2 \in \mathcal{V}\) and \(\alpha_1, \alpha_2\) are scalars, then
+                        \(\alpha_1 v_1 + \alpha_2 v_2 \in \mathcal{V}\).</p>
+                    </div>
+
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+<section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Analyses with the Geometric Jacobian</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Image and Null Space of a Matrix</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Other important definitions:</p>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Definition:</b> The set of \(b\)'s such that there is at least one \(u\) such that \(Au=b\) is called the <b class="itext">image of \(A\)</b>,
+                    \(\texttt{Im}(A)\).</p>
+                    </div>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Theorem 4:</b> \(\texttt{Im}(A)\) is a vector space with dimension rank(\(A\)).</p>
+                    </div>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Definition:</b> Let \(A \in \mathbb{R}^{m \times n}\). The set of \(u\)'s such that \(Au=0_{m \times 1}\) is called the <b class="itext">null space of \(A\)</b>,
+                    \(\texttt{Ker}(A)\).</p>
+                    </div>
+                    <p>Note: it is called "\(\texttt{Ker}\)" because in English we call it "Kernel".</p>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Theorem 5:</b> \(\texttt{Ker}(A)\) is a vector space with dimension  n-rank(\(A\)).</p>
+                    </div>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Analyses with the Geometric Jacobian</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Reachability of Velocities</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>We have an important result:</p>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Theorem 6:</b> The equation \(Au=b\), \(A \in \mathbb{R}^{m \times n}\) has a
+                            solution \(u\) for any \(b\) if and only if
+                            \(n \geq m\) and \(A\) has full rank.</p>
+                    </div>
+
+                    <p>Therefore, the equation \(J_{geo}(q)\dot{q} = \xi_d\) has a solution for any velocity \(\xi_d \in \mathbb{R}^6\) if and only if
+                        \(n \geq 6\) (the robot has at least 6 joints) and \(J_{geo}(q)\) has full rank (in this case, 6).</b></p>
+                    <p>Furthermore, Theorem 4 tells us that the smaller the rank of \(J_{geo}(q)\), the smaller the dimension of achievable velocities \(\xi_d\)
+                    in the configuration \(q\), that is, where it is possible to choose \(\dot{q}\) that gives us this velocity  \(\xi_d\).</p>
+                    <p>Therefore, the <b class="itext">space of achievable velocities</b> in the configuration \(q\) is \(\texttt{Im}(J_{geo}(q))\).</p>
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Analyses with the Geometric Jacobian</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Singular Configurations</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Considering a robot with at least 6 joints, we say that a configuration \(q\) is
+                    <b class="itext">singular</b> if the rank of \(J_{geo}(q)\) is not full.</p>
+                    <p>In a singular configuration, it is not possible to perform any \(v_d, \omega_d\) velocity, which limits the robot's movement.</p>
+                    <p>These are difficult configurations to work with, and control engineers should avoid them whenever possible. The reason
+                    will become clearer when we discuss robot control in more detail.</p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Analyses with the Geometric Jacobian</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Infeasible Velocities</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>If a manipulator cannot perform any velocity \(\xi_d\) in a configuration \(q\), which
+                    velocities can it not perform in that configuration?</p>
+                    <div style="background-color: #282828">
+                        <p><b class="ttext">Theorem 7:</b> The equation \(Au=b\) has no solution \(u\) if \(b\) is non-zero and
+                        \(A^Tb = 0_{n \times 1}\).</p>
+                    </div>
+                    <p>To find some infeasible velocities, we can find vectors \(\xi_d\) such that \(J_{geo}(q)^T\xi_d = 0_{n \times 1}\). </p>
+                    <p>Theorem 7 provides ways to find some velocities that are not feasible, but there are infeasible velocities that
+                    do not satisfy \(J_{geo}(q)^T\xi_d = 0_{n \times 1}\).</p>
+                    <p>The space of infeasible velocities <b class="itext">is not</b> a vector space!</p>
+
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Analyses with the Geometric Jacobian</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Near-Singular Configurations</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Considering only exactly singular configurations as problematic is not practical.</p>
+                    <p>In practice, there are configurations \(q\) that are not <b class="itext">exactly</b> singular, but are practically
+                    singular, because to perform a velocity \(\xi_d\) we need an instantaneous joint velocity \(\dot{q}\) that is extremely high
+                    (and therefore infeasible, in practice).</p>
+                    <p>These are configurations where the matrix \(J_{geo}(q)\) has singular values very close to zero, but not
+                    exactly zero.</p>
+                    <p>Due to the continuity of the matrix \(J_{geo}(q)\) in the configuration \(q\), near-singular configurations are configurations
+                    close to singular configurations.</p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Analyses with the Geometric Jacobian</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example of Infeasibility</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Consider the Kuka KR5 robot on the side. The configuration on the side (which is its initial configuration) is singular.</p>
+                    <p>It cannot perform the vectors (in cyan and yellow, respectively) \(v_d = (1.78 \ 0 \ 0)^T\) and \(\omega_d = (0 \ 0 \ 1)^T\) simultaneously, for example.</p>
+                    <p>There are many others that it cannot perform...</p>
+                    <p>In fact, if \(h_{ne}\) is an infeasible velocity and \(h_{e}\) is feasible, then \(h_{ne}+h_{e}\) is not feasible.</p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula4/anim5.html"
+                            style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Analyses with the Geometric Jacobian</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Motion in the Null Space</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Let's now perform an analysis that is, in a way, complementary to the reachability analysis.</p>
+                    <p>Suppose that in a configuration \(q\) there is a non-zero vector \(\dot{q}\) such that \(J_{geo}(q)\dot{q} = 0_{6 \times 1}\).</p>
+                    <p>This means that there is an "instantaneous motion" (relative to the instantaneous joint velocity \(\dot{q}\)) that, although it moves
+                    parts of the robot, <b class="itext">keeps the end-effector exactly as it is</b>!</p>
+                    <p>Therefore, the <b class="itext">space of joint velocities that are innocuous to the end-effector</b> in the configuration \(q\) is \(\texttt{Ker}(J_{geo}(q))\).</p>
+
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Analyses with the Geometric Jacobian</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Motion in the Null Space</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 50%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>If the robot has more than 6 joints, for every configuration \(q\) there are non-zero vectors \(\dot{q}\) such that \(J_{geo}(q)\dot{q} = 0_{6 \times 1}\).</p>
+                    <p>See the KUKA LBR IIWA on the side, which has 7 joints. It can always make movements that do not change the pose of the end-effector...</p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula4/anim6.html"
+                            style="width:500px;height:550px"></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Analyses with the Geometric Jacobian</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Summary:</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>In summary, for a robot with \(n\) joints:</p>
+                    <ul style="text-align:justify; text-justify: inter-word">
+                        <li>The <b class="itext">space of achievable velocities</b> in the configuration \(q\) is \(\texttt{Im}(J_{geo}(q))\), and has
+                        dimension rank(\(J_{geo}(q)\))...</li>
+                        <li>The <b class="itext">space of joint velocities that are innocuous to the end-effector</b> in the configuration \(q\) is \(\texttt{Ker}(J_{geo}(q))\), and has
+                        dimension \(n\)-rank(\(J_{geo}(q)\))...</li>
+                    </ul>
+                    <p> There are also interpretations for \(\texttt{Im}(J_{geo}(q)^T)\) and \(\texttt{Ker}(J_{geo}(q)^T)\), but they will be seen
+                    at another opportunity.</p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Inverse Differential Kinematics</h3>
+            <p>
+                <img src="/class_presentations/presentation/images/aula4/titulo.svg">
+                <br>
+            </p>
+        </section>
+
+    <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Inverse Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Definition:</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>We are now interested in actually solving the equation</p>
+                    <b class="itext">$$J_{geo}(q)\dot{q} = \xi_d$$</b>
+                    <p>given a configuration \(q\) and a desired velocity \(\xi_d\).</p>
+                    <p>This is the problem of <b class="itext">Inverse Differential Kinematics</b>!</p>
+                    <p>This problem, and similar problems, is a fundamental piece for most control strategies
+                    of manipulators.</p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Inverse Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">More Linear Algebra</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Only one of three possibilities can happen with a linear system \(Au=b\) of the form:</p>
+                    <ul>
+                        <li>...it has <b class="itext">a unique solution</b>...</li>
+                        <li>...it has <b class="itext">infinitely many solutions</b>...</li>
+                        <li>...it <b class="itext">has no solution</b>.</li>
+                    </ul>
+                    <p>It cannot happen that it has, for example, exactly 4 solutions (and no more)!</p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Inverse Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Finding a Solution</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>It is reasonable to think the following:</p>
+                     <ul style="text-align:justify; text-justify: inter-word">
+                        <li>If \(Au=b\) has only one solution, we want to find it.</li>
+                        <li>If \(Au=b\) has infinitely many solutions, we want to find the <b class="itext">best</b> one according to
+                        some criterion.</li>
+                        <li>If \(Au=b\) has no solution, we want to find the vector \(u\) <b class="itext">that best approximates solving the equation</b>.</li>
+                    </ul>
+                    <p>Let's formalize the concept of "best" in the second and third situations.</p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Inverse Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Finding a Solution</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>There are several ways to formalize the concept of "best", but the following way is
+                    <b class="itext">very convenient</b> mathematically:</p>
+                    <ul style="text-align:justify; text-justify: inter-word">
+                        <li>If \(Au=b\) has only one solution, we want to find it.</li>
+                        <li>If \(Au=b\) has infinitely many solutions, we want to find the one that <b class="itext">minimizes \(\|u\|^2\)</b> (solution with the smallest norm).</li>
+                        <li>If \(Au=b\) has no solution, we want to find the one that <b class="itext">minimizes \(\|Au-b\|^2\)</b> (best solution in terms of least squares).</li>
+                    </ul>
+                    <p>What we are looking for is an algorithm that considers all three cases and obtains the respective solution.</p>
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+<section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Inverse Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Finding a Solution</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>There is an elegant way to implement this solution. Consider the following <b class="itext">optimization problem</b>:</p>
+                    <b class="itext">$$\min_{u} \|Au-b\|^2 + \epsilon \|u\|^2$$</b>
+                    <p>We will now convince ourselves that solving this problem for a very small, but positive \(\epsilon\) (\(\lim_{\epsilon \rightarrow +0}\)) is equivalent to implementing
+                    the three-part solution we wanted...</p>
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+<section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Inverse Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Finding a Solution</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>The "trick" is to observe that the objective function \(\|Au-b\|^2 + \epsilon \|u\|^2\) weighs
+                    two objectives, which may be conflicting: minimizing \(\|Au-b\|^2\) and minimizing
+                    \(\|u\|^2\).</p>
+                    <p>Considering a very small \(\epsilon\), minimizing \(\|Au-b\|^2\) has much more priority than minimizing
+                    \(\|u\|^2\), and the second term will only be considered if we can completely minimize \(\|Au-b\|^2\), that is, if
+                    \(Au=b\).</p>
+
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+<section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Inverse Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Finding a Solution</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <ul style="text-align:justify; text-justify: inter-word">
+                        <li>If \(Au=b\) has only one solution, we will completely minimize \(\|Au-b\|^2\) without worrying about minimizing \(\|u\|^2\).
+                    The result will be the unique \(u\) that solves \(Au=b\).</li>
+                        <li>If we have infinitely many solutions, we will completely minimize \(\|Au-b\|^2\). Among those \(u\) where \(Au=b\), the problem
+                    will choose the one that minimizes the lower priority objective function, \(\|u\|^2\), just as we wanted.</li>
+                        <li>If we have none, the problem will only minimize \(\|Au-b\|^2\) as best as possible, without worrying about
+                    minimizing \(\|u\|^2\).</li>
+                    </ul>
+                    <p>To be precise, the third case has a slightly more complicated analysis, as there may be infinitely many \(u\) that
+                    minimize \(\|Au-b\|^2\) without having \(Au=b\). In this case, the second objective function acts again.</p>
+
+
+
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+<section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Inverse Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Finding a Solution</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>The optimization problem:</p>
+                    <b class="itext">$$\min_{u} \|Au-b\|^2 + \epsilon \|u\|^2$$</b>
+                    <p>can be solved analytically by taking the gradient of the objective function with respect to the variable \(u\) and setting it to zero.</p>
+                    <p>The solution is:</p>
+                    <b class="itext">$$u = (A^TA + \epsilon I_{n \times n})^{-1}A^Tb.$$</b>
+                    <p>We can show that, for \(\epsilon > 0\), the matrix \(A^TA + \epsilon I_{n \times n}\) is always invertible.</p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+<section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Inverse Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">The Pseudoinverses</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Let's introduce the notation:</p>
+                    <b class="itext">$$A^{\dagger(\epsilon)} = (A^TA + \epsilon I_{n \times n})^{-1}A^T.$$</b>
+                    <p>Then, our solution, with \(\epsilon \rightarrow +0\), is:</p>
+                    <p><b class="itext">$$u = \lim_{\epsilon \rightarrow +0}  A^{\dagger(\epsilon)} b = \left(\lim_{\epsilon \rightarrow +0}  A^{\dagger(\epsilon)}\right)b.$$</b></p>
+                    <p>The matrix \(A^{\dagger} = \left(\lim_{\epsilon \rightarrow +0}  A^{\dagger(\epsilon)}\right)\) is called the
+                    <b class="itext">pseudoinverse</b> of the matrix \(A\), while \(A^{\dagger(\epsilon)}\) is called the <b class="itext">damped pseudoinverse</b> of the matrix \(A\).</p>
+                    <p>Finally, we have our solution:</p>
+                    <b class="itext">$$u = A^{\dagger}b.$$</b>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+<section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Inverse Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Problems with the Pseudoinverse</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Unfortunately, this solution is not very good.</p>
+                    <p>When \(A\) is close to being singular, \(A^{\dagger}\), and therefore \(u\), tends to "explode" (have very large values).</p>
+                    <p>This is not practical when our \(u\) represents the joint velocity, for example.</p>
+                    <p>For this reason, <b class="itext">we work with the damped pseudoinverse</b>, \(u = A^{\dagger(\epsilon)}b\), with
+                    a small, but not zero, \(\epsilon\).</p>
+                    <p>We have a trade-off between our original desire for \(u\) and having a more reasonable solution (with smaller values) for the problem.</p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+<section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Inverse Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Introduction to Robot Control</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Given a target velocity in the configuration \(q\) and at time \(t\), \(\xi_d(q,t)\), and a damping factor \(\epsilon\), we can calculate the respective
+                    joint velocity:</p>
+                    <b class="itext">$$\dot{q} = J_{geo}(q)^{\dagger(\epsilon)}\xi_d(q,t).$$</b>
+                    <p>If the robot has an interface to send the joint velocity, we can use this equation to perform
+                    <b class="itext">control!</b></p>
+                    <p>The challenge is precisely to choose \(\xi_d\) that will allow us to perform the desired task.</p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">In UAIBot</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>In <b class="itext">UAIBot</b> we use the function <b class="itext">Utils.dp_inv</b> to calculate the damped pseudoinverse:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import numpy as np
+import uaibot as ub
+
+robot = ub.Robot.create_kuka_kr5()
+#Calculate the geometric Jacobian for the current configuration
+Jg, fk = robot.jac_geo()
+#Define the desired velocity
+xi_d = np.matrix([1,0,0,0,0,0]).reshape((6,1))
+#Calculate the joint velocity
+eps=0.001
+qdot = ub.Utils.dp_inv(Jg, eps) * xi_d
+                        </code></pre>
+                    <p>The name comes from the fact that in English we call the matrix <b class="itext">damped pseudoinverse</b>.</p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Differential Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">A Simple Control</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 55%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+
+                    <p>Let's make the end-effector go up and down, without changing its orientation.
+                    To do this, just choose something like \(v_d(t) = (0 \ 0 \ 0.2\cos(t))^T\) and \(\omega_d(t) = (0 \ 0 \ 0)^T\).</p>
+                    <pre><code class="language-python" style="text-align:left">
+import numpy as np
+import uaibot as ub
+
+robot = ub.Robot.create_kuka_kr5()
+sim = ub.Simulation([robot])
+#Parameters
+dt=0.01
+eps=0.001
+
+for i in range(2000): #Simulate for 20 seconds
+    #Calculate the discrete time from the continuous time
+    t = i*dt
+    #Calculate the desired velocity
+    xi_d = np.matrix([0,0,0.2*np.cos(t),0,0,0]).reshape((6,1))
+    #Calculate the geometric Jacobian (in the current configuration)
+    Jg, fk = robot.jac_geo()
+    #Calculate what the joint velocity should be
+    qdot = ub.Utils.dp_inv(Jg, eps) * xi_d
+    #Here, we simulate the robot's movement according to this instantaneous joint velocity.
+    #We use a first-order Euler integration:
+    #next configuration = current configuration + joint velocity *dt
+    qprox = robot.q + qdot * dt
+    robot.add_ani_frame(t, q = qprox)
+
+sim.run()
+
+
+
+
+                        </code></pre>
+                </div>
+
+                <div style="width: 45%; float:right; text-align:left; vertical-align: middle; display:table">
+                     <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula4/anim7.html"
+                            style="width:500px;height:550px"></iframe>
+                </div>
+            </div>
+
+        </section>
+
+<section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Conclusion</h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>With the geometric Jacobian, we can map velocities to joint velocities.</p>
+
+                    <p>This is very useful because it is often easier to plan control in velocity, but the robot receives the command in joint velocity. This mapping solves the problem.</p>
+                    <p>In the next class, we will see that the geometric Jacobian will be used as the main ingredient for calculating
+                    <b class="itext">other Jacobians</b>, related to a space where planning velocities is even simpler
+                    than in the velocity space.</p>
+                    <p>In this space, we will plan our <b class="itext">controller</b>.</p>
+                </div>
+                <div style="width: 10%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br>
+                        <img src="/class_presentations/presentation/images/aula4/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+
         </section>
     </div>
 </div>
@@ -143,9 +1981,12 @@
         color: #34eb5e;
     }
 
-    /* UFMG logo removed */
     body {
+        background-image: url(/class_presentations/presentation/images/aula1/logo_ufmg.svg) !important;
         background-color: black;
+        background-size: 8% !important;
+        background-repeat: no-repeat !important;
+        background-position: 96% 3% !important;
     }
 
     .itext {
@@ -203,6 +2044,7 @@
         plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu]
     });
     var frames = document.getElementsByTagName("iframe");
+
 
     Reveal.on('slidechanged', event => {
         for (let i = 0; i < frames.length; ++i) {

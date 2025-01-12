@@ -41,23 +41,25 @@
             <p>
                 <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
                      style="width:350px;height:auto;">
-                <br><small> </small>
+                <br><small>Vinicius Mariano Gonçalves</small>
             </p>
         </section>
 
+
+
         <section data-menu-title="Exercise 1">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 1</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 1</b>
             </h3>
             <div style="width:1200px;height:800px">
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Consider the robot on the side, which has one revolute joint and one prismatic joint.</p>
-                    <p>Assume that when \(q_1=0\), the axis \(z_e\) is aligned with \(x_0\).</p>
-                    <p>Assume that when \(q_2=0\), the center of the end-effector frame \(\mathcal{F}_e\) is at point \(P\).</p>
-                    <p>The figure shows the positive direction of rotation/translation of both joints.</p>
-                    <p>Compute its direct kinematics for the end-effector, i.e., the MTH \(H_0^{e}(q)\).</p>
-                    <p><a href="/class_presentations/presentation/respostas3.html#/1"><b class="hlink">Answer</b></a></p>
+                    <p>Consider the robot on the side, with one rotational joint and one prismatic joint.</p>
+                    <p>Consider that when \(q_1=0\) the \(z_e\) axis is aligned with \(x_0\).</p>
+                    <p>Consider that when \(q_2=0\) the center of the reference frame \(\mathcal{F}_e\) is at point \(P\).</p>
+                    <p>The drawing shows the positive direction of rotation/translation of the two joints.</p>
+                    <p>Calculate its forward kinematics for the end-effector, i.e., the HTM \(H_0^{e}(q)\).</p>
+                    <p><a href="/class_presentations/presentation/respostas3.html#/1"><b
+                            class="hlink">Answer</b></a></p>
                 </div>
 
                 <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
@@ -67,40 +69,47 @@
                     </div>
                 </div>
             </div>
+
         </section>
 
+
         <section data-menu-title="Exercise 2">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 2</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 2</b>
+
             </h3>
             <div style="width:1200px;height:800px;font-size:25px; text-align:justify; text-justify: inter-word">
 
-                <p>Consider the manipulator below, with three revolute joints.</p>
+                <p>Consider the manipulator below, with three rotational joints.</p>
 
                 <div style="vertical-align: middle; text-align: center; align-items: center">
                     <img src="/class_presentations/presentation/images/exercicios3/robo_2_tr.png"
                          style="width:600px;height:auto;text-align: center">
                 </div>
+
+
             </div>
+
         </section>
 
         <section data-menu-title="Exercise 2 (cont.)">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 2</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 2</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width:60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Assume the \(x_0\) axis is aligned with the line of the first joint, and that a displacement along \(z_0\)
-                       causes the center of the reference frame \(\mathcal{F}_0\) to move to that line.</p>
-                    <p>Also assume that the lines of the first two joints are parallel, and that the second and third
-                       lines are orthogonal.</p>
-                    <p>(a) Create the four Denavit-Hartenberg frames.</p>
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Consider that the \(x_0\) axis is aligned
+                        with the line of the first joint, and that a displacement in \(z_0\) makes the center of the reference frame
+                        \(\mathcal{F}_0\)
+                        go to this line.</p>
+                    <p>Also consider that the lines of the first two joints are parallel, and that the second and third lines
+                        are orthogonal.</p>
+                    <p>(a) Create the four Denavit-Hartenberg reference frames.</p>
                     <p>(b) Derive the \(3 \times 4 = 12\) parameters.</p>
-                    <p>(c) Using those frames, compute the direct kinematics from frame \(\mathcal{F}_0\) to the
-                       end-effector frame \(\mathcal{F}_e\).</p>
-                    <p><a href="/class_presentations/presentation/respostas3.html#/3"><b class="hlink">Answer</b></a></p>
+                    <p>(c) Using these reference frames, calculate the forward kinematics from the reference frame \(\mathcal{F}_0\) to
+                        the end-effector reference frame, \(\mathcal{F}_e\).</p>
+                    <p><a href="/class_presentations/presentation/respostas3.html#/3"><b
+                            class="hlink">Answer</b></a></p>
                 </div>
 
                 <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
@@ -110,100 +119,101 @@
                     </div>
                 </div>
             </div>
+
         </section>
 
         <section data-menu-title="Exercise 3">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 3</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 3</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width:60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Does a Denavit-Hartenberg frame necessarily have its center within the link to which it is
-                       attached? Justify.</p>
-                    <p><a href="/class_presentations/presentation/respostas3.html#/7"><b class="hlink">Answer</b></a></p>
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Does a Denavit-Hartenberg reference frame necessarily have to have its center within the link it is attached to? Justify.</p>
+                    <p><a href="/class_presentations/presentation/respostas3.html#/7"><b
+                            class="hlink">Answer</b></a></p>
                 </div>
 
-                <div style="width:40%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
                         <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
                              style="width:400px;height:auto;">
                     </div>
                 </div>
             </div>
+
         </section>
 
         <section data-menu-title="Exercise 4">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 4</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 4</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width:60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Can we have two different Denavit-Hartenberg frames for the same robot that share the same
-                       center? Justify.</p>
-                    <p><a href="/class_presentations/presentation/respostas3.html#/8"><b class="hlink">Answer</b></a></p>
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Can we have two distinct Denavit-Hartenberg reference frames for the same robot that have the same center? Justify.</p>
+                    <p><a href="/class_presentations/presentation/respostas3.html#/8"><b
+                            class="hlink">Answer</b></a></p>
                 </div>
 
-                <div style="width:40%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
                         <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
                              style="width:400px;height:auto;">
                     </div>
                 </div>
             </div>
+
         </section>
 
         <section data-menu-title="Exercise 5">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 5</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 5</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width:60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>We know that a transformation between two generic frames requires at least 6 numbers.</p>
-                    <p>Knowing that, explain why the transformation between two Denavit-Hartenberg frames requires fewer
-                       parameters (4 in this case).</p>
-                    <p><a href="/class_presentations/presentation/respostas3.html#/9"><b class="hlink">Answer</b></a></p>
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>We know that a transformation between two generic reference frames requires at least 6 numbers.</p>
+                    <p>Knowing this, explain why the transformation between two Denavit-Hartenberg reference frames requires fewer parameters (in this case, 4).</p>
+                    <p><a href="/class_presentations/presentation/respostas3.html#/9"><b
+                            class="hlink">Answer</b></a></p>
                 </div>
 
-                <div style="width:40%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
                         <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
                              style="width:400px;height:auto;">
                     </div>
                 </div>
             </div>
+
         </section>
 
         <section data-menu-title="Exercise 6">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px">
-                <b class="ttext">Exercise 6</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Exercise 6</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width:60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
                     <p>Can we always guarantee that the inverse kinematics problem has a solution? Justify.</p>
-                    <p><a href="/class_presentations/presentation/respostas3.html#/10"><b class="hlink">Answer</b></a></p>
+                    <p><a href="/class_presentations/presentation/respostas3.html#/10"><b
+                            class="hlink">Answer</b></a></p>
                 </div>
 
-                <div style="width:40%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
                         <img src="/class_presentations/presentation/images/exercicios3/titulo_cin_direta.svg"
                              style="width:400px;height:auto;">
                     </div>
                 </div>
             </div>
+
         </section>
 
         <section data-menu-title="Exercise 7">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px">
-                <b class="ttext">Exercise 7</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">Exercise 7</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width:50%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Consider the scenario on the side, which can be created with the following code in UAIBot:</p>
+                <div style="width: 50%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Consider the scenario on the side, which can be created by the following code in UAIBot:</p>
                     <pre><code class="language-python" style="text-align:left">
 import uaibot as ub
 import numpy as np
@@ -225,46 +235,40 @@ material_cube = ub.MeshMaterial(roughness=1, metalness=1, opacity=1, color="purp
 cube = ub.Box(name="cube", htm = ub.Utils.trn([0.8,0,0.4]), width=0.1, depth=0.1, height=0.1, mesh_material=material_cube)
 
 sim = ub.Simulation.create_sim_factory([robot, table1, table2, table3, obstacle, cube])
-                    </code></pre>
+                        </code></pre>
                 </div>
 
-                <div style="width:50%; float:right; text-align:left; vertical-align:top; display:table">
-                    <iframe scrolling="no"
+                <div style="width: 50%; float:right; text-align:left; vertical-align: top; display:table">
+                            <iframe scrolling="no"
                             src="/class_presentations/presentation/images/exercicios3/anim1.html"
-                            style="width:500px;height:550px">
-                    </iframe>
+                            style="width:500px;height:550px"></iframe>
                 </div>
             </div>
+
         </section>
 
         <section data-menu-title="Exercise 7 (cont.)">
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px">
-                <b class="ttext">Exercise 7</b>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:25px"><b class="ttext">Exercise 7</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width:50%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Create UAIBot code so that it picks up the purple block on one table and delivers it to the other
-                       one, without colliding with the obstacles. The robot must pick and place the object from above!</p>
-                    <p>Use inverse kinematics and linear interpolation as shown 
-                       <a href="/class_presentations/presentation/aula3.html#/61"><b class="hlink">in this example</b></a> 
-                       from Lecture 3.</p>
-                    <p>Use the function <b class="itext">robot.attach_object(cube)</b> to make the end-effector pick up
-                       the object when it is in the correct pose.</p>
-                    <p>The <b class="itext">ikm</b> function accepts a parameter <b class="itext">q0</b>, trying to find
-                       an inverse kinematics solution close to <b class="itext">q0</b>. Use that to your advantage.</p>
+                <div style="width: 50%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Create a code in UAIBot for the robot to pick up the purple block on one table and place it on the other, without hitting the obstacles. The robot should pick up and place the object from above!</p>
+                    <p>Use inverse kinematics and linear interpolation, as in <a href="/class_presentations/presentation/aula3.html#/61"><b
+                            class="hlink">this example</b> </a> from Class 3.</p>
+                    <p>Use the function <b class="itext">robot.attach_object(cube)</b> to make the end-effector grab the object when it is in the correct pose.</p>
+                    <p>The function <b class="itext">ikm</b> accepts a parameter <b class="itext">q0</b>, trying to find a configuration in inverse kinematics close to <b class="itext">q0</b>. Use this to your advantage.</p>
                     <p><a href="/class_presentations/presentation/respostas3.html#/11"><b
                             class="hlink">Answer</b></a></p>
                 </div>
-                <div style="width:5%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                </div>
-                <div style="width:45%; float:right; text-align:left; vertical-align: middle; display:table">
-                    <iframe scrolling="no"
+                <div style="width: 5%; float:left; font-size:25px; text-align:justify; text-justify: inter-word"></div>
+                <div style="width: 45%; float:right; text-align:left; vertical-align: middle; display:table">
+                            <iframe scrolling="no"
                             src="/class_presentations/presentation/images/exercicios3/anim1.html"
-                            style="width:500px;height:550px">
-                    </iframe>
+                            style="width:500px;height:550px"></iframe>
                 </div>
             </div>
+
         </section>
 
     </div>
@@ -278,9 +282,12 @@ sim = ub.Simulation.create_sim_factory([robot, table1, table2, table3, obstacle,
         color: #34eb5e;
     }
 
-    /* Removing the UFMG logo from the background */
     body {
+        background-image: url(/class_presentations/presentation/images/aula1/logo_ufmg.svg) !important;
         background-color: black;
+        background-size: 8% !important;
+        background-repeat: no-repeat !important;
+        background-position: 96% 3% !important;
     }
 
     .itext {
@@ -297,7 +304,6 @@ sim = ub.Simulation.create_sim_factory([robot, table1, table2, table3, obstacle,
     .hlink:hover {
         text-decoration: underline;
     }
-
     /* width */
     ::-webkit-scrollbar {
         width: 20px;
@@ -346,6 +352,7 @@ sim = ub.Simulation.create_sim_factory([robot, table1, table2, table3, obstacle,
         plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu]
     });
     var frames = document.getElementsByTagName("iframe");
+
 
     Reveal.on('slidechanged', event => {
         for (let i = 0; i < frames.length; ++i) {

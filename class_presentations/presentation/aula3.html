@@ -16,7 +16,7 @@
         }
     </script>
     
-    <title>Lecture 3 - Robotic Manipulators</title>
+    <title>Class 3 - Robotic Manipulators</title>
 
     <link rel="stylesheet" href="/class_presentations/presentation/dist/reset.css">
     <link rel="stylesheet" href="/class_presentations/presentation/dist/reveal.css">
@@ -37,24 +37,23 @@
 
         <section>
             <h3>Robotic Manipulators</h3>
-            <h3 style="font-size:40px">Lecture 3: Direct and Inverse Kinematics</h3>
+            <h3 style="font-size:40px">Class 3: Forward and Inverse Kinematics</h3>
             <p>
                 <img src="/class_presentations/presentation/images/aula3/titulo.svg" style="width:400px;height:auto;">
-                <br><small> </small>
+                <br><small>Vinicius Mariano Gonçalves</small>
             </p>
         </section>
-
         <section>
-            <h3 style="font-size:40px;vertical-align:top;text-align:left">Direct Kinematics</h3>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left">Forward Kinematics</h3>
             <div style="width:1200px;height:800px">
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>We already know how to describe the motion of a rigid body individually.</p>
-                    <p>Our robot is made up of rigid bodies (the links and the end-effector) connected together. But
-                        <b class="itext">they do not move independently!</b> It is the movement of the robot’s
-                        <b class="itext">joints</b>
-                        that provides this motion.</p>
-                    <p>Relating the joint movement to the movement of the links/end-effector is the goal of
-                        <b class="itext">Direct Kinematics</b>.</p>
+                    <p>We already know how to describe the movement of a rigid body separately.</p>
+                    <p>Our robot is formed by the junction of rigid bodies (the links and the end-effector). But
+                        <b class="itext">they do not move independently!</b> It is the movement of the robot's <b class="itext">joints</b>
+                        that provides this movement.</p>
+                    <p>Relating the joint movement to the movement of the links/end-effector is the goal of <b
+                            class="itext">Forward Kinematics</b>.</p>
+
                 </div>
                 <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
                 <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
@@ -65,6 +64,7 @@
                     </div>
                 </div>
             </div>
+
         </section>
 
         <section>
@@ -75,20 +75,22 @@
             </p>
         </section>
 
-        <!-- BEGIN: 'Configuration' -->
         <section>
-            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Direct Kinematics</h3>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
             <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configuration</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify;">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
                     <p>We start with an important concept/definition: <b class="itext">configuration</b>.</p>
-                    <p>In the context of fixed-base manipulators, rigid links, and open-chain robots, the
-                        <b class="itext">configuration</b>
-                        of the robot at a given instant in time, <b class="itext">\(q\)</b>, is nothing more than a
+                    <p>In the context of fixed-base manipulator robotics, rigid links, and open-chain, the <b
+                            class="itext">configuration</b>
+                        of the robot at a given instant of time, <b class="itext">\(q\)</b>, is nothing more than a
                         column vector
-                        with \(n\) elements, where \(n\) is the number of joints, containing the rotation (revolute
-                        joint)/translation (linear joint) of each joint at that instant in time.</p>
+                        with \(n\) elements, where \(n\) is the number of joints, which has the rotation (rotary joint)/
+                        translation (linear joint) of the joint
+                        at that instant of time.</p>
+
+
                 </div>
                 <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
                 <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
@@ -102,22 +104,23 @@
         </section>
 
         <section>
-            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Direct Kinematics</h3>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
             <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configuration</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify;">
-                    <p>Which direction of rotation/translation is considered positive when the value of \(q_i\) grows, as
-                        well as what rotation/translation corresponds to the zero value of the joint (\(q_i=0\)), is a
-                        <b class="itext">purely conventional choice</b>.</p>
-                    <p>This is common in physics (when setting up a reference frame, you define where zero is and which
-                        direction is positive, etc.).</p>
-                    <p>Usually, this comes predefined in the robot, but it can be changed if it is convenient.</p>
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>What is the direction of rotation/translation of the joint when the value of \(q_i\) increases and what is the
+                        rotation/translation
+                        corresponding to the zero value of the joint (\(q_i=0\)) is a <b class="itext">purely conventional</b> matter.</p>
+                    <p>This is common in physics (when creating a reference frame, you define what the zero point is, what the
+                        positive direction of the \(x\) axis is, etc...).</p>
+                    <p>Normally, this is already defined in the robot, but it can be easily changed if it is convenient for you.</p>
                     <p>
-                        See the various configurations on the right, where you can identify the chosen rotation sense
+                        See the various configurations on the side, where it is possible to determine the chosen rotation direction
                         (counterclockwise)
-                        and zero rotation for both joints.
+                        and the zero rotation for the two joints.
                     </p>
+
                 </div>
 
                 <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
@@ -146,25 +149,29 @@
                             <img src="/class_presentations/presentation/images/aula3/configmostra4.svg"
                                  style="width:400px;height:auto;">
                         </div>
+
                     </div>
                 </div>
             </div>
         </section>
 
         <section>
-            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Direct Kinematics</h3>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
             <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configuration</b>
             </h3>
             <div style="width:1200px;height:800px">
-                <div style="width: 60%; float:left; font-size:25px; text-align:justify;">
-                    <p>Note that, with the configuration, we can determine the position of any point of the robot.</p>
-                    <p>The general definition of configuration in Mechanics is this: <b class="itext">the necessary
-                        information to, at that instant in time, determine the position of every particle of a
-                        system</b>.</p>
-                    <p>In our case, that information is the rotation/translation of the revolute and linear joints,
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Note that, in possession of the configuration, we can determine the position of any particle of
+                        the robot.</p>
+                    <p>The general definition of configuration in Mechanics is this: <b class="itext">the necessary information
+                        to, at that instant of time,
+                        determine the position of any particle of a system</b>.</p>
+                    <p>In our case, this information is the rotation/translation of the rotary and linear joints,
                         respectively.</p>
+
+
                 </div>
-                <div style="width: 10%; float:right;"></div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
                 <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
                     <div style="display:table-cell;vertical-align: middle">
                         <br>
@@ -174,12 +181,1401 @@
                 </div>
             </div>
         </section>
-        <!-- END: 'Configuration' -->
 
-        <!-- Further sections translate everything accordingly -->
+        <section>
+            <h3 style="font-size:40px">Simple Examples</h3>
+            <p>
+                <img src="/class_presentations/presentation/images/aula3/titulo.svg">
+                <br>
+            </p>
+        </section>
 
-        <!-- This is the last part, so we maintain the structure. -->
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Let's calculate a first example of forward kinematics. Consider the planar robot on the side, with
+                        two rotary joints.</p>
+                    <p>Both links are 0.5m.</p>
+                    <p>Calculate \(T^{e}_0(q)\), that is, the HTM of the reference frame attached to the end-effector,
+                        \(\mathcal{F}_e\) relative to the reference frame
+                        \(\mathcal{F}_0\), as a function of the configuration \(q\).</p>
+                    <p>Consider that the positive rotation direction of the two joints is counterclockwise. Also, that in
+                        \(q_1=q_2=0\), the robot
+                        is fully extended to the right.</p>
 
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicadira1.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Let's solve the problem in parts. First, we will calculate the vector \(s(q)\), which is the center of
+                        the reference frame
+                        \(\mathcal{F}_e\) written in the reference frame \(\mathcal{F}_0\).</p>
+                    <p>We start by drawing the vector \(v_1\) that goes from the center of \(\mathcal{F}_0\), which is the center of the
+                        first joint, to the
+                        center of the second joint...</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicadira2.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>With basic trigonometry, we find that the \(x_0\) component of this vector is <b
+                            class="itext">\(0.5\cos(q_1)\)</b>, and
+                        the \(z_0\) component is <b class="itext">\(0.5\sin(q_1)\)</b>. The \(y_0\) component is <b
+                                class="itext">\(0\)</b>.</p>
+                    <p>So:
+                        $$v_1(q) = \Large{\Bigg(}\normalsize{}\begin{array}{c} 0.5\cos(q_1) \\ 0 \\ 0.5\sin(q_1)
+                        \end{array}\Large{\Bigg)}\normalsize{}.$$</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicadira3.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Now let's draw the vector \(v_2\), which goes from the center of the second joint to the center of
+                        \(\mathcal{F}_e\).</p>
+                    <p>With a bit of geometry, we find that the angle this vector makes with the \(x_0\) axis is
+                        \(q_1+q_2\).</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicadira4.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Again, with basic trigonometry, we find that the \(x_0\) component of this vector is <b
+                            class="itext">\(0.5\cos(q_1+q_2)\)</b>, and
+                        the \(z_0\) component is <b class="itext">\(0.5\sin(q_1+q_2)\)</b>. The \(y_0\) component is <b
+                                class="itext">\(0\)</b>.</p>
+                    <p>So:
+                        $$v_2(q) = \Large{\Bigg(}\normalsize{}\begin{array}{c} 0.5\cos(q_1+q_2) \\ 0 \\ 0.5\sin(q_1+q_2)
+                        \end{array}\Large{\Bigg)}\normalsize{}.$$</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicadira6.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Therefore, the vector \(s(q)\) is \(v_1(q)+v_2(q)\):</p>
+                    <p>So:
+                        <b class="itext">$$s(q) = \Large{\Bigg(}\normalsize{}\begin{array}{c}
+                            0.5\cos(q_1)+0.5\cos(q_1+q_2) \\ 0 \\ 0.5\sin(q_1)+0.5\sin(q_1+q_2)
+                            </end{array}\Large{\Bigg)}\normalsize{}.$$</b></p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicadira6.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>We now need to find the rotation matrix \(Q(q)\).</p>
+                    <p>Note, from the image on the side, that, disregarding the translation (already solved when we calculated
+                        \(s(q)\)), the reference frame
+                        \(\mathcal{F}_e\) is the reference frame \(\mathcal{F}_0\) rotated by \(q_1+q_2\) on the \(y_0\) axis <b
+                                class="itext">in the clockwise direction!</b> Since we defined the positive rotation as being in the
+                        <b class="itext">counterclockwise direction</b>, it will be a rotation of <b class="itext">\(-(q_1+q_2\))</b>
+                        in \(y_0\).</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicadira7.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Therefore:</p>
+                    <p><b class="itext">$$ Q(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{ccc}
+                        \cos(q_1+q_2) & 0 & -\sin(q_1+q_2) \\
+                        0 & 1 & 0 \\
+                        \sin(q_1+q_2) & 0 & \cos(q_1+q_2)
+                        \end{array}\LARGE{\Bigg)}\normalsize{}$$</b></p>
+                    <p>in which we use the fact that \(\cos(-\theta)=\cos(\theta)\) and \(\sin(-\theta)=-\sin(\theta)\).</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicadira7.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Finally, using the notations \(c_1=\cos(q_1)\), \(s_1=\sin(q_1)\), \(c_{12}=\cos(q_1+q_2)\) and
+                        \(s_{12}=\sin(q_1+q_2)\):</p>
+                    <b class="itext">$$ H_0^e(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{cccc}
+                        c_{12} & 0 & -s_{12} & 0.5c_1+0.5c_{12} \\
+                        0 & 1 & 0 & 0 \\
+                        s_{12} & 0 & c_{12} & 0.5s_1+0.5s_{12} \\
+                        0 & 0 & 0 & 1
+                        \end{array}\LARGE{\Bigg)}\normalsize{}$$</b>
+                    <p>in which \(q=(q_1 \ q_2)^T\).</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicadira1.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 2</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>The next example is similar to the first, but we have a linear joint before the end-effector.</p>
+                    <p>Two rotary joints and one linear joint.</p>
+                    <p>The third joint has as its positive direction the direction pointed by \(x_e\). The value \(q_3=0\)
+                        corresponds
+                        to a link of \(0.25m\) (see image on the side).</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle; align-items: center">
+                        <div style="position:absolute;top:50px;right:50px"
+                             class="vim_indicator current-visible fragment"
+                             data-fragment-index="0">
+                            <br>
+                            <img src="/class_presentations/presentation/images/aula3/exemplocinematicadirb1.svg"
+                                 style="width:400px;height:auto;">
+                        </div>
+                        <div style="position:absolute;top:50px;right:50px"
+                             class="vim_indicator current-visible fragment"
+                             data-fragment-index="1">
+                            <br>
+                            <img src="/class_presentations/presentation/images/aula3/exemplocinematicadirb2.svg"
+                                 style="width:400px;height:auto;">
+                        </div>
+                        <div style="position:absolute;top:50px;right:50px"
+                             class="vim_indicator current-visible fragment"
+                             data-fragment-index="2">
+                            <br>
+                            <img src="/class_presentations/presentation/images/aula3/exemplocinematicadirb3.svg"
+                                 style="width:400px;height:auto;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 2</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>The solution is very similar to the previous one. </p>
+                    <p>The difference is the vector \(v_2\). In Example 1, we used the link length as \(0.5m\).
+                        Now we will use \(0.25+q_3\). The vector will then be:</p>
+                    <p>So:
+                        $$v_2(q) = \Large{\Bigg(}\normalsize{}\begin{array}{c} (0.25+q_3)\cos(q_1+q_2) \\ 0 \\
+                        (0.25+q_3)\sin(q_1+q_2)
+                        \end{array}\Large{\Bigg)}\normalsize{}.$$</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicadirb1.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 2</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>The final HTM will be:</p>
+                    <p><b class="itext">$$ H_0^e(q) = \LARGE{\Bigg(}\normalsize{}\begin{array}{cccc}
+                        c_{12} & 0 & -s_{12} & 0.5c_1+(0.25+q_3)c_{12} \\
+                        0 & 1 & 0 & 0 \\
+                        s_{12} & 0 & c_{12} & 0.5s_1+(0.25+q_3)s_{12} \\
+                        0 & 0 & 0 & 1
+                        \end{array}\LARGE{\Bigg)}\normalsize{}$$</b>
+                    <p>in which \(q=(q_1 \ q_2 \ q_3)^T\).</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicadirb1.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Joint Limits
+                and Self-Collision</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Note that, in the two previous examples, there are combinations of configuration \(q\) that would
+                        be invalid.</p>
+                    <p>For example, in a certain configuration, there may be a collision between links.</p>
+                    <p>Or even, in the case of the linear joint in Example 2, there are clearly limits \(q_{3,min} \leq q_3 \leq
+                        q_{3,max}\), because
+                        the joint cannot extend indefinitely in one direction or the other.</p>
+                    <p>Rotary joints can also have factory limits, created to avoid collisions.</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Forward Kinematics</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Joint Limits
+                and Self-Collision</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>In fact, for each robot, there is a subset of \(q\) values that are <b
+                            class="itext">prohibited</b>, due to these
+                        factors. </p>
+                    <p>In this course, we will essentially <b class="itext">ignore</b> this. We will assume that
+                        our controllers
+                        do not guide the configuration to these prohibited values.</p>
+                    <p>This is reasonable, actually, because robots are built to minimize this problem
+                        and the tasks we
+                        deal with in the industrial environment are not extremely complex.</p>
+                    <p>There are techniques to explicitly consider this problem in the controller, but they are beyond the scope
+                        of this course.</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">The Denavit-Hartenberg Convention</h3>
+            <p>
+                <img src="/class_presentations/presentation/images/aula3/titulo.svg">
+                <br>
+            </p>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <br>
+                    <p>For planar robots, where it is not necessary to worry about 3D movements, we can use analytical geometry techniques to calculate the forward kinematics for the end-effector.</p>
+                    <p>But for general robots, this is not very practical, and the analysis would become very
+                        <tag style="font-style: italic">ad-hoc</tag>
+                        .
+                    </p>
+                    <p>To standardize the process of calculating forward kinematics, the
+                        <b class="itext">Denavit-Hartenberg (DH) convention</b> was created.</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <br>
+                    <p>The idea is simple: the DH convention tells you how to attach reference frames to each of the rigid bodies
+                        of the robot.</p>
+                    <p>With this convention, there is a <b class="itext">systematic and simple</b> way to calculate the HTM from one reference frame to the next, until we have
+                        the HTM from the reference frame \(\mathcal{F}_0\) to the end-effector reference frame, \(\mathcal{F}_e\).</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <br>
+                    <p>For a robot with \(n\) joints, the DH convention creates \(n+1\) reference frames.</p>
+                    <p>We will name these reference frames \(\mathcal{F}_{DHi}\), \(i=0,1,...,n\).</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <br><br>
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            </h3>
+            <div style="width:1000px;height:800px">
+                <div style="font-size:25px; text-align:justify; text-justify: inter-word">
+                    <br>
+                    <p>There is a "recipe" to create these reference frames. Do the following for \(i=0,...,n\), where the joints are
+                        numbered from \(1\) to \(n\)</p>
+                    <div style="background-color: #282828">
+                        <ul>
+                            <li>Identify the <b class="itext">line<sub>i</sub></b>, which is the infinite line aligned with the
+                                <b class="itext">joint<sub>i</sub></b>;
+                            </li>
+                            <li>Identify the <b class="itext">line<sub>i+1</sub></b>, which is the infinite line aligned with the
+                                <b class="itext">joint<sub>i+1</sub></b>;
+                            </li>
+                            <li>Identify the <b class="itext">point<sub>i,i+1</sub></b>, which is the point on the <b
+                                    class="itext">line<sub>i</sub></b> closest to the <b
+                                    class="itext">line<sub>i+1</sub></b>;
+                            </li>
+                            <li>Identify the <b class="itext">point<sub>i+1,i</sub></b>, which is the point on the <b
+                                    class="itext">line<sub>i+1</sub></b> closest to the <b
+                                    class="itext">line<sub>i</sub></b>;
+                            </li>
+                            <li>The <b class="itext">center</b> of \(\mathcal{F}_{DHi}\) is the point <b
+                                    class="itext">point<sub>i+1,i</sub></b>;
+                            </li>
+                            <li>The <b class="itext">\(z_{DHi}\)</b> axis is chosen as being in one of the two directions on the <b class="itext">line<sub>i+1</sub></b>;
+                            </li>
+                            <li>The <b class="itext">\(x_{DHi}\)</b> axis is chosen as the vector that goes from <b
+                                    class="itext">point<sub>i,i+1</sub></b> to <b
+                                    class="itext">point<sub>i+1,i</sub></b>, after normalization;
+                            </li>
+                            <li>Complete the reference frame \(\mathcal{F}_{DHi}\) with the <b class="itext">\(y_{DHi}\)</b> axis
+                                using the right-hand rule.
+                            </li>
+                        </ul>
+                    </div>
+                    <p>The reference frame \(\mathcal{F}_{DHi}\) is attached to the i-th link, with link 0 being the base of the robot
+                        (immobile).</p>
+
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            </h3>
+            <div style="width:1000px;height:800px">
+                <div style="font-size:25px; text-align:justify; text-justify: inter-word">
+                    <br>
+                    <p>There are some cases where the rule is ill-defined, and the engineer has the freedom to choose:</p>
+
+                    <ul style="text-align:justify; text-justify: inter-word">
+                        <li>For \(i=0\), there is no <b class="itext">joint<sub>0</sub></b>. So, for \(i=0\), simply
+                            choose the center arbitrarily on the <b class="itext">line<sub>1</sub></b>, and the <b
+                                    class="itext">\(x_{DH0}\)</b> axis
+                            arbitrarily, as long as it is orthogonal to the <b class="itext">\(z_{DH0}\)</b> axis.
+                        </li>
+                        <li>If the lines <b class="itext">line<sub>i</sub></b> and <b class="itext">line<sub>i+1</sub></b>
+                            are parallel, there are
+                            infinite possible choices for the pair of points <b class="itext">point<sub>i,i+1</sub></b>
+                            and <b class="itext">point<sub>i+1,i</sub></b>. Choose
+                            one of these pairs arbitrarily.
+                        </li>
+                        <li>If <b class="itext">point<sub>i,i+1</sub></b> =<b class="itext">point<sub>i+1,i</sub></b>, the
+                            rule for choosing
+                            <b class="itext">\(x_{DHi}\)</b> is ill-defined. Choose any of the two vectors that are mutually orthogonal to the
+                            lines <b class="itext">line<sub>i</sub></b> and <b class="itext">line<sub>i+1</sub></b>.
+                        </li>
+                        <li>If \(i=n\), there is no <b class="itext">joint<sub>n+1</sub></b>. In this case, choose the line
+                            <b class="itext">line<sub>n+1</sub></b> arbitrarily. Generally, we use the previous line,
+                            <b class="itext">line<sub>n</sub></b>.
+                        </li>
+                    </ul>
+
+
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1</b>
+            </h3>
+            <div style="width:1200px;height:800px;">
+                <div style="font-size:25px; text-align:left">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula3/anim1.html"
+                            style="width:800px;height:650px; position:absolute; top:100px; right:150px"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 2</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="font-size:25px; text-align:left">
+
+
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula3/anim2.html"
+                            style="width:800px;height:650px; position:absolute; top:100px; right:150px"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 3</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="font-size:25px; text-align:left">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula3/anim3.html"
+                            style="width:800px;height:650px; position:absolute; top:100px; right:150px"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Denavit-Hartenberg Parameters</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>After attaching \(n+1\) reference frames to the robot (one of them on the fixed base), there is a systematic way to calculate the HTM <b class="itext">\(H_{DH0}^{DHn}(q)\)</b>, which is the last DH reference frame (\(i=n\))
+                        written in the first DH reference frame (\(i=0\)).</p>
+                    <p>Given the two interpretations for an HTM, we can also interpret <b class="itext">\(H_{DH0}^{DHn}(q)\)</b>
+                        as the
+                        rigid transformation that we have to make from the first reference frame to the last.</p>
+                    <p>In any case, for this, we have to extract the <b class="itext">Denavit-Hartenberg Parameters</b>
+                        of the robot, which are \(4n\) numbers that allow us to know how each of the reference frames is
+                        at a
+                        given instant of time.</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Denavit-Hartenberg Parameters</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>There are <b class="itext">4</b> parameters to transform from the reference frame \(\mathcal{F}_{DH(i-1)}\)
+                        to the next, the reference frame
+                        \(\mathcal{F}_{DHi}\). This is for \(i=1,...,n\), totaling \(4n\) parameters. </p>
+                    <p>These are the 4 parameters:</p>
+                    <p>
+                    <div style="background-color: #282828">
+                        <ul style="text-align:justify; text-justify: inter-word">
+                            <li><b class="itext">\(\theta_i\)</b> : the rotation that must be made on the <b class="itext">current \(z\) axis</b> to
+                                align the current \(x\) axis with the next \(x\) axis.
+                            </li>
+                            <li><b class="itext">\(d_i\)</b> : the displacement that must be made on the <b class="itext">current \(z\) axis</b> to
+                                move the center of the current reference frame to <b class="itext">point<sub>i,i+1</sub></b>.
+                            </li>
+                            <li><b class="itext">\(\alpha_i\)</b> : the rotation that must be made on the <b class="itext">current \(x\) axis</b> to
+                                align the current \(z\) axis with the next \(z\) axis.
+                            </li>
+                            <li><b class="itext">\(a_i\)</b> : the translation that must be made on the <b class="itext">current \(x\) axis</b> to
+                                finally make the two reference frames coincide.
+                            </li>
+                            </li>
+                        </ul>
+                    </div>
+                    </p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Denavit-Hartenberg Parameters</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>The way the DH axes are attached ensures the existence of these parameters, that is, there are numbers
+                        \(\theta_i,d_i,\alpha_i,a_i\) such that these transformations parameterized by them transform one
+                        reference frame into the next.</p>
+                    <div style="background-color: #282828">
+                        <p><b class="itext">Very important:</b> if the \(i\)-th joint is rotary, \(\theta_i\) is variable and depends
+                            on the current configuration of joint \(i\), \(q_i\). If it is linear, it is \(d_i\) that is variable, and depends on the
+                            current configuration of joint \(i\), \(q_i\).</p>
+                    </div>
+                    <p>All three remaining parameters from one reference frame to the next are <b class="itext">structural constants</b>
+                        of the robot, decided at the time of its conception.</p>
+                    <p>Note that the transformations always use <b class="itext">the current reference frame</b>, not the
+                        <b class="itext">initial reference frame</b>...</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 1 of Parameter Calculation</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="font-size:25px; text-align:left">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula3/anim4.html"
+                            style="width:800px;height:650px; position:absolute; top:115px; right:150px"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 2 of Parameter Calculation</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="font-size:25px; text-align:left">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula3/anim5.html"
+                            style="width:800px;height:650px; position:absolute; top:115px; right:150px"></iframe>
+                </div>
+            </div>
+        </section>
+
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Denavit-Hartenberg Parameters</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Note that in the two previous examples, the robot was the same, but in different configurations.</p>
+                    <p>The structural parameters (in <b>white</b>) were the same, but the variable parameters (in <b
+                            style="color:gold">yellow</b>) changed.</p>
+                    <p>In this case, since all the joints were rotary, all the \(\theta_i\) are variable, depending on the
+                        configuration \(q_i\).</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example 3 of Parameter Calculation</b>
+            </h3>
+            <div style="width:1200px;height:800px">
+                <div style="font-size:25px; text-align:left">
+                    <iframe scrolling="no"
+                            src="/class_presentations/presentation/images/aula3/anim6.html"
+                            style="width:800px;height:650px; position:absolute; top:115px; right:150px"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Calculation of Transformations</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>In possession of the parameters, it is very easy to calculate the transformation from the reference frame \(\mathcal{F}_{DH(i-1)}\) to the
+                    \(\mathcal{F}_{DHi}\), for \(i=1,2,...,n\).</p>
+                    <p>The transformation is as follows:
+                     <b class="itext">$$H_{DH(i-1)}^{DHi}(q_i) = R_z(\theta_i)D_z(d_i)R_x(\alpha_i)D_x(a_i).$$</b></p>
+                    <p><b class="itext">Note that the transformation should be read from left to right, as we use the current reference frame, not
+                    the initial one, to interpret the transformations!</b></p>
+                    <p>So first is the rotation in \(z\), then the displacement in \(z\), then the rotation in \(x\), and finally the displacement in \(x\).</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Calculation of Transformations</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>The HTM \(H_{DH(i-1)}^{DHi}(q_i)\) can be interpreted either as the transformation from
+                        \(\mathcal{F}_{DH(i-1)}\) to
+                        \(\mathcal{F}_{DHi}\) <b class="itext">interpreted in \(\mathcal{F}_{DH(i-1)}\)</b>
+                        (interpretation as a rigid transformation) or
+                        as the reference frame \(\mathcal{F}_{DHi}\) <b class="itext">written in
+                            \(\mathcal{F}_{DH(i-1)}\)</b> (interpretation as a reference frame).</p>
+
+                    <p>Note that \(H_{DH(i-1)}^{DHi}(q_i)\) depends on \(q_i\), because either \(\theta_i\) (rotary joint) or \(d_i\) (linear joint)
+                    depends on \(q_i\).</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Calculation of Transformations</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>The HTM \(H_{DH0}^{DHn}(q)\) between the first reference frame (fixed) and the one attached to the last link (end-effector) is:</b>
+                        <b class="itext">$$H_{DH0}^{DHn}(q) = H_{DH0}^{DH1}(q_1)H_{DH1}^{DH2}(q_2)...H_{DH(n-1)}^{DHn}(q_n).$$</b></p>
+
+                    <p>It depends on the entire configuration \(q\).</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Some Details</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Not always the first reference frame created by DH, \(\mathcal{F}_{DH0}\), is the reference frame you
+                        wanted to be
+                        "the" reference frame \(\mathcal{F}_0\).</p>
+
+                    <p>Similarly, not always the last reference frame of DH, \(\mathcal{F}_{DHn}\), is the reference frame you
+                        would like to be
+                        the end-effector reference frame \(\mathcal{F}_e\).</p>
+
+                    <p>Fortunately, in both cases, there will be <b class="itext">constant (independent of \(q\))</b> transformations,
+                        \(H_{0}^{DH0}\) and \(H_{DHn}^{e}\), respectively, that allow us to make this adjustment.</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Some Details</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>The DH convention, although it has not completely solved the problem in these cases, has solved the most
+                    complex part of the problem, which is finding the part of the transformation that is variable, depending on \(q\).</p>
+
+                    <p>With these two adjustment matrices, we have:
+                    <b class="itext">$$H_{0}^e(q) = H_0^{DH0} H_{DH0}^{DHn}(q) H_{DHn}^{e}.$$</b></p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">The Denavit-Hartenberg Convention</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Where to Find</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>The DH parameters can be obtained by measuring the robot directly, or from its manual.</p>
+                    <p>Unfortunately, there are other conventions besides DH. So, sometimes the manual provides the parameters for
+                    another convention.</p>
+                    <p>In any case, it is the most used definition.</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section>
+            <h3 style="font-size:40px">Inverse Kinematics</h3>
+            <p>
+                <img src="/class_presentations/presentation/images/aula3/titulo.svg">
+                <br>
+            </p>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Inverse Kinematics</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Definition</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>In the problem of <b class="itext">inverse kinematics</b> we have a desired HTM for the end-effector, \(\hat{H}_{0}^{e}\)
+                    and we want to find \(q\) such that \(H_0^{e}(q) =\hat{H}_{0}^{e}\).</p>
+                    <p>This problem can have <b class="itext">one, none, or multiple solutions</b>.</p>
+                    <p>We have to solve a complex system of non-linear equations.</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Inverse Kinematics</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>To illustrate this complexity, let's solve a problem that is, apparently, very simple.</p>
+                    <p>Consider the planar robot with two rotary joints on the side. We want the position of the end-effector to be a
+                    desired position \(x=x_a\) and \(z=z_a\).</p>
+                    <p>We do not care about the orientation. It is a "partial" inverse kinematics problem.</p>
+                    <p>Even so, we will see that it is not simple.</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Inverse Kinematics</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Using the notation of \(c_1,s_1,c_{12}\) and \(s_{12}\) defined earlier, we have the equalities:</p>
+                    <p><b class="itext">$$L_1c_1 + L_2c_{12} = x_a,$$</b></p>
+                    <p><b class="itext">$$L_1s_1 + L_2s_{12} = z_a$$</b></p>
+                    <p>obtained by forward kinematics (see <a href="/class_presentations/presentation/aula3.html#/7"><b
+                            class="hlink">Example 1</b></a> of Forward Kinematics).</p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Inverse Kinematics</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Square both equalities and add them.</p>
+                    <p>Use the fact that \(c_1^2+s_1^2 = c_{12}^2+s_{12}^2 = 1\), and that \(c_1c_{12} + s_1s_{12} = \cos(q_2)\):</p>
+                    <p><b class="itext">$$L_1^2+L_2^2 + 2L_1L_2\cos(q_2) = x_a^2+z_a^2.$$</b></p>
+                    <p>And therefore:</p>
+                    <p><b class="itext">$$\cos(q_2) = \frac{x_a^2+z_a^2-(L_1^2+L_2^2)}{2L_1L_2}.$$</b></p>
+
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Inverse Kinematics</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>For the equation</p>
+                    <p><b class="itext">$$\cos(q_2) = \frac{x_a^2+z_a^2-(L_1^2+L_2^2)}{2L_1L_2}$$</b></p>
+                    <p>to have a solution, the right-hand side must be between -1 and 1. Rewriting this condition, we have:</p>
+                    <p><b class="itext">$$(L_1-L_2)^2 \leq x_a^2+z_a^2 \leq (L_1+L_2)^2$$</b></p>
+                    <p>Reflect a little and you will see that this condition makes perfect sense, geometrically.</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Inverse Kinematics</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>If the condition is satisfied, we have two solutions:</p>
+                    <p><b class="itext">$$q_2 = \pm \cos^{-1}\left(\frac{x_a^2+z_a^2-(L_1^2+L_2^2)}{2L_1L_2}\right).$$</b></p>
+                    <p>Let's assume from now on that we choose one of these two solutions. Substituting into the original system
+                    and using \(c_{12} = c_1c_2-s_1s_2\) and \(s_{12} = c_1s_2+c_2s_1\) (where \(c_2=\cos(q_2)\) and \(s_2=\sin(q_2)\)):</p>
+                    <p><b class="itext">$$(L_1+L_2c_2)c_1 - L_2s_2s_1 = x_a,$$</b></p>
+                    <p><b class="itext">$$L_2s_2 c_1 + (L_1+L_2c_2)s_1 = z_a$$</b></p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Inverse Kinematics</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>We then have a linear system with two equations and two unknowns for the variables \(s_1\) and \(c_1\):</p>
+                    <p><b class="itext">$$\left(\begin{array}{cc} L_1+L_2c_2 & -L_2s_2 \\ L_2s_2 & L_1+L_2c_2\end{array}\right)\left(\begin{array}{c} c_1 \\ s_1 \end{array}\right) = \left(\begin{array}{c} x_a \\ z_a \end{array}\right).$$</b></p>
+                    <p>Isolating:</p>
+                   <p><b class="itext">$$c_1 = U = \frac{(L_1+L_2c_2)x_a + L_2s_2z_a}{G}$$</b></p>
+                    <p><b class="itext">$$s_1 = V = \frac{-L_2s_2x_a + (L_1+L_2c_2)z_a}{G}$$</b></p>
+                    <p>where \(G = L_1^2+L_2^2 + 2L_1L_2c_2\).</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Inverse Kinematics</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Using the expression for \(c_2\) that we have, it is easy to see that \(G=x_a^2+z_a^2\). Therefore, if we assume that the target point is not
+                    at the origin, we have that \(G \not=0\).</p>
+                    <p>For a system of equations of the form \(\cos(q_1)=U\) and \(\sin(q_1)=V\) to have a solution, it is necessary and sufficient that
+                    \(U^2+V^2=1\). In fact, we can show that this is true in this case.</p>
+                   <p>In this case, the solution for \(q_1\) is unique. Generally, in computational systems, the function <b class="itext">atan2(V,U)</b> gives this value.</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Inverse Kinematics</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:left">
+                    <p>We have the Python code to calculate the inverse kinematics:</p>
+                    <pre><code class="language-python" style="text-align:left; height:300px">
+import numpy as np
+
+def find_q1(L1,L2,xa,za,q2):
+  G =  xa**2+za**2
+  c2 = np.cos(q2)
+  s2 = np.sin(q2)
+  U = ( (L1+L2*c2)*xa + L2*s2*za )/G
+  V = ( -L2*s2*xa + (L1+L2*c2)*za )/G
+  return np.arctan2(V,U)
+
+def solve_ik(L1,L2,xa,za):
+  G =  xa**2+za**2
+  if G >= (L1+L2)**2 or G <= (L1-L2)**2:
+    raise Exception("No solution!")
+  else:
+
+    q2_A = np.arccos( (G - (L1**2+L2**2))/(2*L1*L2) )
+    q2_B = -q2_A
+
+    return [find_q1(L1,L2,xa,za,q2_A), q2_A], [find_q1(L1,L2,xa,za,q2_B), q2_B]
+
+
+#Test:
+L1 = 1
+L2 = 1.5
+xa = 0.8
+za = 0.5
+
+q_A, q_B = solve_ik(L1,L2,xa,za)
+
+print(q_A)
+print(q_B)
+                        </code></pre>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+     <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Inverse Kinematics</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Considering \(G \not=0\), when we have a solution, we have two solutions (see on the side).</p>
+                    <p>The exception is when \(q_2=0\), where we only have one solution.</p>
+                    <p>The case where \(G=0\) can be treated separately.</p>
+                </div>
+
+                <div style="width: 40%; float:right; text-align:left; vertical-align: middle; display:table">
+                <div style="display:table-cell;vertical-align: middle; align-items: center">
+                        <div style="position:absolute;top:50px;right:50px"
+                             class="vim_indicator current-visible fragment"
+                             data-fragment-index="0">
+                            <img src="/class_presentations/presentation/images/aula3/exemplocinematicainv2a.svg"
+                                 style="width:400px;height:auto;">
+                        </div>
+                        <div style="position:absolute;top:50px;right:50px"
+                             class="vim_indicator current-visible fragment"
+                             data-fragment-index="1">
+                            <img src="/class_presentations/presentation/images/aula3/exemplocinematicainv2b.svg"
+                                 style="width:400px;height:auto;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+ <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Inverse Kinematics</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Conclusion</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Solving the inverse kinematics problem for a three-dimensional robot with several degrees of freedom analytically, as we did here, is often unfeasible</p>
+                    <p>There is research dedicated solely to the problem of analytical inverse kinematics for specific robots.</p>
+                   <p>However, <b class="itext">numerical methods</b> are more practical for general robots.</p>
+                    <p>The technique of <b class="itext">kinematic control</b> that we will see soon can be easily adapted for this purpose.</p>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/exemplocinematicainv.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h3 style="font-size:40px">Functions in UAIBot</h3>
+            <p>
+                <img src="/class_presentations/presentation/images/aula3/titulo.svg">
+                <br>
+            </p>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Functions in UAIBot</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configuration</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>In <b class="itext">UAIBot</b>, we can access the current configuration of the robot as <b class="itext">robot.q</b>, where
+                    <b class="itext">robot</b> is the name of the robot variable:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import numpy as np
+import uaibot as ub
+
+robot = ub.Robot.create_kuka_kr5()
+#Show the current configuration
+print(robot.q)
+#Show the "base" configuration
+print(robot.q0)
+                        </code></pre>
+                    <p>Both are numpy vectors with shape (n,1) (n rows and 1 column).</p>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Functions in UAIBot</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Configuration</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>We can specify the configuration at time \(t\) with <b class="itext">.add_ani_frame</b>.</p>
+                    <p>When it is called, we change the current configuration of the robot (<b class="itext">robot.q</b>).</p>
+                    <pre><code class="language-python" style="text-align:left">
+import numpy as np
+import uaibot as ub
+
+robot = ub.Robot.create_kuka_kr5()
+sim = ub.Simulation([robot])
+
+#Let's make the first joint vary from 0 to 2*pi, while the others remain at
+# zero. The time will vary from 0.01 to 0.01 seconds, up to 10 seconds.
+dt=0.01
+tmax=10
+for i in range(round(tmax/dt)):
+    t = i*dt
+    robot.add_ani_frame(time = t, q = [ (2*np.pi)*t/tmax, 0, 0, 0, 0, 0])
+
+#Let's see the result
+sim.run()
+                        </code></pre>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Functions in UAIBot</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Forward Kinematics</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Forward kinematics can be calculated with the function <b class="itext">.fkm</b> (from Forward KineMatics).</p>
+                    <p>All HTMs are calculated with respect to the simulation scenario reference frame:</p>
+                    <p></p>
+                    <pre><code class="language-python" style="text-align:left; height:300px">
+import numpy as np
+import uaibot as ub
+
+#Just configure how the matrices will be displayed
+np.set_printoptions(precision=4, suppress=True)
+
+robot = ub.Robot.create_kuka_kr5()
+
+#Without parameters, calculate for the current configuration (robot.q) and the end-effector
+print(robot.fkm())
+
+#We can specify the configuration
+print(robot.fkm(q=[0,1,2,3,4,5]))
+
+#We can choose whether we want to calculate the HTM for the end-effector (default) or for the DH reference frames. In the latter case, we have a list with n matrices
+#(for the first reference frame, FDH0, it is not calculated, as it is fixed)
+
+#Calculate for the end-effector
+print(robot.fkm(q=robot.q, axis='eef'))
+#Calculate for the DH reference frames
+htm_dh = robot.fkm(q=[0,1,2,3,4,5], axis='dh')
+for i in range(len(htm_dh)):
+    print(htm_dh[i])
+                        </code></pre>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Functions in UAIBot</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">DH Parameters</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>In <b class="itext">UAIBot</b> we can access the DH parameters of the robot:</p>
+                    <pre><code class="language-python" style="text-align:left">
+import numpy as np
+import uaibot as ub
+
+robot = ub.Robot.create_kuka_kr5()
+
+#The joints go from i=0 to i=n-1
+for i in range(len(robot.links)):
+    #Type: 0 (rotary), 1 (linear)
+    print("Type"+str(i+1)+": "+str(robot.links[i].joint_type))
+    print("theta"+str(i+1)+": "+str(robot.links[i].theta)+" rad")
+    print("d"+str(i+1)+": "+str(robot.links[i].d)+" m")
+    print("alpha"+str(i+1)+": "+str(robot.links[i].alpha)+" rad")
+    print("a"+str(i+1)+": "+str(robot.links[i].a)+" m")
+    print("\n")
+
+
+                        </code></pre>
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+       <section>
+            <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Functions in UAIBot</h3>
+            </h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Inverse Kinematics</b></h3>
+            <div style="width:1200px;height:800px">
+                <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
+                    <p>Inverse kinematics can be calculated with the function <b class="itext">.ikm</b> (from Inverse KineMatics):</p>
+                    <p></p>
+                    <pre><code class="language-python" style="text-align:left; height:300px">
+import numpy as np
+import uaibot as ub
+
+robot = ub.Robot.create_kuka_kr5()
+sim = ub.Simulation([robot])
+
+#Let's create a target HTM for the end-effector that is equal to the initial one, but shifted
+#a little down
+target =  ub.Utils.trn([0,0,-0.3]) * robot.fkm()
+
+#Let's find out what the configuration is that gives this HTM for the end-effector:
+q_ikm = robot.ikm(htm_target = target)
+
+#Let's make a smooth animation of the robot going from the initial configuration to
+#the target configuration
+dt=0.01
+tmax = 10
+for i in range(round(tmax/dt)):
+    t = i*dt
+    q_c = (1-t/tmax) * robot.q0 + (t/tmax) * q_ikm
+    robot.add_ani_frame(time=t, q=q_c)
+
+sim.run()
+                        </code></pre>
+
+                </div>
+                <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
+                <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
+                    <div style="display:table-cell;vertical-align: middle">
+                        <img src="/class_presentations/presentation/images/aula3/titulo.svg"
+                             style="width:350px;height:auto;">
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 </div>
 <style>
@@ -191,18 +1587,12 @@
         color: #34eb5e;
     }
 
-    /* Removed the UFMG logo background
     body {
         background-image: url(/class_presentations/presentation/images/aula1/logo_ufmg.svg) !important;
         background-color: black;
         background-size: 8% !important;
         background-repeat: no-repeat !important;
         background-position: 96% 3% !important;
-    }
-    */
-
-    body {
-        background-color: black;
     }
 
     .itext {
@@ -265,6 +1655,7 @@
         plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu]
     });
     var frames = document.getElementsByTagName("iframe");
+
 
     Reveal.on('slidechanged', event => {
         for (let i = 0; i < frames.length; ++i) {
