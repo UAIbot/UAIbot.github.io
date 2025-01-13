@@ -49,8 +49,8 @@
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
                     <p>We already know how to describe the movement of a rigid body separately.</p>
                     <p>Our robot is formed by the junction of rigid bodies (the links and the end-effector). But
-                        <b class="itext">they do not move independently!</b> It is the movement of the robot's <b class="itext">joints</b>
-                        that provides this movement.</p>
+                        <b class="itext">they do not move independently!</b> It is the movement of the <b class="itext">joints</b>
+                        of the robot that provides this movement.</p>
                     <p>Relating the joint movement to the movement of the links/end-effector is the goal of <b
                             class="itext">Forward Kinematics</b>.</p>
 
@@ -82,11 +82,9 @@
             <div style="width:1200px;height:800px">
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
                     <p>We start with an important concept/definition: <b class="itext">configuration</b>.</p>
-                    <p>In the context of fixed-base manipulator robotics, rigid links, and open-chain, the <b
-                            class="itext">configuration</b>
-                        of the robot at a given instant of time, <b class="itext">\(q\)</b>, is nothing more than a
-                        column vector
-                        with \(n\) elements, where \(n\) is the number of joints, which has the rotation (rotary joint)/
+                    <p>In the context of fixed-base, rigid-link, open-chain manipulators, the <b class="itext">configuration</b>
+                        of the robot at a given instant of time, <b class="itext">\(q\)</b>, is nothing more than a column vector
+                        with \(n\) elements, where \(n\) is the number of joints, that has the rotation (rotary joint)/
                         translation (linear joint) of the joint
                         at that instant of time.</p>
 
@@ -109,14 +107,14 @@
             </h3>
             <div style="width:1200px;height:800px">
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>What is the direction of rotation/translation of the joint when the value of \(q_i\) increases and what is the
+                    <p>The direction of rotation/translation of the joint when the value of \(q_i\) increases and the
                         rotation/translation
                         corresponding to the zero value of the joint (\(q_i=0\)) is a <b class="itext">purely conventional</b> matter.</p>
                     <p>This is common in physics (when creating a reference frame, you define what the zero point is, what the
                         positive direction of the \(x\) axis is, etc...).</p>
-                    <p>Normally, this is already defined in the robot, but it can be easily changed if it is convenient for you.</p>
+                    <p>Usually, this is already defined in the robot, but it can be easily changed if it is convenient for you.</p>
                     <p>
-                        See the various configurations on the side, where it is possible to determine the chosen rotation direction
+                        See the various configurations on the side, where it is possible to determine the chosen direction of rotation
                         (counterclockwise)
                         and the zero rotation for the two joints.
                     </p>
@@ -163,7 +161,7 @@
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
                     <p>Note that, in possession of the configuration, we can determine the position of any particle of
                         the robot.</p>
-                    <p>The general definition of configuration in Mechanics is this: <b class="itext">the necessary information
+                    <p>The general definition of configuration in Mechanics is this: <b class="itext">the information necessary
                         to, at that instant of time,
                         determine the position of any particle of a system</b>.</p>
                     <p>In our case, this information is the rotation/translation of the rotary and linear joints,
@@ -202,9 +200,9 @@
                     <p>Calculate \(T^{e}_0(q)\), that is, the HTM of the reference frame attached to the end-effector,
                         \(\mathcal{F}_e\) relative to the reference frame
                         \(\mathcal{F}_0\), as a function of the configuration \(q\).</p>
-                    <p>Consider that the positive rotation direction of the two joints is counterclockwise. Also, that in
+                    <p>Consider that the positive direction of rotation of the two joints is counterclockwise. Also, that in
                         \(q_1=q_2=0\), the robot
-                        is fully extended to the right.</p>
+                        is fully stretched to the right.</p>
 
 
                 </div>
@@ -224,8 +222,8 @@
             </h3>
             <div style="width:1200px;height:800px">
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Let's solve the problem in parts. First, we will calculate the vector \(s(q)\), which is the center of
-                        the reference frame
+                    <p>Let's solve the problem in parts. First, we will calculate the vector \(s(q)\), which is the center of the
+                        reference frame
                         \(\mathcal{F}_e\) written in the reference frame \(\mathcal{F}_0\).</p>
                     <p>We start by drawing the vector \(v_1\) that goes from the center of \(\mathcal{F}_0\), which is the center of the
                         first joint, to the
@@ -248,10 +246,8 @@
             </h3>
             <div style="width:1200px;height:800px">
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>With basic trigonometry, we find that the \(x_0\) component of this vector is <b
-                            class="itext">\(0.5\cos(q_1)\)</b>, and
-                        the \(z_0\) component is <b class="itext">\(0.5\sin(q_1)\)</b>. The \(y_0\) component is <b
-                                class="itext">\(0\)</b>.</p>
+                    <p>With basic trigonometry, we find that the \(x_0\) component of this vector is <b class="itext">\(0.5\cos(q_1)\)</b>, and
+                        the \(z_0\) component is <b class="itext">\(0.5\sin(q_1)\)</b>. The \(y_0\) component is <b class="itext">\(0\)</b>.</p>
                     <p>So:
                         $$v_1(q) = \Large{\Bigg(}\normalsize{}\begin{array}{c} 0.5\cos(q_1) \\ 0 \\ 0.5\sin(q_1)
                         \end{array}\Large{\Bigg)}\normalsize{}.$$</p>
@@ -294,10 +290,8 @@
             </h3>
             <div style="width:1200px;height:800px">
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Again, with basic trigonometry, we find that the \(x_0\) component of this vector is <b
-                            class="itext">\(0.5\cos(q_1+q_2)\)</b>, and
-                        the \(z_0\) component is <b class="itext">\(0.5\sin(q_1+q_2)\)</b>. The \(y_0\) component is <b
-                                class="itext">\(0\)</b>.</p>
+                    <p>Again, with basic trigonometry, we find that the \(x_0\) component of this vector is <b class="itext">\(0.5\cos(q_1+q_2)\)</b>, and
+                        the \(z_0\) component is <b class="itext">\(0.5\sin(q_1+q_2)\)</b>. The \(y_0\) component is <b class="itext">\(0\)</b>.</p>
                     <p>So:
                         $$v_2(q) = \Large{\Bigg(}\normalsize{}\begin{array}{c} 0.5\cos(q_1+q_2) \\ 0 \\ 0.5\sin(q_1+q_2)
                         \end{array}\Large{\Bigg)}\normalsize{}.$$</p>
@@ -322,7 +316,7 @@
                     <p>So:
                         <b class="itext">$$s(q) = \Large{\Bigg(}\normalsize{}\begin{array}{c}
                             0.5\cos(q_1)+0.5\cos(q_1+q_2) \\ 0 \\ 0.5\sin(q_1)+0.5\sin(q_1+q_2)
-                            </end{array}\Large{\Bigg)}\normalsize{}.$$</b></p>
+                            \end{array}\Large{\Bigg)}\normalsize{}.$$</b></p>
                 </div>
                 <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
                 <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
@@ -341,10 +335,9 @@
             <div style="width:1200px;height:800px">
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
                     <p>We now need to find the rotation matrix \(Q(q)\).</p>
-                    <p>Note, from the image on the side, that, disregarding the translation (already solved when we calculated
+                    <p>Note, from the image on the side, that, disregarding the translation (already resolved when we calculated
                         \(s(q)\)), the reference frame
-                        \(\mathcal{F}_e\) is the reference frame \(\mathcal{F}_0\) rotated by \(q_1+q_2\) on the \(y_0\) axis <b
-                                class="itext">in the clockwise direction!</b> Since we defined the positive rotation as being in the
+                        \(\mathcal{F}_e\) is the reference frame \(\mathcal{F}_0\) rotated by \(q_1+q_2\) on the \(y_0\) axis <b class="itext">in the clockwise direction!</b> Since we defined the positive rotation as being in the
                         <b class="itext">counterclockwise direction</b>, it will be a rotation of <b class="itext">\(-(q_1+q_2\))</b>
                         in \(y_0\).</p>
                 </div>
@@ -370,7 +363,7 @@
                         0 & 1 & 0 \\
                         \sin(q_1+q_2) & 0 & \cos(q_1+q_2)
                         \end{array}\LARGE{\Bigg)}\normalsize{}$$</b></p>
-                    <p>in which we use the fact that \(\cos(-\theta)=\cos(\theta)\) and \(\sin(-\theta)=-\sin(\theta)\).</p>
+                    <p>in which we used the fact that \(\cos(-\theta)=\cos(\theta)\) and \(\sin(-\theta)=-\sin(\theta)\).</p>
                 </div>
                 <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
                 <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
@@ -419,9 +412,8 @@
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
                     <p>The next example is similar to the first, but we have a linear joint before the end-effector.</p>
                     <p>Two rotary joints and one linear joint.</p>
-                    <p>The third joint has as its positive direction the direction pointed by \(x_e\). The value \(q_3=0\)
-                        corresponds
-                        to a link of \(0.25m\) (see image on the side).</p>
+                    <p>The third joint has the positive direction pointed by \(x_e\). The value \(q_3=0\) corresponds
+                        to a link of \(0.25m\) (see the image on the side).</p>
                 </div>
                 <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
                 <div style="width: 30%; float:right; text-align:left; vertical-align: middle; display:table">
@@ -511,8 +503,8 @@
             </h3>
             <div style="width:1200px;height:800px">
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Note that, in the two previous examples, there are combinations of configuration \(q\) that would
-                        be invalid.</p>
+                    <p>Note that, in the two previous examples, there are combinations of configuration \(q\) that would be
+                        invalid.</p>
                     <p>For example, in a certain configuration, there may be a collision between links.</p>
                     <p>Or even, in the case of the linear joint in Example 2, there are clearly limits \(q_{3,min} \leq q_3 \leq
                         q_{3,max}\), because
@@ -538,8 +530,7 @@
             </h3>
             <div style="width:1200px;height:800px">
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>In fact, for each robot, there is a subset of \(q\) values that are <b
-                            class="itext">prohibited</b>, due to these
+                    <p>In fact, for each robot, there is a subset of \(q\) values that are <b class="itext">prohibited</b>, due to these
                         factors. </p>
                     <p>In this course, we will essentially <b class="itext">ignore</b> this. We will assume that
                         our controllers
@@ -602,7 +593,8 @@
                     <br>
                     <p>The idea is simple: the DH convention tells you how to attach reference frames to each of the rigid bodies
                         of the robot.</p>
-                    <p>With this convention, there is a <b class="itext">systematic and simple</b> way to calculate the HTM from one reference frame to the next, until we have
+                    <p>With this convention, there is a <b class="itext">systematic and simple</b> way to calculate the
+                        HTM from one reference frame to the next, until we have
                         the HTM from the reference frame \(\mathcal{F}_0\) to the end-effector reference frame, \(\mathcal{F}_e\).</p>
 
                 </div>
@@ -665,7 +657,7 @@
                             <li>The <b class="itext">center</b> of \(\mathcal{F}_{DHi}\) is the point <b
                                     class="itext">point<sub>i+1,i</sub></b>;
                             </li>
-                            <li>The <b class="itext">\(z_{DHi}\)</b> axis is chosen as being in one of the two directions on the <b class="itext">line<sub>i+1</sub></b>;
+                            <li>The <b class="itext">\(z_{DHi}\)</b> axis is chosen as one of the two directions on the <b class="itext">line<sub>i+1</sub></b>;
                             </li>
                             <li>The <b class="itext">\(x_{DHi}\)</b> axis is chosen as the vector that goes from <b
                                     class="itext">point<sub>i,i+1</sub></b> to <b
@@ -768,13 +760,11 @@
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
                     <p>After attaching \(n+1\) reference frames to the robot (one of them on the fixed base), there is a systematic way to calculate the HTM <b class="itext">\(H_{DH0}^{DHn}(q)\)</b>, which is the last DH reference frame (\(i=n\))
                         written in the first DH reference frame (\(i=0\)).</p>
-                    <p>Given the two interpretations for an HTM, we can also interpret <b class="itext">\(H_{DH0}^{DHn}(q)\)</b>
-                        as the
+                    <p>Given the two interpretations for an HTM, we can also interpret <b class="itext">\(H_{DH0}^{DHn}(q)\)</b> as the
                         rigid transformation that we have to make from the first reference frame to the last.</p>
-                    <p>In any case, for this, we have to extract the <b class="itext">Denavit-Hartenberg Parameters</b>
+                    <p>In any case, for this, we need to extract the <b class="itext">Denavit-Hartenberg Parameters</b>
                         of the robot, which are \(4n\) numbers that allow us to know how each of the reference frames is
-                        at a
-                        given instant of time.</p>
+                        at a given instant of time.</p>
 
                 </div>
                 <div style="width: 10%; float:right; text-align:left; vertical-align: middle; display:table"></div>
@@ -894,7 +884,7 @@
             <div style="width:1200px;height:800px">
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
                     <p>Note that in the two previous examples, the robot was the same, but in different configurations.</p>
-                    <p>The structural parameters (in <b>white</b>) were the same, but the variable parameters (in <b
+                    <p>The structural parameters (in <b>white</b>) were the same, but the variable ones (in <b
                             style="color:gold">yellow</b>) changed.</p>
                     <p>In this case, since all the joints were rotary, all the \(\theta_i\) are variable, depending on the
                         configuration \(q_i\).</p>
@@ -1007,7 +997,7 @@
                         wanted to be
                         "the" reference frame \(\mathcal{F}_0\).</p>
 
-                    <p>Similarly, not always the last reference frame of DH, \(\mathcal{F}_{DHn}\), is the reference frame you
+                    <p>Similarly, not always the last DH reference frame, \(\mathcal{F}_{DHn}\), is the reference frame you
                         would like to be
                         the end-effector reference frame \(\mathcal{F}_e\).</p>
 
@@ -1087,10 +1077,10 @@
             <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Definition</b></h3>
             <div style="width:1200px;height:800px">
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>In the problem of <b class="itext">inverse kinematics</b> we have a desired HTM for the end-effector, \(\hat{H}_{0}^{e}\)
+                    <p>In the problem of <b class="itext">inverse kinematics</b>, we have a desired HTM for the end-effector, \(\hat{H}_{0}^{e}\)
                     and we want to find \(q\) such that \(H_0^{e}(q) =\hat{H}_{0}^{e}\).</p>
                     <p>This problem can have <b class="itext">one, none, or multiple solutions</b>.</p>
-                    <p>We have to solve a complex system of non-linear equations.</p>
+                    <p>We have to solve a complex system of nonlinear equations.</p>
 
 
                 </div>
@@ -1326,7 +1316,7 @@ print(q_B)
             <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Example</b></h3>
             <div style="width:1200px;height:800px">
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>Considering \(G \not=0\), when we have a solution, we have two solutions (see on the side).</p>
+                    <p>Considering \(G \not=0\), when we have a solution, we have two solutions (see the side).</p>
                     <p>The exception is when \(q_2=0\), where we only have one solution.</p>
                     <p>The case where \(G=0\) can be treated separately.</p>
                 </div>
@@ -1474,7 +1464,8 @@ print(robot.fkm())
 #We can specify the configuration
 print(robot.fkm(q=[0,1,2,3,4,5]))
 
-#We can choose whether we want to calculate the HTM for the end-effector (default) or for the DH reference frames. In the latter case, we have a list with n matrices
+#We can choose whether we want to calculate the HTM for the end-effector (default) or for
+#the DH reference frames. In the latter case, we have a list with n matrices
 #(for the first reference frame, FDH0, it is not calculated, as it is fixed)
 
 #Calculate for the end-effector
@@ -1499,10 +1490,10 @@ for i in range(len(htm_dh)):
        <section>
             <h3 style="font-size:40px;vertical-align:top;text-align:left;height:50px">Functions in UAIBot</h3>
             </h3>
-            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">DH Parameters</b></h3>
+            <h3 style="font-size:25px;vertical-align:top;text-align:left;height:50px"><b class="ttext">Denavit-Hartenberg Parameters</b></h3>
             <div style="width:1200px;height:800px">
                 <div style="width: 60%; float:left; font-size:25px; text-align:justify; text-justify: inter-word">
-                    <p>In <b class="itext">UAIBot</b> we can access the DH parameters of the robot:</p>
+                    <p>In <b class="itext">UAIBot</b>, we can access the DH parameters of the robot:</p>
                     <pre><code class="language-python" style="text-align:left">
 import numpy as np
 import uaibot as ub
@@ -1586,7 +1577,7 @@ sim.run()
     .reveal .controls {
         color: #34eb5e;
     }
-    /* Removed UFMG logo background
+    /*
     body {
         background-image: url(/class_presentations/presentation/images/aula1/logo_ufmg.svg) !important;
         background-color: black;
