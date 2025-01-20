@@ -29,7 +29,7 @@ Beginner-friendly web-based simulator for interactive robotics learning and rese
 
 > "While teaching robotics, I used many different desktop-based simulators with my students (such as CoppeliaSim and Matlab Toolboxes). However, I realized that students nowadays are much more used to web-based applications. This is why I, together with my students, came with the idea of creating a simulator [...]"<br>
 <div align="center">
- <br>UAIbot co-creator
+ <br>Vinicius Mariano Gonçalves - UAIbot co-creator
 </div>
 
 ## Frequently Asked Questions
