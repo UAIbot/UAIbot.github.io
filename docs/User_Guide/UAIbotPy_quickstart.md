@@ -104,6 +104,6 @@ If you execute the Python code above you should see the simulation below after y
 
 Click here to see the simulation above in a new tab: [moving_simulation_elements.html](/assets/Python_examples/moving_simulation_elements.html)
 
-If you gently hoover the cursor over the lower part of the simulation canvas a simplified media player interface will appear. Through this interface, you can play, pause, and replay the simulation as you wish.
+If you gently hover the cursor over the lower part of the simulation canvas a simplified media player interface will appear. Through this interface, you can play, pause, and replay the simulation as you wish.
 
 That's all for this quickstart guide. If you want to learn more we suggest that you browse through the project's API documentation or take a look at the cookbook section. In case of any doubts or suggestions do not hesitate to open an issue on GitHub.
