@@ -1,0 +1,903 @@
+<html>
+<style>
+.controller:hover{opacity:1 !important;}
+</style>
+<body>
+<div id='canvas_container_17380144552749217' style='width:800px;height:600px;position:relative'>
+<div id='loading_screen_17380144552749217' style='width:800px;height:600px;position:relative; background-color: #19bd39;text-align:center;align-items:center;display:flex;justify-content:center'> 
+ <img src='https://cdn.jsdelivr.net/gh/viniciusmgn/uaibot_content@master/contents/SVG/logo_uai_bot.svg' style='width:200px;height:114px'/>
+ </div>
+<script id='MathJax-script' async src='https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js'></script>
+<canvas id='scene_17380144552749217' width='800px' height='600px'></canvas>
+<!-- USER DIVS GO HERE --><div class = 'controller' style='width:800px;height:30px;'></div>
+</div>
+
+ <script type="module">
+import { Object3D, Vector3, BoxBufferGeometry, Color, Mesh, MeshBasicMaterial, PerspectiveCamera, OrthographicCamera,
+Scene, WebGLRenderer, AmbientLight, DirectionalLight, HemisphereLight, MeshStandardMaterial,
+AxesHelper, GridHelper, Matrix4, SphereBufferGeometry, CylinderBufferGeometry, ConeGeometry, Group, LoadingManager, MeshPhysicalMaterial, Vector2, FrontSide,
+	BackSide, DoubleSide, PMREMGenerator, TextureLoader, PointLight, UVMapping, CubeReflectionMapping, CubeRefractionMapping,
+	EquirectangularReflectionMapping, EquirectangularRefractionMapping, CubeUVReflectionMapping,
+	CubeUVRefractionMapping, RepeatWrapping, ClampToEdgeWrapping, MirroredRepeatWrapping,
+	NearestFilter, LinearFilter, NearestMipmapNearestFilter, NearestMipmapLinearFilter, LinearMipmapNearestFilter,
+	LinearMipmapLinearFilter, BufferGeometry, Float32BufferAttribute, PointsMaterial, Points, ArrowHelper, TextGeometry, CubeTextureLoader,sRGBEncoding
+} from 'https://cdn.skypack.dev/three@0.135.0/build/three.module.js';
+import { OrbitControls } from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/controls/OrbitControls.js';
+import {OBJLoader} from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/loaders/OBJLoader.js';
+import {STLLoader} from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/loaders/STLLoader.js';
+import {ColladaLoader} from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/loaders/ColladaLoader.js';
+import {GUI} from 'https://cdn.skypack.dev/dat.gui';
+import {ParametricGeometry} from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/geometries/ParametricGeometry.js'
+
+
+//0.126.1 0.137.5
+import { RoomEnvironment } from 'https://unpkg.com/three@0.126.1/examples/jsm/environments/RoomEnvironment.js';
+
+//--------------------SIMULATION ELEMENTS---------------------
+
+const delay = 500; 
+ const maxTime = 6.280000000000005; 
+ const cameraType= 'orthographic'; 
+ const sceneID= '17380144552749217'; 
+ const showWorldFrame=true; 
+ const showGrid=true; 
+ const backgroundColor='#F5F6FA'; 
+ const ambientLightIntensity = 4;
+ const ldrUrls = [];
+ const cameraStartPose = [3.0, 3.0, 3.0, 3.0, 3.0, 0.0, 0.5];
+ const gridSize = 12;
+ const gridDivisions = 24;
+ //SIMULATION PARAMETERS GO HERE
+
+function elapsedMs()
+{
+	return (new Date()).getTime();
+}
+
+
+class Objsim{
+	constructor(_frames){
+		this.frames = _frames;
+		this.currentFrame = 0;
+		this.shape = "I HAVE NO SHAPE YET";
+	}
+
+	hasLoaded()
+	{
+		return true;
+	}
+
+	nextFrame(){
+		while( (this.currentFrame < this.frames.length-1) && ( 1000 * this.frames[this.currentFrame+1][0] + delay < (elapsedMs() - startMs)) )
+		{
+			this.currentFrame += 1;
+		}
+	}
+	setFrameTime(time)
+	{
+		this.currentFrame = 0;
+		while( (this.currentFrame < this.frames.length-1) && ( this.frames[this.currentFrame+1][0] < time) )
+		{
+			this.currentFrame += 1;
+		}
+	}
+	showFrame(){
+		this.shape.matrix.set( this.frames[this.currentFrame][ 1],this.frames[this.currentFrame][ 2],this.frames[this.currentFrame][ 3],this.frames[this.currentFrame][ 4],
+							   this.frames[this.currentFrame][ 5],this.frames[this.currentFrame][ 6],this.frames[this.currentFrame][ 7],this.frames[this.currentFrame][ 8],
+							   this.frames[this.currentFrame][ 9],this.frames[this.currentFrame][10],this.frames[this.currentFrame][11],this.frames[this.currentFrame][12],
+							   this.frames[this.currentFrame][13],this.frames[this.currentFrame][14],this.frames[this.currentFrame][15],this.frames[this.currentFrame][16]);
+
+
+	}
+	setEnvMap(envMap)
+	{
+		this.shape.material.envMap = envMap;
+		this.shape.material.needsUpdate = true;
+	}
+}
+
+class Box extends Objsim{
+	constructor(_width, _height, _depth, _frames, _material){
+		super(_frames);
+		this.width = _width;
+		this.height = _height;
+		this.depth = _depth;
+		const geometry = new BoxBufferGeometry( this.width, this.height, this.depth);
+		const cube = new Mesh( geometry, _material );
+		cube.matrixAutoUpdate = false;
+		this.shape = cube;
+	}
+}
+
+class Ball extends Objsim{
+	constructor(_radius, _frames, _material){
+		super(_frames);
+		this.radius = _radius;
+		const geometry = new SphereBufferGeometry( this.radius, 64, 32);
+		const sphere = new Mesh( geometry, _material);
+		sphere.matrixAutoUpdate = false;
+		this.shape = sphere;
+	}
+}
+
+class Cylinder extends Objsim{
+	constructor(_radius, _height, _frames, _material){
+		super(_frames);
+		this.radius = _radius;
+		this.height = _height;
+		const geometry = new CylinderBufferGeometry( this.radius, this.radius, this.height, 20 );
+		const cylinder = new Mesh( geometry, _material);
+		cylinder.matrixAutoUpdate = false;
+		this.shape = cylinder;
+	}
+}
+
+class Cone extends Objsim{
+	constructor(_radius, _height, _frames, _material){
+		super(_frames);
+		this.radius = _radius;
+		this.height = _height;
+		const geometry = new ConeGeometry( this.radius, this.height, 20, 5, false, 0.0, 6.28 );
+		const cone = new Mesh( geometry, _material);
+		cone.matrixAutoUpdate = false;
+		this.shape = cone;
+	}
+}
+
+function signFun(x,n){
+	return Math.sign(x)*( Math.pow(Math.abs(x),n))
+}
+
+class SmoothBox extends Objsim{
+
+
+
+	constructor(_width, _height, _depth, _frames, _material){
+		super(_frames);
+		this.width = _width;
+		this.height = _height;
+		this.depth = _depth;
+
+		const geometry = new ParametricGeometry( function fun(u,v,target) {
+			let cosu = signFun(Math.cos(0.0001*Math.PI + 0.9999*Math.PI*u),0.5)
+			let sinu = signFun(Math.sin(0.0001*Math.PI + 0.9999*Math.PI*u),0.5)
+			let cosv = signFun(Math.cos(2*Math.PI*v),0.5)
+			let sinv = signFun(Math.sin(2*Math.PI*v),0.5)
+
+			let x = (_width/2)*sinu*cosv;
+			let y = (_height/2)*sinu*sinv;
+			let z = (_depth/2)*cosu;
+
+	    	target.set( x, y, z );
+
+		}, 25, 25 );
+
+
+		const smoothCube = new Mesh( geometry, _material );
+		smoothCube.matrixAutoUpdate = false;
+		this.shape = smoothCube;
+	}
+
+
+
+}
+
+class PointCloud extends Objsim{
+
+	constructor(_points, _frames, _color, _size) {
+		super(_frames);
+
+		this.color = _color;
+		this.points = _points
+		this.size = _size;
+
+		const vertices = []
+		const geometry = new BufferGeometry();
+		geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3));
+		const material = new PointsMaterial({color: this.color, size: this.size});
+		this.shape  = new Points(geometry, material);
+	}
+
+	showFrame(){
+		const vertices = [];
+
+		for (let i = this.frames[this.currentFrame][1]; i < this.frames[this.currentFrame][2]; i++) {
+			vertices.push(this.points[0][i], this.points[1][i], this.points[2][i]);
+		}
+
+		this.shape.geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3));
+
+	}
+
+	setEnvMap(envMap) {}
+
+}
+
+class RigidObject extends Objsim
+{
+
+	constructor(_frames, _list_3dobject) {
+		super(_frames);
+
+		this.shape = new Group();
+		this.shape.matrixAutoUpdate = false;
+
+		const manager = new LoadingManager();
+
+		let loader;
+
+		for (let i = 0; i < _list_3dobject.length; i++) {
+			const _3dobject = _list_3dobject[i];
+			if (_3dobject.type === 'obj') {
+				loader = new OBJLoader(manager);
+				loader.load(_3dobject.url, (root) => {
+
+					root.scale.set(_3dobject.scale, _3dobject.scale, _3dobject.scale);
+					root.applyMatrix4(_3dobject.matrix)
+
+					root.traverse(function (child) {
+						if (child instanceof Mesh) {
+							child.material = _3dobject.mesh_material;
+						}
+					});
+
+					this.shape.add(root);
+				});
+			}
+			if (_3dobject.type === 'stl') {
+				loader = new STLLoader(manager);
+				loader.load(_3dobject.url, (root) => {
+					const mesh = new Mesh(root);
+
+					mesh.scale.set(_3dobject.scale, _3dobject.scale, _3dobject.scale);
+					mesh.applyMatrix4(_3dobject.matrix)
+
+					mesh.traverse(function (child) {
+						if (child instanceof Mesh) {
+							child.material = _3dobject.mesh_material;
+						}
+					});
+
+					this.shape.add(mesh);
+				});
+			}
+			if (_3dobject.type === 'dae') {
+				loader = new ColladaLoader(manager);
+				loader.load(_3dobject.url, (root) => {
+					const group = root.scene;
+
+					group.scale.set(_3dobject.scale, _3dobject.scale, _3dobject.scale);
+					group.applyMatrix4(_3dobject.matrix)
+
+					group.traverse(function (child) {
+						if (child instanceof Mesh) {
+							child.material = _3dobject.mesh_material;
+						}
+					});
+
+					this.shape.add(group);
+				});
+			}
+		}
+
+	}
+
+	setEnvMapTemp(variable, envMap)
+	{
+		if(variable instanceof Mesh)
+		{
+			variable.material.envMap = envMap;
+			variable.material.needsUpdate  = true;
+		}
+		else if (variable instanceof Group)
+		{
+			for(let i=0; i < variable.children.length; i++)
+			{
+				this.setEnvMapTemp(variable.children[i]);
+			}
+		}
+	}
+	setEnvMap(envMap) {
+		this.setEnvMapTemp(this.shape, envMap);
+	}
+
+}
+
+class Vector extends Objsim {
+
+
+	constructor(_frames, _color, _thickness, _origin, _dir, _length) {
+		super(_frames);
+
+		this.color = _color;
+		this.thickness = _thickness
+		this.origin = new Vector3(_origin[0], _origin[1], _origin[2]);
+		this.dir =  new Vector3(_dir[0], _dir[1], _dir[2]);
+		this._length = length
+
+		this.shape = new ArrowHelper( this.dir, this.origin, this.length, this.color );
+		this.shape.line.material.linewidth = this.thickness;
+
+	}
+
+	showFrame() {
+		this.shape.setLength(this.frames[this.currentFrame][3]);
+		const dir = this.frames[this.currentFrame][2];
+		const origin = this.frames[this.currentFrame][1];
+
+		this.shape.setDirection(new Vector3(dir[0], dir[1], dir[2]));
+		this.shape.position.set(origin[0], origin[1], origin[2]);
+	}
+	setEnvMap(envMap) {}
+}
+
+class PointLightSim extends Objsim {
+
+
+	constructor(_frames) {
+		super(_frames);
+		this.shape = new PointLight(this.frames[0][1],this.frames[0][2],this.frames[0][3]);
+		this.shape.position.set(this.frames[0][4][0],this.frames[0][4][1],this.frames[0][4][2]);
+	}
+
+	showFrame() {
+		this.shape.color.set(this.frames[this.currentFrame][1]);
+		this.shape.intensity = this.frames[this.currentFrame][2];
+		this.shape.distance = this.frames[this.currentFrame][3];
+		this.shape.position.set(this.frames[this.currentFrame][4][0],this.frames[this.currentFrame][4][1],this.frames[this.currentFrame][4][2]);
+	}
+	setEnvMap(envMap) {}
+}
+
+class HTMLDiv extends Objsim{
+
+	constructor(_id, _frames){
+		super(_frames);
+		this.id = _id;
+		this.shape = undefined;
+	}
+
+	showFrame() {
+		var element = document.getElementById(this.id);
+
+		element.innerHTML = this.frames[this.currentFrame][1];
+		element.style.position = "absolute";
+		element.style = this.frames[this.currentFrame][2];
+	}
+	setEnvMap(envMap) {}
+}
+
+class Robot extends Objsim{
+
+	constructor(_objBase, _link, _frames, _htm_base_0, _htm_n_eef, _eef_frame_visible){
+		super(_frames);
+
+		this.loadedObjs = 0
+		this.links = _link;
+
+		this.totalNumberOfObjects = _objBase.length;
+
+		for(let i=0; i<this.links.length; i++)
+		{
+			this.totalNumberOfObjects+= this.links[i].model3d.length;
+		}
+
+		this.htm_base_0 = _htm_base_0;
+
+		//Function that creates a generic robot
+		const base = new Group();
+		base.name = "base";
+
+		const baseFrame = new Group();
+		baseFrame.name = "baseFrame";
+		baseFrame.applyMatrix4(this.htm_base_0);
+
+
+		//Create link groups
+		let linkGroupList = [];
+
+		for (let i = 0; i <= this.links.length; i++) {
+
+			var linkGroup = new Group();
+			linkGroup.name = "linkFrame" + i.toString();
+			linkGroupList.push(linkGroup);
+
+			linkGroup = new Group();
+			linkGroup.name = "link" + i.toString();
+			var axesHelper = new AxesHelper(0.2);
+			axesHelper.matrixAutoUpdate = false;
+			axesHelper.visible = true;
+			linkGroup.add(axesHelper)
+
+			if (i < this.links.length) {
+				linkGroup.rotateZ(this.links[i].theta);
+				linkGroup.translateZ(this.links[i].d);
+				linkGroup.rotateX(this.links[i].alpha);
+				linkGroup.translateX(this.links[i].a);
+			}
+
+
+			linkGroup.updateMatrix();
+
+			linkGroupList.push(linkGroup);
+		}
+
+		var linkGroup = new Group();
+		linkGroup.name = "eefFrame";
+		linkGroupList.push(linkGroup);
+
+		linkGroup = new Group();
+		linkGroup.name = "eef";
+		var axesHelper = new AxesHelper(0.2);
+		axesHelper.matrixAutoUpdate = false;
+		axesHelper.visible = _eef_frame_visible;
+		linkGroup.add(axesHelper);
+		linkGroup.applyMatrix4(_htm_n_eef)
+		linkGroup.updateMatrix();
+		linkGroupList.push(linkGroup);
+
+
+		base.add(baseFrame)
+		baseFrame.add(linkGroupList[0])
+
+		for (let i = 0; i < linkGroupList.length-1; i++) {
+			linkGroupList[i].add(linkGroupList[i + 1])
+		}
+
+		//Load 3D models
+
+		this.shape = base;
+		this.shape.matrixAutoUpdate = false;
+
+		this.loadObj(_objBase,"base", "base", false)
+		for (let i = 0; i < this.links.length-1; i++) {
+			this.loadObj(this.links[i].model3d,"link" + (i+1).toString(), "link" + (i).toString(), this.links[i].showFrame)
+		}
+		this.loadObj(this.links[this.links.length-1].model3d,"link" + (this.links.length).toString(), "link" + (this.links.length).toString(), false)
+
+		this.delta_config = []
+
+		for (let i = 0; i < this.links.length; i++) {
+			if(this.links[i].jointType == 0)
+			{
+				this.delta_config.push(this.shape.getObjectByName("link" + (i).toString()).rotation.z)
+			}
+			if(this.links[i].jointType == 1)
+			{
+				this.delta_config.push(this.shape.getObjectByName("link" + (i).toString()).position.z)
+
+			}
+		}
+
+	}
+
+	loadObj(obj, name1, name2, axisVisible) {
+
+		const manager = new LoadingManager();
+		const objLoader = new OBJLoader(manager);
+		const stlLoader = new STLLoader(manager);
+		const colladaLoader = new ColladaLoader(manager);
+
+		for (let i = 0; i < obj.length; i++) {
+
+
+			if (obj[i].type == "obj") {
+				objLoader.load(obj[i].url, (root) => {
+					root.scale.set(obj[i].scale, obj[i].scale, obj[i].scale);
+					root.applyMatrix4(obj[i].matrix)
+
+					root.traverse(function (child) {
+						if (child instanceof Mesh) {
+							child.material = obj[i].mesh_material;
+						}
+					});
+
+					this.shape.getObjectByName(name2).add(root);
+					this.loadedObjs += 1
+				});
+			}
+			if (obj[i].type == "stl") {
+				stlLoader.load(obj[i].url, (root) => {
+					const mesh = new Mesh(root);
+					mesh.scale.set(obj[i].scale, obj[i].scale, obj[i].scale);
+					mesh.applyMatrix4(obj[i].matrix)
+
+					mesh.traverse(function (child) {
+						if (child instanceof Mesh) {
+							child.material = obj[i].mesh_material;
+						}
+					});
+
+					this.shape.getObjectByName(name2).add(mesh);
+					this.loadedObjs += 1
+				});
+			}
+			if (obj[i].type == "dae") {
+				colladaLoader.load(obj[i].url, (root) => {
+					const group = root.scene;
+					group.scale.set(obj[i].scale, obj[i].scale, obj[i].scale);
+					group.applyMatrix4(obj[i].matrix)
+
+					group.traverse(function (child) {
+						if (child instanceof Mesh) {
+							child.material = obj[i].mesh_material;
+						}
+					});
+
+					this.shape.getObjectByName(name2).add(group);
+					this.loadedObjs += 1
+				});
+			}
+
+		}
+
+		this.shape.getObjectByName(name1).getObjectByProperty("type", "AxesHelper").visible = axisVisible;
+	}
+
+	hasLoaded()
+	{
+		return this.loadedObjs == this.totalNumberOfObjects;
+	}
+
+	//Function that updates frames
+	showFrame(){
+		//setting robot position
+		this.shape.matrix.set( this.frames[this.currentFrame][ 1],this.frames[this.currentFrame][ 2],this.frames[this.currentFrame][ 3],this.frames[this.currentFrame][ 4],
+							   this.frames[this.currentFrame][ 5],this.frames[this.currentFrame][ 6],this.frames[this.currentFrame][ 7],this.frames[this.currentFrame][ 8],
+							   this.frames[this.currentFrame][ 9],this.frames[this.currentFrame][10],this.frames[this.currentFrame][11],this.frames[this.currentFrame][12],
+							   this.frames[this.currentFrame][13],this.frames[this.currentFrame][14],this.frames[this.currentFrame][15],this.frames[this.currentFrame][16]);
+		//setting robot configuration
+
+		if(this.frames[this.currentFrame][17] != undefined){
+
+			for(let i = 0; i < this.links.length; i++){
+				const linkName = "linkFrame" + (i).toString();
+
+				if(this.links[i].jointType == 0){
+					this.shape.getObjectByName(linkName).rotation.z = this.frames[this.currentFrame][17][i] + this.delta_config[i];
+				}else if (this.links[i].jointType == 1){
+					this.shape.getObjectByName(linkName).position.z = this.frames[this.currentFrame][17][i] + this.delta_config[i];
+				}
+
+			}
+		}
+	}
+
+	setEnvMapTemp(variable, envMap)
+	{
+		if(variable instanceof Mesh)
+		{
+			variable.material.envMap = envMap;
+			variable.material.needsUpdate  = true;
+		}
+		else if (variable instanceof Group)
+		{
+			for(let i=0; i < variable.children.length; i++)
+			{
+				this.setEnvMapTemp(variable.children[i]);
+			}
+		}
+	}
+	setEnvMap(envMap) {
+		this.setEnvMapTemp(this.shape, envMap);
+	}
+}
+
+//------------------------------------------------------------
+
+//--------------- BASIC ELEMENTS OF ANY SCENE ----------------
+
+Object3D.DefaultUp = new Vector3(0,0,1); //Pointing Z axis up
+const canvas = document.getElementById('scene_'+sceneID);// Selecting canvas
+
+const scene = new Scene();//Instantiate the Scene
+scene.background = new Color(backgroundColor);//Set background color
+
+let camera;
+
+if (cameraType == "perspective") {
+	camera = new PerspectiveCamera(60, canvas.clientWidth / canvas.clientHeight, 0.1, 100);//Instantiate a camera
+}
+if (cameraType == "orthographic") {
+	camera = new OrthographicCamera(-3.2, 3.2, 2.4, -2.4, 0.01, 100);
+}
+
+
+
+var ambientLight = new HemisphereLight('white','darkslategrey', 3);//Instantiate Ambient light
+ambientLight.intensity = ambientLightIntensity;
+scene.add(ambientLight);
+
+const controls = new OrbitControls(camera, canvas);	//Instantiate orbit controls
+controls.target.set(0, 0, 0);//Point camera at the origin
+
+camera.position.set(cameraStartPose[0], cameraStartPose[1], cameraStartPose[2]);
+//camera.rotation.set(cameraStartPose[3], cameraStartPose[4], cameraStartPose[5]);
+camera.lookAt(new Vector3(cameraStartPose[3], cameraStartPose[4], cameraStartPose[5]));
+camera.zoom = cameraStartPose[6];
+camera.updateProjectionMatrix();
+
+controls.target.set(0, 0, 0);//Point camera at the origin
+
+const renderer = new WebGLRenderer({canvas, antialias: true});//Instantiate renderer
+renderer.physicallyCorrectLights = true;//Enable physically Correct Lights
+renderer.setSize(canvas.clientWidth, canvas.clientHeight);//Set render size
+renderer.setPixelRatio(window.devicePixelRatio);//Set pixel ratio
+
+let sceneElements = [];
+
+if (showWorldFrame) {
+	const axesHelper = new AxesHelper(0.5);
+	axesHelper.renderOrder = 1;
+	scene.add(axesHelper);
+}
+
+if (showGrid) {
+	const gridHelper = new GridHelper(gridSize, gridDivisions);
+	scene.add(gridHelper);
+	gridHelper.rotation.x = 3.14 / 2;
+}
+
+
+
+//------------------------------------------------------------
+
+//--------------- ADDING ELEMENTS TO THIS SCENE ---------------
+
+//BEGIN DECLARATION OF THE CYLINDER 'p1'
+
+const material_p1 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "CornflowerBlue",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0,
+normalScale: new Vector2(1,1),
+refractionRatio: 0.98,
+roughness: 1,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+
+const var_p1 = new Cylinder(0.3,1.7,[[0, 1.0, 0.0, -0.0, 5.0, 0.0, 0.0, -1.0, 4.5, 0.0, 1.0, -0.0, 0.85, 0, 0, 0, 1], [0, 1, 0, 0, 4.9984, 0, 0, -1, 4.4986, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.04, 1, 0, 0, 4.9954, 0, 0, -1, 4.4959, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.08, 1, 0, 0, 4.9909, 0, 0, -1, 4.492, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.12, 1, 0, 0, 4.985, 0, 0, -1, 4.4868, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.16, 1, 0, 0, 4.9777, 0, 0, -1, 4.4805, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.2, 1, 0, 0, 4.9692, 0, 0, -1, 4.4731, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.24000000000000002, 1, 0, 0, 4.9595, 0, 0, -1, 4.4646, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.28, 1, 0, 0, 4.9486, 0, 0, -1, 4.455, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.32, 1, 0, 0, 4.9366, 0, 0, -1, 4.4445, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.36, 1, 0, 0, 4.9235, 0, 0, -1, 4.433, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.39999999999999997, 1, 0, 0, 4.9093, 0, 0, -1, 4.4206, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.43999999999999995, 1, 0, 0, 4.8942, 0, 0, -1, 4.4074, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.4799999999999999, 1, 0, 0, 4.8781, 0, 0, -1, 4.3933, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.5199999999999999, 1, 0, 0, 4.861, 0, 0, -1, 4.3784, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.5599999999999999, 1, 0, 0, 4.8431, 0, 0, -1, 4.3627, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.6, 1, 0, 0, 4.8244, 0, 0, -1, 4.3463, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.64, 1, 0, 0, 4.8048, 0, 0, -1, 4.3291, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.68, 1, 0, 0, 4.7844, 0, 0, -1, 4.3113, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.7200000000000001, 1, 0, 0, 4.7633, 0, 0, -1, 4.2928, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.7600000000000001, 1, 0, 0, 4.7415, 0, 0, -1, 4.2737, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.8000000000000002, 1, 0, 0, 4.719, 0, 0, -1, 4.254, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.8400000000000002, 1, 0, 0, 4.6958, 0, 0, -1, 4.2337, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.8800000000000002, 1, 0, 0, 4.672, 0, 0, -1, 4.2128, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.9200000000000003, 1, 0, 0, 4.6476, 0, 0, -1, 4.1915, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.9600000000000003, 1, 0, 0, 4.6226, 0, 0, -1, 4.1696, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.0000000000000002, 1, 0, 0, 4.597, 0, 0, -1, 4.1472, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.0400000000000003, 1, 0, 0, 4.5709, 0, 0, -1, 4.1243, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.0800000000000003, 1, 0, 0, 4.5442, 0, 0, -1, 4.101, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.1200000000000003, 1, 0, 0, 4.5171, 0, 0, -1, 4.0772, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.1600000000000004, 1, 0, 0, 4.4895, 0, 0, -1, 4.053, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.2000000000000004, 1, 0, 0, 4.4615, 0, 0, -1, 4.0284, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.2400000000000004, 1, 0, 0, 4.433, 0, 0, -1, 4.0034, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.2800000000000005, 1, 0, 0, 4.404, 0, 0, -1, 3.9781, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.3200000000000005, 1, 0, 0, 4.3747, 0, 0, -1, 3.9524, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.3600000000000005, 1, 0, 0, 4.345, 0, 0, -1, 3.9264, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.4000000000000006, 1, 0, 0, 4.315, 0, 0, -1, 3.9, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.4400000000000006, 1, 0, 0, 4.2846, 0, 0, -1, 3.8733, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.4800000000000006, 1, 0, 0, 4.2538, 0, 0, -1, 3.8463, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.5200000000000007, 1, 0, 0, 4.2227, 0, 0, -1, 3.819, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.5600000000000007, 1, 0, 0, 4.1914, 0, 0, -1, 3.7914, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.6000000000000008, 1, 0, 0, 4.1597, 0, 0, -1, 3.7636, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.6400000000000008, 1, 0, 0, 4.1278, 0, 0, -1, 3.7355, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.6800000000000008, 1, 0, 0, 4.0956, 0, 0, -1, 3.7071, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.7200000000000009, 1, 0, 0, 4.0632, 0, 0, -1, 3.6785, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.760000000000001, 1, 0, 0, 4.0305, 0, 0, -1, 3.6497, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.800000000000001, 1, 0, 0, 3.9977, 0, 0, -1, 3.6206, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.840000000000001, 1, 0, 0, 3.9646, 0, 0, -1, 3.5914, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.880000000000001, 1, 0, 0, 3.9314, 0, 0, -1, 3.5619, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.920000000000001, 1, 0, 0, 3.898, 0, 0, -1, 3.5322, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.960000000000001, 1, 0, 0, 3.8645, 0, 0, -1, 3.5023, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.000000000000001, 1, 0, 0, 3.8308, 0, 0, -1, 3.4722, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.040000000000001, 1, 0, 0, 3.7971, 0, 0, -1, 3.4419, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.080000000000001, 1, 0, 0, 3.7633, 0, 0, -1, 3.4114, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.120000000000001, 1, 0, 0, 3.7295, 0, 0, -1, 3.3807, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.160000000000001, 1, 0, 0, 3.6957, 0, 0, -1, 3.3498, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.200000000000001, 1, 0, 0, 3.6619, 0, 0, -1, 3.3188, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.240000000000001, 1, 0, 0, 3.6281, 0, 0, -1, 3.2875, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.280000000000001, 1, 0, 0, 3.5945, 0, 0, -1, 3.2559, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.320000000000001, 1, 0, 0, 3.5611, 0, 0, -1, 3.2242, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.360000000000001, 1, 0, 0, 3.5279, 0, 0, -1, 3.1922, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.4000000000000012, 1, 0, 0, 3.495, 0, 0, -1, 3.1599, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.4400000000000013, 1, 0, 0, 3.4624, 0, 0, -1, 3.1274, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.4800000000000013, 1, 0, 0, 3.4303, 0, 0, -1, 3.0945, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.5200000000000014, 1, 0, 0, 3.3987, 0, 0, -1, 3.0611, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.5600000000000014, 1, 0, 0, 3.3677, 0, 0, -1, 3.0274, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.6000000000000014, 1, 0, 0, 3.3374, 0, 0, -1, 2.9931, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.6400000000000015, 1, 0, 0, 3.3079, 0, 0, -1, 2.9582, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.6800000000000015, 1, 0, 0, 3.2793, 0, 0, -1, 2.9227, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.7200000000000015, 1, 0, 0, 3.2516, 0, 0, -1, 2.8863, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.7600000000000016, 1, 0, 0, 3.225, 0, 0, -1, 2.849, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.8000000000000016, 1, 0, 0, 3.1994, 0, 0, -1, 2.8106, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.8400000000000016, 1, 0, 0, 3.1749, 0, 0, -1, 2.771, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.8800000000000017, 1, 0, 0, 3.1514, 0, 0, -1, 2.73, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.9200000000000017, 1, 0, 0, 3.1289, 0, 0, -1, 2.6875, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.9600000000000017, 1, 0, 0, 3.1072, 0, 0, -1, 2.6434, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.0000000000000018, 1, 0, 0, 3.0861, 0, 0, -1, 2.5977, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.040000000000002, 1, 0, 0, 3.0656, 0, 0, -1, 2.5503, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.080000000000002, 1, 0, 0, 3.0452, 0, 0, -1, 2.5012, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.120000000000002, 1, 0, 0, 3.0249, 0, 0, -1, 2.4506, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.160000000000002, 1, 0, 0, 3.0044, 0, 0, -1, 2.3986, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.200000000000002, 1, 0, 0, 2.9836, 0, 0, -1, 2.3454, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.240000000000002, 1, 0, 0, 2.9621, 0, 0, -1, 2.2911, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.280000000000002, 1, 0, 0, 2.94, 0, 0, -1, 2.2361, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.320000000000002, 1, 0, 0, 2.9171, 0, 0, -1, 2.1804, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.360000000000002, 1, 0, 0, 2.8934, 0, 0, -1, 2.1244, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.400000000000002, 1, 0, 0, 2.8687, 0, 0, -1, 2.0683, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.440000000000002, 1, 0, 0, 2.8431, 0, 0, -1, 2.0122, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.480000000000002, 1, 0, 0, 2.8166, 0, 0, -1, 1.9563, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.5200000000000022, 1, 0, 0, 2.7891, 0, 0, -1, 1.9008, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.5600000000000023, 1, 0, 0, 2.7607, 0, 0, -1, 1.8458, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.6000000000000023, 1, 0, 0, 2.7315, 0, 0, -1, 1.7914, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.6400000000000023, 1, 0, 0, 2.7013, 0, 0, -1, 1.7378, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.6800000000000024, 1, 0, 0, 2.6702, 0, 0, -1, 1.685, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.7200000000000024, 1, 0, 0, 2.6384, 0, 0, -1, 1.6331, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.7600000000000025, 1, 0, 0, 2.6057, 0, 0, -1, 1.5822, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.8000000000000025, 1, 0, 0, 2.5722, 0, 0, -1, 1.5323, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.8400000000000025, 1, 0, 0, 2.538, 0, 0, -1, 1.4835, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.8800000000000026, 1, 0, 0, 2.5031, 0, 0, -1, 1.4357, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.9200000000000026, 1, 0, 0, 2.4674, 0, 0, -1, 1.3891, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.9600000000000026, 1, 0, 0, 2.4311, 0, 0, -1, 1.3437, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.000000000000003, 1, 0, 0, 2.3941, 0, 0, -1, 1.2994, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.040000000000003, 1, 0, 0, 2.3565, 0, 0, -1, 1.2564, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.080000000000003, 1, 0, 0, 2.3183, 0, 0, -1, 1.2146, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.120000000000003, 1, 0, 0, 2.2795, 0, 0, -1, 1.174, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.160000000000003, 1, 0, 0, 2.2402, 0, 0, -1, 1.1347, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.200000000000003, 1, 0, 0, 2.2003, 0, 0, -1, 1.0967, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.240000000000003, 1, 0, 0, 2.1598, 0, 0, -1, 1.06, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.280000000000003, 1, 0, 0, 2.1189, 0, 0, -1, 1.0246, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.320000000000003, 1, 0, 0, 2.0775, 0, 0, -1, 0.9905, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.360000000000003, 1, 0, 0, 2.0357, 0, 0, -1, 0.9578, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.400000000000003, 1, 0, 0, 1.9934, 0, 0, -1, 0.9265, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.440000000000003, 1, 0, 0, 1.9507, 0, 0, -1, 0.8965, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.480000000000003, 1, 0, 0, 1.9076, 0, 0, -1, 0.8679, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.520000000000003, 1, 0, 0, 1.8642, 0, 0, -1, 0.8408, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.560000000000003, 1, 0, 0, 1.8204, 0, 0, -1, 0.8151, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.600000000000003, 1, 0, 0, 1.7764, 0, 0, -1, 0.7908, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.640000000000003, 1, 0, 0, 1.7321, 0, 0, -1, 0.7681, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.680000000000003, 1, 0, 0, 1.6875, 0, 0, -1, 0.7469, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.720000000000003, 1, 0, 0, 1.6428, 0, 0, -1, 0.7273, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.760000000000003, 1, 0, 0, 1.598, 0, 0, -1, 0.7092, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.800000000000003, 1, 0, 0, 1.553, 0, 0, -1, 0.6928, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.840000000000003, 1, 0, 0, 1.5081, 0, 0, -1, 0.678, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.8800000000000034, 1, 0, 0, 1.4632, 0, 0, -1, 0.665, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.9200000000000035, 1, 0, 0, 1.4183, 0, 0, -1, 0.6536, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.9600000000000035, 1, 0, 0, 1.3737, 0, 0, -1, 0.6441, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.0000000000000036, 1, 0, 0, 1.3293, 0, 0, -1, 0.6363, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.040000000000004, 1, 0, 0, 1.2853, 0, 0, -1, 0.6305, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.080000000000004, 1, 0, 0, 1.2418, 0, 0, -1, 0.6265, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.120000000000004, 1, 0, 0, 1.1989, 0, 0, -1, 0.6243, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.160000000000004, 1, 0, 0, 1.1568, 0, 0, -1, 0.6242, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.200000000000004, 1, 0, 0, 1.1155, 0, 0, -1, 0.6259, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.240000000000004, 1, 0, 0, 1.0753, 0, 0, -1, 0.6296, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.280000000000004, 1, 0, 0, 1.0362, 0, 0, -1, 0.6351, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.320000000000004, 1, 0, 0, 0.9985, 0, 0, -1, 0.6425, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.360000000000004, 1, 0, 0, 0.9624, 0, 0, -1, 0.6517, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.400000000000004, 1, 0, 0, 0.9279, 0, 0, -1, 0.6626, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.440000000000004, 1, 0, 0, 0.8952, 0, 0, -1, 0.6751, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.480000000000004, 1, 0, 0, 0.8644, 0, 0, -1, 0.689, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.520000000000004, 1, 0, 0, 0.8357, 0, 0, -1, 0.7043, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.560000000000004, 1, 0, 0, 0.8092, 0, 0, -1, 0.7208, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.600000000000004, 1, 0, 0, 0.7849, 0, 0, -1, 0.7384, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.640000000000004, 1, 0, 0, 0.7629, 0, 0, -1, 0.7569, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.680000000000004, 1, 0, 0, 0.7432, 0, 0, -1, 0.7761, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.720000000000004, 1, 0, 0, 0.7259, 0, 0, -1, 0.7959, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.760000000000004, 1, 0, 0, 0.711, 0, 0, -1, 0.8162, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.800000000000004, 1, 0, 0, 0.6983, 0, 0, -1, 0.8368, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.840000000000004, 1, 0, 0, 0.6881, 0, 0, -1, 0.8575, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.880000000000004, 1, 0, 0, 0.6801, 0, 0, -1, 0.8783, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.920000000000004, 1, 0, 0, 0.6744, 0, 0, -1, 0.899, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.960000000000004, 1, 0, 0, 0.6709, 0, 0, -1, 0.9195, 0, 1, 0, 0.85, 0, 0, 0, 1], [6.000000000000004, 1, 0, 0, 0.6696, 0, 0, -1, 0.9396, 0, 1, 0, 0.85, 0, 0, 0, 1], [6.0400000000000045, 1, 0, 0, 0.6703, 0, 0, -1, 0.9593, 0, 1, 0, 0.85, 0, 0, 0, 1], [6.0800000000000045, 1, 0, 0, 0.6731, 0, 0, -1, 0.9785, 0, 1, 0, 0.85, 0, 0, 0, 1], [6.1200000000000045, 1, 0, 0, 0.6779, 0, 0, -1, 0.9971, 0, 1, 0, 0.85, 0, 0, 0, 1], [6.160000000000005, 1, 0, 0, 0.6846, 0, 0, -1, 1.0149, 0, 1, 0, 0.85, 0, 0, 0, 1], [6.200000000000005, 1, 0, 0, 0.693, 0, 0, -1, 1.0319, 0, 1, 0, 0.85, 0, 0, 0, 1], [6.240000000000005, 1, 0, 0, 0.7032, 0, 0, -1, 1.048, 0, 1, 0, 0.85, 0, 0, 0, 1], [6.280000000000005, 1, 0, 0, 0.715, 0, 0, -1, 1.0632, 0, 1, 0, 0.85, 0, 0, 0, 1]], material_p1);
+sceneElements.push(var_p1);
+
+//BEGIN DECLARATION OF THE CYLINDER 'p2'
+
+const material_p2 = new MeshPhysicalMaterial({
+opacity: 1,
+transparent: false,
+aoMapIntensity: 1,
+bumpScale: 1,
+color: "CornflowerBlue",
+emissive: "black",
+emissiveIntensity: 1,
+envMapIntensity: 1,
+flatShading: false,
+lightMapIntensity: 1,
+metalness: 0,
+normalScale: new Vector2(1,1),
+refractionRatio: 0.98,
+roughness: 1,
+clearcoat: 0,
+clearcoatNormalScale: new Vector2(1,1),
+clearcoatRoughness: 0,
+ior: 1.5,
+reflectivity: 0.5,
+sheen: 0,
+sheenRoughness: 1,
+sheenColor: "white",
+specularIntensity: 0,
+specularColor: "white",
+transmission: 0,
+});
+
+
+const var_p2 = new Cylinder(0.3,1.7,[[0, 1.0, 0.0, -0.0, 1.0, 0.0, 0.0, -1.0, 5.0, 0.0, 1.0, -0.0, 0.85, 0, 0, 0, 1], [0, 1, 0, 0, 1.0015, 0, 0, -1, 4.9985, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.04, 1, 0, 0, 1.0044, 0, 0, -1, 4.9956, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.08, 1, 0, 0, 1.0086, 0, 0, -1, 4.9914, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.12, 1, 0, 0, 1.0141, 0, 0, -1, 4.9859, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.16, 1, 0, 0, 1.0209, 0, 0, -1, 4.9791, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.2, 1, 0, 0, 1.0289, 0, 0, -1, 4.9711, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.24000000000000002, 1, 0, 0, 1.038, 0, 0, -1, 4.962, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.28, 1, 0, 0, 1.0483, 0, 0, -1, 4.9517, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.32, 1, 0, 0, 1.0596, 0, 0, -1, 4.9404, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.36, 1, 0, 0, 1.0719, 0, 0, -1, 4.9281, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.39999999999999997, 1, 0, 0, 1.0852, 0, 0, -1, 4.9148, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.43999999999999995, 1, 0, 0, 1.0994, 0, 0, -1, 4.9005, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.4799999999999999, 1, 0, 0, 1.1146, 0, 0, -1, 4.8854, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.5199999999999999, 1, 0, 0, 1.1306, 0, 0, -1, 4.8694, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.5599999999999999, 1, 0, 0, 1.1474, 0, 0, -1, 4.8526, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.6, 1, 0, 0, 1.165, 0, 0, -1, 4.8349, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.64, 1, 0, 0, 1.1834, 0, 0, -1, 4.8165, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.68, 1, 0, 0, 1.2025, 0, 0, -1, 4.7974, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.7200000000000001, 1, 0, 0, 1.2224, 0, 0, -1, 4.7776, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.7600000000000001, 1, 0, 0, 1.2429, 0, 0, -1, 4.757, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.8000000000000002, 1, 0, 0, 1.264, 0, 0, -1, 4.7359, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.8400000000000002, 1, 0, 0, 1.2858, 0, 0, -1, 4.7141, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.8800000000000002, 1, 0, 0, 1.3082, 0, 0, -1, 4.6917, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.9200000000000003, 1, 0, 0, 1.3311, 0, 0, -1, 4.6687, 0, 1, 0, 0.85, 0, 0, 0, 1], [0.9600000000000003, 1, 0, 0, 1.3546, 0, 0, -1, 4.6452, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.0000000000000002, 1, 0, 0, 1.3786, 0, 0, -1, 4.6212, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.0400000000000003, 1, 0, 0, 1.4032, 0, 0, -1, 4.5966, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.0800000000000003, 1, 0, 0, 1.4282, 0, 0, -1, 4.5716, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.1200000000000003, 1, 0, 0, 1.4537, 0, 0, -1, 4.5461, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.1600000000000004, 1, 0, 0, 1.4796, 0, 0, -1, 4.5201, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.2000000000000004, 1, 0, 0, 1.5059, 0, 0, -1, 4.4937, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.2400000000000004, 1, 0, 0, 1.5327, 0, 0, -1, 4.4669, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.2800000000000005, 1, 0, 0, 1.5599, 0, 0, -1, 4.4397, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.3200000000000005, 1, 0, 0, 1.5874, 0, 0, -1, 4.4121, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.3600000000000005, 1, 0, 0, 1.6153, 0, 0, -1, 4.3842, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.4000000000000006, 1, 0, 0, 1.6435, 0, 0, -1, 4.3559, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.4400000000000006, 1, 0, 0, 1.6721, 0, 0, -1, 4.3273, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.4800000000000006, 1, 0, 0, 1.7009, 0, 0, -1, 4.2983, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.5200000000000007, 1, 0, 0, 1.7301, 0, 0, -1, 4.269, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.5600000000000007, 1, 0, 0, 1.7596, 0, 0, -1, 4.2395, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.6000000000000008, 1, 0, 0, 1.7893, 0, 0, -1, 4.2096, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.6400000000000008, 1, 0, 0, 1.8193, 0, 0, -1, 4.1795, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.6800000000000008, 1, 0, 0, 1.8495, 0, 0, -1, 4.1491, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.7200000000000009, 1, 0, 0, 1.8799, 0, 0, -1, 4.1185, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.760000000000001, 1, 0, 0, 1.9105, 0, 0, -1, 4.0876, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.800000000000001, 1, 0, 0, 1.9414, 0, 0, -1, 4.0566, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.840000000000001, 1, 0, 0, 1.9724, 0, 0, -1, 4.0253, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.880000000000001, 1, 0, 0, 2.0035, 0, 0, -1, 3.9938, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.920000000000001, 1, 0, 0, 2.0348, 0, 0, -1, 3.9621, 0, 1, 0, 0.85, 0, 0, 0, 1], [1.960000000000001, 1, 0, 0, 2.0662, 0, 0, -1, 3.9302, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.000000000000001, 1, 0, 0, 2.0977, 0, 0, -1, 3.8982, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.040000000000001, 1, 0, 0, 2.1293, 0, 0, -1, 3.866, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.080000000000001, 1, 0, 0, 2.1609, 0, 0, -1, 3.8337, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.120000000000001, 1, 0, 0, 2.1925, 0, 0, -1, 3.8012, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.160000000000001, 1, 0, 0, 2.2241, 0, 0, -1, 3.7687, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.200000000000001, 1, 0, 0, 2.2557, 0, 0, -1, 3.736, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.240000000000001, 1, 0, 0, 2.2871, 0, 0, -1, 3.7033, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.280000000000001, 1, 0, 0, 2.3184, 0, 0, -1, 3.6705, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.320000000000001, 1, 0, 0, 2.3495, 0, 0, -1, 3.6377, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.360000000000001, 1, 0, 0, 2.3804, 0, 0, -1, 3.6049, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.4000000000000012, 1, 0, 0, 2.4109, 0, 0, -1, 3.5722, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.4400000000000013, 1, 0, 0, 2.441, 0, 0, -1, 3.5396, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.4800000000000013, 1, 0, 0, 2.4706, 0, 0, -1, 3.5071, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.5200000000000014, 1, 0, 0, 2.4997, 0, 0, -1, 3.4748, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.5600000000000014, 1, 0, 0, 2.5281, 0, 0, -1, 3.4428, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.6000000000000014, 1, 0, 0, 2.5558, 0, 0, -1, 3.4111, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.6400000000000015, 1, 0, 0, 2.5826, 0, 0, -1, 3.3799, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.6800000000000015, 1, 0, 0, 2.6085, 0, 0, -1, 3.3493, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.7200000000000015, 1, 0, 0, 2.6333, 0, 0, -1, 3.3194, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.7600000000000016, 1, 0, 0, 2.6571, 0, 0, -1, 3.2903, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.8000000000000016, 1, 0, 0, 2.6797, 0, 0, -1, 3.2623, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.8400000000000016, 1, 0, 0, 2.7012, 0, 0, -1, 3.2354, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.8800000000000017, 1, 0, 0, 2.7216, 0, 0, -1, 3.2098, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.9200000000000017, 1, 0, 0, 2.7409, 0, 0, -1, 3.1857, 0, 1, 0, 0.85, 0, 0, 0, 1], [2.9600000000000017, 1, 0, 0, 2.7594, 0, 0, -1, 3.1632, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.0000000000000018, 1, 0, 0, 2.7771, 0, 0, -1, 3.1424, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.040000000000002, 1, 0, 0, 2.7943, 0, 0, -1, 3.1233, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.080000000000002, 1, 0, 0, 2.8112, 0, 0, -1, 3.106, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.120000000000002, 1, 0, 0, 2.828, 0, 0, -1, 3.0902, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.160000000000002, 1, 0, 0, 2.8449, 0, 0, -1, 3.0759, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.200000000000002, 1, 0, 0, 2.8621, 0, 0, -1, 3.063, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.240000000000002, 1, 0, 0, 2.8797, 0, 0, -1, 3.0512, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.280000000000002, 1, 0, 0, 2.8979, 0, 0, -1, 3.0404, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.320000000000002, 1, 0, 0, 2.9169, 0, 0, -1, 3.0302, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.360000000000002, 1, 0, 0, 2.9365, 0, 0, -1, 3.0206, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.400000000000002, 1, 0, 0, 2.9569, 0, 0, -1, 3.0113, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.440000000000002, 1, 0, 0, 2.9781, 0, 0, -1, 3.0021, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.480000000000002, 1, 0, 0, 3.0001, 0, 0, -1, 2.9929, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.5200000000000022, 1, 0, 0, 3.0228, 0, 0, -1, 2.9835, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.5600000000000023, 1, 0, 0, 3.0463, 0, 0, -1, 2.9738, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.6000000000000023, 1, 0, 0, 3.0704, 0, 0, -1, 2.9638, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.6400000000000023, 1, 0, 0, 3.0952, 0, 0, -1, 2.9532, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.6800000000000024, 1, 0, 0, 3.1207, 0, 0, -1, 2.9421, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.7200000000000024, 1, 0, 0, 3.1467, 0, 0, -1, 2.9304, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.7600000000000025, 1, 0, 0, 3.1733, 0, 0, -1, 2.918, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.8000000000000025, 1, 0, 0, 3.2004, 0, 0, -1, 2.905, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.8400000000000025, 1, 0, 0, 3.228, 0, 0, -1, 2.8912, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.8800000000000026, 1, 0, 0, 3.256, 0, 0, -1, 2.8767, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.9200000000000026, 1, 0, 0, 3.2844, 0, 0, -1, 2.8615, 0, 1, 0, 0.85, 0, 0, 0, 1], [3.9600000000000026, 1, 0, 0, 3.3132, 0, 0, -1, 2.8455, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.000000000000003, 1, 0, 0, 3.3423, 0, 0, -1, 2.8288, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.040000000000003, 1, 0, 0, 3.3717, 0, 0, -1, 2.8113, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.080000000000003, 1, 0, 0, 3.4014, 0, 0, -1, 2.7931, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.120000000000003, 1, 0, 0, 3.4314, 0, 0, -1, 2.7742, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.160000000000003, 1, 0, 0, 3.4616, 0, 0, -1, 2.7545, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.200000000000003, 1, 0, 0, 3.492, 0, 0, -1, 2.7341, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.240000000000003, 1, 0, 0, 3.5226, 0, 0, -1, 2.7131, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.280000000000003, 1, 0, 0, 3.5534, 0, 0, -1, 2.6913, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.320000000000003, 1, 0, 0, 3.5843, 0, 0, -1, 2.6689, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.360000000000003, 1, 0, 0, 3.6154, 0, 0, -1, 2.6458, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.400000000000003, 1, 0, 0, 3.6466, 0, 0, -1, 2.6221, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.440000000000003, 1, 0, 0, 3.6779, 0, 0, -1, 2.5977, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.480000000000003, 1, 0, 0, 3.7094, 0, 0, -1, 2.5728, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.520000000000003, 1, 0, 0, 3.7409, 0, 0, -1, 2.5473, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.560000000000003, 1, 0, 0, 3.7724, 0, 0, -1, 2.5211, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.600000000000003, 1, 0, 0, 3.804, 0, 0, -1, 2.4945, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.640000000000003, 1, 0, 0, 3.8357, 0, 0, -1, 2.4672, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.680000000000003, 1, 0, 0, 3.8674, 0, 0, -1, 2.4395, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.720000000000003, 1, 0, 0, 3.8992, 0, 0, -1, 2.4112, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.760000000000003, 1, 0, 0, 3.9309, 0, 0, -1, 2.3825, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.800000000000003, 1, 0, 0, 3.9627, 0, 0, -1, 2.3532, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.840000000000003, 1, 0, 0, 3.9945, 0, 0, -1, 2.3235, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.8800000000000034, 1, 0, 0, 4.0262, 0, 0, -1, 2.2933, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.9200000000000035, 1, 0, 0, 4.058, 0, 0, -1, 2.2626, 0, 1, 0, 0.85, 0, 0, 0, 1], [4.9600000000000035, 1, 0, 0, 4.0897, 0, 0, -1, 2.2315, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.0000000000000036, 1, 0, 0, 4.1214, 0, 0, -1, 2.2, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.040000000000004, 1, 0, 0, 4.1531, 0, 0, -1, 2.1681, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.080000000000004, 1, 0, 0, 4.1847, 0, 0, -1, 2.1358, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.120000000000004, 1, 0, 0, 4.2163, 0, 0, -1, 2.1031, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.160000000000004, 1, 0, 0, 4.2478, 0, 0, -1, 2.0699, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.200000000000004, 1, 0, 0, 4.2792, 0, 0, -1, 2.0365, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.240000000000004, 1, 0, 0, 4.3106, 0, 0, -1, 2.0026, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.280000000000004, 1, 0, 0, 4.3419, 0, 0, -1, 1.9684, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.320000000000004, 1, 0, 0, 4.3732, 0, 0, -1, 1.9338, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.360000000000004, 1, 0, 0, 4.4043, 0, 0, -1, 1.8989, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.400000000000004, 1, 0, 0, 4.4354, 0, 0, -1, 1.8637, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.440000000000004, 1, 0, 0, 4.4663, 0, 0, -1, 1.8281, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.480000000000004, 1, 0, 0, 4.4971, 0, 0, -1, 1.7922, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.520000000000004, 1, 0, 0, 4.5279, 0, 0, -1, 1.756, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.560000000000004, 1, 0, 0, 4.5585, 0, 0, -1, 1.7194, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.600000000000004, 1, 0, 0, 4.5889, 0, 0, -1, 1.6826, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.640000000000004, 1, 0, 0, 4.6192, 0, 0, -1, 1.6454, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.680000000000004, 1, 0, 0, 4.6494, 0, 0, -1, 1.608, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.720000000000004, 1, 0, 0, 4.6794, 0, 0, -1, 1.5702, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.760000000000004, 1, 0, 0, 4.7092, 0, 0, -1, 1.5321, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.800000000000004, 1, 0, 0, 4.7388, 0, 0, -1, 1.4938, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.840000000000004, 1, 0, 0, 4.7682, 0, 0, -1, 1.4551, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.880000000000004, 1, 0, 0, 4.7974, 0, 0, -1, 1.4161, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.920000000000004, 1, 0, 0, 4.8263, 0, 0, -1, 1.3768, 0, 1, 0, 0.85, 0, 0, 0, 1], [5.960000000000004, 1, 0, 0, 4.8549, 0, 0, -1, 1.3372, 0, 1, 0, 0.85, 0, 0, 0, 1], [6.000000000000004, 1, 0, 0, 4.8832, 0, 0, -1, 1.2973, 0, 1, 0, 0.85, 0, 0, 0, 1], [6.0400000000000045, 1, 0, 0, 4.9112, 0, 0, -1, 1.257, 0, 1, 0, 0.85, 0, 0, 0, 1], [6.0800000000000045, 1, 0, 0, 4.9387, 0, 0, -1, 1.2164, 0, 1, 0, 0.85, 0, 0, 0, 1], [6.1200000000000045, 1, 0, 0, 4.9656, 0, 0, -1, 1.1754, 0, 1, 0, 0.85, 0, 0, 0, 1], [6.160000000000005, 1, 0, 0, 4.9919, 0, 0, -1, 1.134, 0, 1, 0, 0.85, 0, 0, 0, 1], [6.200000000000005, 1, 0, 0, 5.0173, 0, 0, -1, 1.0922, 0, 1, 0, 0.85, 0, 0, 0, 1], [6.240000000000005, 1, 0, 0, 5.0412, 0, 0, -1, 1.05, 0, 1, 0, 0.85, 0, 0, 0, 1], [6.280000000000005, 1, 0, 0, 5.0629, 0, 0, -1, 1.0078, 0, 1, 0, 0.85, 0, 0, 0, 1]], material_p2);
+sceneElements.push(var_p2);
+//USER INPUT GOES HERE
+
+
+
+// add stuff to the scene
+for (let i = 0; i < sceneElements.length; i++) {
+	if (typeof sceneElements[i].shape != "undefined") {
+		scene.add(sceneElements[i].shape);
+	}
+}
+
+
+
+//Add LDR to the scene
+if ( !(ldrUrls.length==0) )
+{
+	const pmremGenerator = new PMREMGenerator( renderer );
+	var ldrCubeMap = new CubeTextureLoader().load(ldrUrls, function () {
+
+		var ldrCubeRenderTarget = pmremGenerator.fromCubemap(ldrCubeMap);
+
+		ldrCubeMap.encoding = sRGBEncoding;
+
+
+		for (let i = 0; i < sceneElements.length; i++) {
+			sceneElements[i].setEnvMap(ldrCubeRenderTarget.texture);
+		}
+		scene.background = ldrCubeMap;
+	});
+	renderer.toneMappingExposure = 1.0;
+}
+
+
+
+//Add gui
+var gui = new GUI({autoPlace: false, width: "800px"});
+var customContainer = document.getElementById('canvas_container_'+sceneID);
+customContainer.appendChild(gui.domElement);
+
+var automaticPlay = true;
+var manualTime=0;
+
+gui.add({Progress: 0}, "Progress", 0, maxTime, 0.01).onChange(function (value) {
+    automaticPlay = false;
+	manualTime = value+0.0001;
+	btn.innerHTML = "&#9654";
+})
+customContainer.getElementsByClassName('c')[0].style.width = (canvas.clientWidth-20).toString()+'px';
+customContainer.getElementsByClassName('dg main')[0].style.width = canvas.clientWidth.toString()+'px';
+customContainer.getElementsByClassName('dg main')[0].style.right = '0px'; //0
+customContainer.getElementsByClassName('dg main')[0].style.top = '0px'; //550
+customContainer.getElementsByClassName('dg main')[0].style.position = 'relative'; //absolute
+customContainer.getElementsByClassName('close-button close-bottom')[0].style.height = '0px';
+customContainer.getElementsByClassName('close-button close-bottom')[0].innerHTML = '';
+customContainer.getElementsByClassName('property-name')[0].innerHTML = '';
+customContainer.getElementsByClassName('slider')[0].style.width = (canvas.clientWidth-100).toString()+'px'
+customContainer.getElementsByClassName('slider-fg')[0].style.backgroundColor = '#19bd39'
+customContainer.querySelectorAll("input[type=text]")[0].style.width = '50px';
+customContainer.querySelectorAll("input[type=text]")[0].style.color = '#19bd39';
+
+customContainer.getElementsByClassName('dg')[0].style.borderLeft = '4px solid #1a1a1a'
+customContainer.getElementsByClassName('cr')[0].style.borderLeft = '4px solid #1a1a1a'
+customContainer.getElementsByClassName('number')[0].style.borderLeft = '4px solid #1a1a1a'
+var recoveryCurrentTime = false;
+
+let btn = document.createElement("button");
+btn.style.backgroundColor = "#1a1a1a";
+btn.style.color = "#19bd39";
+btn.style.border= "none";
+btn.style.height= "28px";
+btn.style.width= "28px";
+btn.innerHTML = "||";
+btn.onclick = function () {
+
+	automaticPlay = !automaticPlay;
+
+	if(automaticPlay)
+	{
+		btn.innerHTML = "||";
+		recoveryCurrentTime = true;
+	}
+	else
+	{
+		manualTime = parseFloat(customContainer.querySelectorAll("input[type=text]")[0].value)+0.0001;
+		btn.innerHTML = "&#9654";
+	}
+
+};
+customContainer.getElementsByClassName('c')[0].style.verticalAlign= "middle"
+customContainer.getElementsByClassName('c')[0].appendChild(btn);
+//------------------------------------------------------------
+
+//Wait until all objects loaded
+
+var loadedAll = false;
+var sceneDrawn = false;
+
+
+//Get starting ms
+var startMs =  elapsedMs()
+
+//Initialize
+var heightScene;
+var heightBar;
+
+document.getElementsByClassName('controller')[0].appendChild(customContainer.getElementsByClassName('dg main')[0])
+document.getElementsByClassName('controller')[0].style.opacity="0"
+
+heightScene = document.getElementById('scene_'+sceneID).style.height;
+document.getElementById('scene_'+sceneID).style.visibility='hidden';
+document.getElementById('scene_'+sceneID).style.height='0px';
+
+heightBar = customContainer.getElementsByClassName('dg main')[0].style.height;
+customContainer.getElementsByClassName('dg main')[0].style.visibility='hidden';
+customContainer.getElementsByClassName('dg main')[0].style.height = '0px';
+
+
+//-------------------- THE ANIMATION LOOP -------------------
+
+
+
+renderer.setAnimationLoop(() => {
+
+
+	loadedAll = true;
+
+	for(let i = 0; i < sceneElements.length; i++){
+		loadedAll = loadedAll && sceneElements[i].hasLoaded();
+	}
+
+	if(!loadedAll)
+	{
+		startMs =  elapsedMs();
+	}
+	else
+	{
+		//document.getElementById('canvas_container').style.visibility = 'visible';
+		if( (elapsedMs()-startMs > delay) && !sceneDrawn)
+		{
+			document.getElementById('scene_'+sceneID).style.visibility = 'visible';
+			document.getElementById('canvas_container_'+sceneID).getElementsByClassName('dg main')[0].style.visibility = 'visible';
+			document.getElementById('scene_'+sceneID).style.height=heightScene;
+			document.getElementById('canvas_container_'+sceneID).getElementsByClassName('dg main')[0].style.height = heightBar;
+			document.getElementById('loading_screen_'+sceneID).remove();
+			sceneDrawn = true;
+		}
+	}
+
+
+	//MAGIC HAPPENS HERE!!!
+	if(loadedAll && automaticPlay)
+	{
+
+		var currentSeconds;
+		if(!recoveryCurrentTime)
+		{
+
+			for (let i = 0; i < sceneElements.length; i++) {
+				sceneElements[i].nextFrame();
+				sceneElements[i].showFrame();
+			}
+
+			currentSeconds = Math.min(0.001*Math.max(elapsedMs()-startMs-delay,0),maxTime);
+
+			var percentage = (100 * currentSeconds / (0.000001 + maxTime)).toString();
+			customContainer.getElementsByClassName('slider-fg')[0].style.width = percentage + "%";
+			customContainer.querySelectorAll("input[type=text]")[0].value = Math.round(100 * currentSeconds) / 100;
+		}
+		else
+		{
+			currentSeconds = customContainer.querySelectorAll("input[type=text]")[0].value;
+			startMs =  elapsedMs()-delay-1000*currentSeconds;
+			recoveryCurrentTime = false;
+		}
+
+	}
+	if(loadedAll && !automaticPlay)
+	{
+		for (let i = 0; i < sceneElements.length; i++) {
+			sceneElements[i].setFrameTime(manualTime);
+			sceneElements[i].showFrame();
+		}
+	}
+
+	renderer.render(scene, camera);
+});
+//------------------------------------------------------------
+ </script>
+ </body>
+ </html>
